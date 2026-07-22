@@ -1,0 +1,118 @@
+:root {
+  --arsenal-red: #ef0107;
+  --arsenal-red-dark: #b8000d;
+  --arsenal-gold: #db9e00;
+  --ink: #101418;
+  --ink-soft: #4a5560;
+  --bg: #f6f7f9;
+  --card-bg: #ffffff;
+  --border: #e3e6ea;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.05);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.site-header {
+  background: linear-gradient(135deg, var(--arsenal-red), var(--arsenal-red-dark));
+  color: #fff;
+  padding: 32px 0 28px;
+  border-bottom: 4px solid var(--arsenal-gold);
+}
+.site-header h1 { margin: 0 0 4px; font-size: 32px; letter-spacing: -0.01em; }
+.site-header .tagline { margin: 0; opacity: .92; }
+.last-updated { margin: 8px 0 0; font-size: 13px; opacity: .8; }
+
+main { padding: 24px 0 48px; }
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.card h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: var(--arsenal-red-dark);
+  border-bottom: 2px solid var(--arsenal-gold);
+  padding-bottom: 6px;
+  display: inline-block;
+}
+.section-note { color: var(--ink-soft); font-size: 14px; margin: 0 0 14px; }
+
+.odds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.odds-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  background: #fafbfc;
+}
+.odds-item .comp { font-weight: 600; font-size: 14px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
+.odds-item .value { font-size: 28px; font-weight: 700; color: var(--arsenal-red-dark); margin: 6px 0 2px; }
+.odds-item .updated { font-size: 12px; color: var(--ink-soft); }
+
+.transfers-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.transfers-columns h3 { margin: 0 0 8px; font-size: 15px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
+.transfer-list, .rumor-list, .source-list { list-style: none; padding: 0; margin: 0; }
+.transfer-list li, .rumor-list li, .source-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.transfer-list li:last-child, .rumor-list li:last-child, .source-list li:last-child { border-bottom: none; }
+.transfer-list .player { font-weight: 600; }
+.transfer-list .meta, .rumor-list .meta { display: block; font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+
+.rumor-list .headline { font-weight: 600; }
+.rumor-list .reliability {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.reliability.high { background: #d4edda; color: #155724; }
+.reliability.medium { background: #fff3cd; color: #856404; }
+.reliability.low { background: #f8d7da; color: #721c24; }
+
+.source-list a { color: var(--arsenal-red-dark); text-decoration: none; font-weight: 600; }
+.source-list a:hover { text-decoration: underline; }
+.source-list .desc { display: block; font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+
+.empty { color: var(--ink-soft); font-style: italic; padding: 8px 0; }
+
+footer { padding: 20px 0 40px; color: var(--ink-soft); text-align: center; }
+
+@media (max-width: 600px) {
+  .transfers-columns { grid-template-columns: 1fr; }
+  .site-header h1 { font-size: 26px; }
+}

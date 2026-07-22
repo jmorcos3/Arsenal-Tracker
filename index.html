@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arsenal Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Arsenal Tracker</h1>
+      <p class="tagline">Trophy odds, summer transfers, rumors & squad news.</p>
+      <p id="last-updated" class="last-updated"></p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="odds-section" class="card">
+      <h2>Trophy Odds</h2>
+      <p class="section-note">
+        Arsenal are out of the FA Cup and EFL Cup — only the Premier League and Champions League remain, plus the Double.
+      </p>
+      <div id="odds-grid" class="odds-grid"></div>
+    </section>
+
+    <section id="transfers-section" class="card">
+      <h2>Summer Transfers</h2>
+      <div class="transfers-columns">
+        <div>
+          <h3>In</h3>
+          <ul id="transfers-in" class="transfer-list"></ul>
+        </div>
+        <div>
+          <h3>Out</h3>
+          <ul id="transfers-out" class="transfer-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="pl-transfers-section" class="card">
+      <h2>Around the Premier League</h2>
+      <p class="section-note">Notable moves at rival clubs worth knowing about.</p>
+      <ul id="pl-transfers-list" class="transfer-list"></ul>
+    </section>
+
+    <section id="rumors-section" class="card">
+      <h2>Rumors</h2>
+      <ul id="rumors-list" class="rumor-list"></ul>
+    </section>
+
+    <section id="sources-section" class="card">
+      <h2>Sources</h2>
+      <ul id="sources-list" class="source-list"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <small>Community-maintained. Odds are estimates — verify with a bookmaker before betting.</small>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

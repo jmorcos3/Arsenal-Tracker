@@ -1,0 +1,29 @@
+{
+  "items": [
+    {
+      "name": "HandofArsenal (X)",
+      "url": "https://x.com/HandofArsenal",
+      "description": "Arsenal transfer news & analysis."
+    },
+    {
+      "name": "Billy Carpy (X)",
+      "url": "https://x.com/billycarpy",
+      "description": "Arsenal reporting and takes."
+    },
+    {
+      "name": "Fabrizio Romano (X)",
+      "url": "https://x.com/FabrizioRomano",
+      "description": "Global transfer news."
+    },
+    {
+      "name": "David Ornstein (The Athletic)",
+      "url": "https://www.nytimes.com/athletic/author/david-ornstein/",
+      "description": "High-reliability Arsenal reporting."
+    },
+    {
+      "name": "Arsenal.com News",
+      "url": "https://www.arsenal.com/news",
+      "description": "Official club news."
+    }
+  ]
+}

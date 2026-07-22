@@ -1,0 +1,20 @@
+{
+  "lastUpdated": "2026-07-22",
+  "items": [
+    {
+      "competition": "Premier League",
+      "odds": "3.50",
+      "lastUpdated": "2026-07-22"
+    },
+    {
+      "competition": "Champions League",
+      "odds": "8.00",
+      "lastUpdated": "2026-07-22"
+    },
+    {
+      "competition": "Double (PL + UCL)",
+      "odds": "25.00",
+      "lastUpdated": "2026-07-22"
+    }
+  ]
+}
