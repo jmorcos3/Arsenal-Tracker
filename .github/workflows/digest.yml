@@ -1,0 +1,29 @@
+name: Arsenal Digest
+
+on:
+  schedule:
+    # 16:17 UTC every 3 days = ~12:17pm ET during EDT, ~11:17am ET during EST.
+    # GitHub Actions cron is UTC-only, so the fire time drifts by 1h across DST.
+    - cron: '17 16 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install feedparser anthropic
+
+      - name: Build and send digest
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          DIGEST_TO: jmorcos3@gmail.com
+          DIGEST_FROM: jmorcos3@gmail.com
+        run: python scripts/digest.py
