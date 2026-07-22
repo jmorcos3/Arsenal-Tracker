@@ -24,6 +24,11 @@
       "name": "Arsenal.com News",
       "url": "https://www.arsenal.com/news",
       "description": "Official club news."
+    },
+    {
+      "name": "Transfermarkt — Transfers & Rumors",
+      "url": "https://www.transfermarkt.com/navigation/transfersundgeruechte",
+      "description": "Comprehensive transfer news, rumors, and market values."
     }
   ]
 }
