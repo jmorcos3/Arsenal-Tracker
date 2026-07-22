@@ -32,13 +32,21 @@ function renderOdds(data) {
     grid.innerHTML = '<p class="empty">No odds yet.</p>';
     return;
   }
-  grid.innerHTML = data.items.map(item => `
-    <div class="odds-item">
-      <div class="comp">${escapeHTML(item.competition)}</div>
-      <div class="value">${escapeHTML(String(item.odds))}</div>
-      <div class="updated">Updated ${escapeHTML(item.lastUpdated || '')}</div>
-    </div>
-  `).join('');
+  grid.innerHTML = data.items.map(item => {
+    const oddsDisplay = item.odds == null ? '—' : String(item.odds);
+    const prob = (item.impliedProbability != null)
+      ? ` <span class="prob">(${(item.impliedProbability * 100).toFixed(1)}%)</span>` : '';
+    const book = item.bestBookmaker
+      ? `<div class="book">${escapeHTML(item.bestBookmaker)}</div>` : '';
+    return `
+      <div class="odds-item">
+        <div class="comp">${escapeHTML(item.competition)}</div>
+        <div class="value">${escapeHTML(oddsDisplay)}${prob}</div>
+        ${book}
+        <div class="updated">Updated ${escapeHTML(item.lastUpdated || '')}</div>
+      </div>
+    `;
+  }).join('');
 }
 
 function renderTransfers(data) {

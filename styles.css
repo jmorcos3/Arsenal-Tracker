@@ -71,6 +71,8 @@ main { padding: 24px 0 48px; }
 }
 .odds-item .comp { font-weight: 600; font-size: 14px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .04em; }
 .odds-item .value { font-size: 28px; font-weight: 700; color: var(--arsenal-red-dark); margin: 6px 0 2px; }
+.odds-item .value .prob { font-size: 14px; font-weight: 500; color: var(--ink-soft); vertical-align: middle; }
+.odds-item .book { font-size: 12px; color: var(--ink-soft); margin: 2px 0; font-style: italic; }
 .odds-item .updated { font-size: 12px; color: var(--ink-soft); }
 
 .transfers-columns {

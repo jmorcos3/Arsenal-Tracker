@@ -3,9 +3,11 @@ name: Arsenal Digest
 on:
   schedule:
     # 16:17 UTC every 3 days = ~12:17pm ET during EDT, ~11:17am ET during EST.
-    # GitHub Actions cron is UTC-only, so the fire time drifts by 1h across DST.
     - cron: '17 16 */3 * *'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   send-digest:
@@ -21,9 +23,33 @@ jobs:
         run: pip install feedparser anthropic
 
       - name: Build and send digest
+        id: digest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           DIGEST_TO: jmorcos3@gmail.com
           DIGEST_FROM: jmorcos3@gmail.com
         run: python scripts/digest.py
+
+      - name: Commit updated tracker data
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "No data changes to commit"
+          else
+            git commit -m "chore(data): auto-update from digest run"
+            git push
+          fi
+
+      - name: Notify on unhandled failure
+        if: failure()
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          DIGEST_TO: jmorcos3@gmail.com
+          DIGEST_FROM: jmorcos3@gmail.com
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python scripts/notify_failure.py

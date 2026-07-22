@@ -1,20 +1,27 @@
 {
-  "lastUpdated": "2026-07-22",
+  "lastUpdated": "2026-07-22T00:00:00Z",
   "items": [
     {
       "competition": "Premier League",
-      "odds": "3.50",
+      "odds": 3.50,
+      "impliedProbability": 0.2857,
+      "bestBookmaker": null,
       "lastUpdated": "2026-07-22"
     },
     {
       "competition": "Champions League",
-      "odds": "8.00",
+      "odds": 8.00,
+      "impliedProbability": 0.125,
+      "bestBookmaker": null,
       "lastUpdated": "2026-07-22"
     },
     {
       "competition": "Double (PL + UCL)",
-      "odds": "25.00",
+      "odds": 28.00,
+      "impliedProbability": 0.0357,
+      "bestBookmaker": "Implied (product of individual odds)",
       "lastUpdated": "2026-07-22"
     }
-  ]
+  ],
+  "history": []
 }
