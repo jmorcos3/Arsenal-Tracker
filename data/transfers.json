@@ -1,6 +1,13 @@
 {
   "window": "Summer 2026",
-  "lastUpdated": "2026-07-22",
-  "in": [],
+  "lastUpdated": "2026-07-25",
+  "in": [
+    {
+      "player": "Christos Tzolis",
+      "club": "Club Brugge",
+      "fee": "\u00a334m",
+      "date": "2026-07-23"
+    }
+  ],
   "out": []
 }

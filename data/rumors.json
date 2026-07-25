@@ -1,4 +1,19 @@
 {
-  "lastUpdated": "2026-07-22",
-  "items": []
+  "lastUpdated": "2026-07-25",
+  "items": [
+    {
+      "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
+      "source": "BBC Sport",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cpq8lpj530po?at_medium=RSS&at_campaign=rss",
+      "date": "2026-07-23",
+      "reliability": "high"
+    },
+    {
+      "headline": "Arsenal exploring deal for Real Madrid's Vinicius Jr",
+      "source": "Sky Sports",
+      "sourceUrl": "https://www.skysports.com/football/news/12040/13566893/vinicius-jr-transfer-news-arsenal-exploring-deal-for-real-madrid-and-brazil-forward",
+      "date": "2026-07-25",
+      "reliability": "medium"
+    }
+  ]
 }
