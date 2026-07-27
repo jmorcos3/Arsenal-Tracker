@@ -1,5 +1,6 @@
 """Fetch Arsenal news, refresh live odds, update tracker JSON, email a digest."""
 
+import html
 import json
 import os
 import re
@@ -36,7 +37,12 @@ ODDS_API_BASE = "https://api.the-odds-api.com/v4/sports"
 ODDS_SPORTS = {
     "Premier League": "soccer_epl",
     "Champions League": "soccer_uefa_champs_league",
+    "FA Cup": "soccer_fa_cup",
+    "Carabao Cup": "soccer_efl_cup",
 }
+INDIVIDUAL_COMPS = list(ODDS_SPORTS.keys())
+
+SITE_URL = os.environ.get("SITE_URL", "https://github.com/jmorcos3/Arsenal-Tracker")
 
 
 # ---------- news gathering ----------
@@ -65,10 +71,9 @@ def gather_news():
                 })
         except Exception as e:
             print(f"[warn] failed to fetch {source}: {e}")
-    dedup_key = lambda i: re.sub(r"\W+", "", i["title"].lower())[:80]
     seen, unique = set(), []
     for it in items:
-        k = dedup_key(it)
+        k = re.sub(r"\W+", "", it["title"].lower())[:80]
         if k and k not in seen:
             seen.add(k)
             unique.append(it)
@@ -78,7 +83,6 @@ def gather_news():
 # ---------- odds ----------
 
 def fetch_arsenal_odds(sport_key, api_key):
-    """Return (best_decimal_odds, bookmaker_title) or (None, None)."""
     url = (
         f"{ODDS_API_BASE}/{sport_key}/odds"
         f"?apiKey={api_key}&regions=uk&markets=outrights&oddsFormat=decimal"
@@ -115,20 +119,26 @@ def refresh_odds_file():
 
     odds_path = DATA_DIR / "odds.json"
     current = json.loads(odds_path.read_text()) if odds_path.exists() else {"items": [], "history": []}
-
     prev_map = {i["competition"]: i for i in current.get("items", [])}
+
     new_items = []
     live_snapshot = {"date": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
 
-    for comp_name, sport_key in ODDS_SPORTS.items():
+    for comp_name in INDIVIDUAL_COMPS:
+        sport_key = ODDS_SPORTS[comp_name]
         price, book = fetch_arsenal_odds(sport_key, api_key)
         if price is None:
-            print(f"[warn] no live odds for {comp_name}; keeping previous value")
-            new_items.append(prev_map.get(comp_name, {
-                "competition": comp_name, "odds": None,
-                "impliedProbability": None, "bestBookmaker": None,
-                "lastUpdated": current.get("lastUpdated", ""),
-            }))
+            prev = prev_map.get(comp_name)
+            if prev:
+                new_items.append(prev)
+                print(f"[warn] no live odds for {comp_name}; keeping previous value {prev.get('odds')}")
+            else:
+                new_items.append({
+                    "competition": comp_name, "odds": None,
+                    "impliedProbability": None, "bestBookmaker": None,
+                    "lastUpdated": current.get("lastUpdated", ""),
+                })
+                print(f"[warn] no live odds for {comp_name} and no previous value")
             continue
         new_items.append({
             "competition": comp_name,
@@ -151,12 +161,8 @@ def refresh_odds_file():
             "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         })
         live_snapshot["Double (PL + UCL)"] = double_price
-    else:
-        new_items.append(prev_map.get("Double (PL + UCL)", {
-            "competition": "Double (PL + UCL)", "odds": None,
-            "impliedProbability": None, "bestBookmaker": None,
-            "lastUpdated": current.get("lastUpdated", ""),
-        }))
+    elif prev_map.get("Double (PL + UCL)"):
+        new_items.append(prev_map["Double (PL + UCL)"])
 
     history = current.get("history", [])
     if len(live_snapshot) > 1:
@@ -168,18 +174,17 @@ def refresh_odds_file():
         "items": new_items,
         "history": history,
     }, indent=2) + "\n")
-    print(f"[ok] odds refreshed: {[i['competition']+'='+str(i['odds']) for i in new_items]}")
+    print(f"[ok] odds refreshed")
 
 
 # ---------- LLM: structured digest ----------
 
 DIGEST_TOOL = {
     "name": "publish_digest",
-    "description": "Emit the Arsenal digest as structured data plus HTML email body.",
+    "description": "Emit the Arsenal digest as structured data.",
     "input_schema": {
         "type": "object",
         "properties": {
-            "email_html": {"type": "string", "description": "HTML email body (no <html>/<body> wrapper). Inline CSS only."},
             "subject_highlight": {"type": "string", "description": "3-8 word top-story summary for the email subject."},
             "additions": {
                 "type": "object",
@@ -187,14 +192,17 @@ DIGEST_TOOL = {
                     "transfers_in": {"type": "array", "items": {"type": "object", "properties": {
                         "player": {"type": "string"}, "club": {"type": "string"},
                         "fee": {"type": "string"}, "date": {"type": "string"},
+                        "sourceUrl": {"type": "string"},
                     }, "required": ["player"]}},
                     "transfers_out": {"type": "array", "items": {"type": "object", "properties": {
                         "player": {"type": "string"}, "club": {"type": "string"},
                         "fee": {"type": "string"}, "date": {"type": "string"},
+                        "sourceUrl": {"type": "string"},
                     }, "required": ["player"]}},
                     "pl_transfers": {"type": "array", "items": {"type": "object", "properties": {
                         "player": {"type": "string"}, "from": {"type": "string"},
-                        "to": {"type": "string"}, "fee": {"type": "string"}, "date": {"type": "string"},
+                        "to": {"type": "string"}, "fee": {"type": "string"},
+                        "date": {"type": "string"}, "sourceUrl": {"type": "string"},
                     }, "required": ["player"]}},
                     "rumors": {"type": "array", "items": {"type": "object", "properties": {
                         "headline": {"type": "string"},
@@ -204,8 +212,25 @@ DIGEST_TOOL = {
                     }, "required": ["headline"]}},
                 },
             },
+            "narrative": {
+                "type": "object",
+                "properties": {
+                    "summary": {"type": "string", "description": "1-2 sentence overview of the past 3 days."},
+                    "odds_commentary": {"type": "string", "description": "Optional short note on odds movement."},
+                    "squad_news": {"type": "array", "items": {"type": "object", "properties": {
+                        "text": {"type": "string"}, "url": {"type": "string"},
+                    }, "required": ["text"]}},
+                    "around_pl_notes": {"type": "array", "items": {"type": "object", "properties": {
+                        "text": {"type": "string"}, "url": {"type": "string"},
+                    }, "required": ["text"]}},
+                    "fixtures": {"type": "array", "items": {"type": "object", "properties": {
+                        "text": {"type": "string"}, "url": {"type": "string"},
+                    }, "required": ["text"]}},
+                },
+                "required": ["summary"],
+            },
         },
-        "required": ["email_html", "subject_highlight", "additions"],
+        "required": ["subject_highlight", "additions", "narrative"],
     },
 }
 
@@ -237,46 +262,37 @@ def generate_digest(items, odds_snapshot):
 
     today = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
 
-    prompt = f"""You are writing an Arsenal FC news digest email for a fan.
+    prompt = f"""You are producing structured content for an Arsenal FC news digest.
 
 TODAY: {today}
 LOOKBACK: last {LOOKBACK_HOURS} hours
 
-CURRENT LIVE ODDS (Arsenal to win):
+CURRENT LIVE ODDS (Arsenal to win each trophy):
 {odds_lines}
 
-ALREADY-TRACKED ITEMS (do not re-add these; only add genuinely new items):
+ALREADY-TRACKED (do not re-add; only add genuinely new items):
 {json.dumps(tracker_state, indent=2)[:4000]}
 
 RECENT ARTICLES:
 {articles_block}
 
-Call the `publish_digest` tool with:
+Call the `publish_digest` tool. Rules:
 
-1. `additions` — ONLY items not already tracked above. Use exact field names. Rumor reliability rules:
-   - High: David Ornstein, Fabrizio Romano, BBC, The Athletic
-   - Medium: Sky Sports, The Guardian, The Telegraph
-   - Low: tabloids, unnamed sources, aggregators
-   Leave arrays empty if nothing new.
+1. `subject_highlight` — the biggest single story of the last 3 days in 3-8 words. Neutral phrasing.
 
-2. `subject_highlight` — the single biggest story in 3-8 words (e.g. "Rice contract extension announced"). Neutral, no clickbait.
+2. `additions` — ONLY new items (not in ALREADY-TRACKED). Include a `sourceUrl` on each item when a URL was provided. Rumor reliability:
+   - high: David Ornstein, Fabrizio Romano, BBC, The Athletic
+   - medium: Sky Sports, The Guardian, The Telegraph
+   - low: tabloids, unnamed sources, aggregators
 
-3. `email_html` — HTML body only (no <html>/<body>). Sections in this order:
-   - <h1 style="color:#EF0107">Arsenal Digest — {today}</h1>
-   - "Trophy Odds" (use the live odds above; format like "PL: 3.50 (28.6%)")
-   - "Transfers — In" (confirmed signings)
-   - "Transfers — Out" (confirmed departures)
-   - "Rumors" (with colored reliability badges: green=high, amber=medium, red=low)
-   - "Squad News" (injuries, contracts, returns)
-   - "Around the Premier League" (moves at rival clubs)
-   - "Upcoming" (fixtures/dates if mentioned)
-   Rules for the HTML:
-   - Every item MUST include a source link.
-   - Inline CSS only. Use gold (#DB9E00) for section-heading borders.
-   - Bullet points, one-line summaries.
-   - Empty sections: <p><em>Nothing to report.</em></p>
-   - Do not invent facts.
-   - ~2 pages max when printed.
+3. `narrative` — extra content for the email body that doesn't fit as tracker rows:
+   - `summary`: 1-2 sentence overview.
+   - `odds_commentary`: optional 1-liner if odds moved notably.
+   - `squad_news`: bullets on injuries, contract extensions, returns, tactical notes. Each with `text` and `url` if from a specific article.
+   - `around_pl_notes`: bullets on rival club news beyond confirmed transfers (manager changes, contract news, etc.).
+   - `fixtures`: bullets on upcoming/notable fixtures mentioned.
+
+Do NOT invent facts. If a category has nothing new, leave the array empty (or omit).
 """
 
     resp = client.messages.create(
@@ -316,30 +332,283 @@ def apply_additions(additions):
     transfers = load_json("transfers.json") or {"window": "Summer 2026", "in": [], "out": []}
     transfers.setdefault("in", [])
     transfers.setdefault("out", [])
-    in_added = _merge(transfers["in"], additions.get("transfers_in"), lambda t: _norm(t.get("player")))
-    out_added = _merge(transfers["out"], additions.get("transfers_out"), lambda t: _norm(t.get("player")))
+    _merge(transfers["in"], additions.get("transfers_in"), lambda t: _norm(t.get("player")))
+    _merge(transfers["out"], additions.get("transfers_out"), lambda t: _norm(t.get("player")))
     transfers["lastUpdated"] = today
     (DATA_DIR / "transfers.json").write_text(json.dumps(transfers, indent=2) + "\n")
 
     pl = load_json("pl-transfers.json") or {"window": "Summer 2026", "items": []}
     pl.setdefault("items", [])
-    pl_added = _merge(pl["items"], additions.get("pl_transfers"),
-                      lambda t: _norm(t.get("player")) + "|" + _norm(t.get("to")))
+    _merge(pl["items"], additions.get("pl_transfers"),
+           lambda t: _norm(t.get("player")) + "|" + _norm(t.get("to")))
     pl["lastUpdated"] = today
     (DATA_DIR / "pl-transfers.json").write_text(json.dumps(pl, indent=2) + "\n")
 
     rumors = load_json("rumors.json") or {"items": []}
     rumors.setdefault("items", [])
-    rumor_added = _merge(rumors["items"], additions.get("rumors"),
-                         lambda r: _norm(r.get("headline"))[:80])
+    _merge(rumors["items"], additions.get("rumors"),
+           lambda r: _norm(r.get("headline"))[:80])
     rumors["lastUpdated"] = today
     (DATA_DIR / "rumors.json").write_text(json.dumps(rumors, indent=2) + "\n")
 
-    print(f"[ok] additions applied: transfers_in={in_added} transfers_out={out_added} "
-          f"pl_transfers={pl_added} rumors={rumor_added}")
+    print("[ok] additions applied")
 
 
-# ---------- email ----------
+# ---------- email HTML rendering ----------
+
+E = html.escape
+
+# Colors reused across the template
+RED = "#EF0107"
+RED_DARK = "#B8000D"
+GOLD = "#DB9E00"
+INK = "#101418"
+INK_SOFT = "#4a5560"
+BORDER = "#e3e6ea"
+BG = "#f6f7f9"
+CARD_ALT = "#fafbfc"
+
+REL_STYLES = {
+    "high":   ("#d4edda", "#155724", "High"),
+    "medium": ("#fff3cd", "#856404", "Medium"),
+    "low":    ("#f8d7da", "#721c24", "Low"),
+}
+
+
+def _reliability_badge(reliability):
+    bg, fg, label = REL_STYLES.get(reliability, REL_STYLES["medium"])
+    return (
+        f'<span style="display:inline-block;background:{bg};color:{fg};'
+        f'padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;'
+        f'text-transform:uppercase;letter-spacing:.05em;margin-left:6px;'
+        f'vertical-align:middle;">{E(label)}</span>'
+    )
+
+
+def _source_link(url, text):
+    if not url:
+        return E(text)
+    return f'<a href="{E(url)}" style="color:{RED_DARK};text-decoration:none;">{E(text)}</a>'
+
+
+def _section_header(title):
+    return (
+        f'<tr><td style="padding:18px 28px 4px;">'
+        f'<h2 style="margin:0;color:{RED_DARK};font-size:16px;'
+        f'border-left:4px solid {GOLD};padding:2px 0 2px 10px;'
+        f'text-transform:uppercase;letter-spacing:.03em;">{E(title)}</h2>'
+        f'</td></tr>'
+    )
+
+
+def _section_body(inner_html):
+    return f'<tr><td style="padding:6px 28px 14px;font-size:14px;line-height:1.55;color:{INK};">{inner_html}</td></tr>'
+
+
+def _empty():
+    return f'<p style="margin:6px 0;color:{INK_SOFT};font-style:italic;">Nothing to report.</p>'
+
+
+def _bullet_list(items_html):
+    lis = "".join(f'<li style="margin:4px 0;">{h}</li>' for h in items_html)
+    return f'<ul style="margin:4px 0 0;padding:0 0 0 20px;">{lis}</ul>'
+
+
+def render_header(today_str):
+    return (
+        f'<tr><td style="background:linear-gradient(135deg,{RED},{RED_DARK});'
+        f'padding:24px 28px;border-bottom:4px solid {GOLD};">'
+        f'<h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:-0.01em;">'
+        f'Arsenal Digest</h1>'
+        f'<p style="margin:6px 0 0;color:rgba(255,255,255,0.9);font-size:13px;">'
+        f'{E(today_str)} · {LOOKBACK_HOURS // 24}-day recap</p>'
+        f'</td></tr>'
+    )
+
+
+def render_intro(summary):
+    if not summary:
+        return ""
+    return (
+        f'<tr><td style="padding:18px 28px 4px;font-size:15px;line-height:1.5;color:{INK};">'
+        f'{E(summary)}</td></tr>'
+    )
+
+
+def render_odds(odds_items, commentary):
+    by_name = {i["competition"]: i for i in odds_items}
+
+    def cell(comp):
+        item = by_name.get(comp)
+        odds = "—" if not item or item.get("odds") is None else f'{item["odds"]:.2f}'
+        prob = "" if not item or item.get("impliedProbability") is None else f'{item["impliedProbability"] * 100:.1f}%'
+        book = "" if not item or not item.get("bestBookmaker") else E(item["bestBookmaker"])
+        return (
+            f'<td width="25%" valign="top" style="background:{CARD_ALT};border:1px solid {BORDER};'
+            f'border-radius:6px;padding:12px 6px;text-align:center;">'
+            f'<div style="font-size:10px;color:{INK_SOFT};text-transform:uppercase;letter-spacing:.05em;font-weight:600;">{E(comp)}</div>'
+            f'<div style="font-size:22px;font-weight:700;color:{RED_DARK};margin:6px 0 2px;">{E(odds)}</div>'
+            f'<div style="font-size:11px;color:{INK_SOFT};">{E(prob)}</div>'
+            f'<div style="font-size:10px;color:{INK_SOFT};margin-top:2px;">{book}</div>'
+            f'</td>'
+        )
+
+    grid = (
+        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+        f'style="border-collapse:separate;border-spacing:6px;">'
+        f'<tr>{cell("Premier League")}{cell("Champions League")}{cell("FA Cup")}{cell("Carabao Cup")}</tr>'
+        f'</table>'
+    )
+
+    double = by_name.get("Double (PL + UCL)")
+    double_row = ""
+    if double and double.get("odds") is not None:
+        prob = f'{double["impliedProbability"] * 100:.2f}%' if double.get("impliedProbability") is not None else ""
+        double_row = (
+            f'<div style="margin-top:10px;padding:8px 12px;background:{CARD_ALT};'
+            f'border:1px solid {BORDER};border-radius:6px;text-align:center;font-size:13px;color:{INK_SOFT};">'
+            f'Double (PL + UCL): <strong style="color:{RED_DARK};font-size:16px;">{double["odds"]:.2f}</strong>'
+            f'{f" · {E(prob)}" if prob else ""}'
+            f'</div>'
+        )
+
+    commentary_html = f'<p style="margin:8px 0 0;color:{INK_SOFT};font-size:13px;font-style:italic;">{E(commentary)}</p>' if commentary else ""
+
+    return _section_header("Trophy Odds") + _section_body(grid + double_row + commentary_html)
+
+
+def _transfer_line(t, direction):
+    name = t.get("player") or ""
+    club = t.get("club") or ""
+    fee = t.get("fee") or ""
+    date = t.get("date") or ""
+    arrow = "←" if direction == "in" else "→"
+    parts = []
+    if club:
+        parts.append(f'{arrow} {E(club)}')
+    if fee:
+        parts.append(E(fee))
+    if date:
+        parts.append(f'<span style="color:{INK_SOFT};">{E(date)}</span>')
+    meta = " · ".join(parts)
+    body = f'<strong>{E(name)}</strong>' + (f' {meta}' if meta else "")
+    if t.get("sourceUrl"):
+        body += f' <a href="{E(t["sourceUrl"])}" style="color:{RED_DARK};text-decoration:none;font-size:12px;">[source]</a>'
+    return body
+
+
+def render_transfers_in(items):
+    if not items:
+        return _section_header("Transfers — In") + _section_body(_empty())
+    lines = [_transfer_line(t, "in") for t in items]
+    return _section_header("Transfers — In") + _section_body(_bullet_list(lines))
+
+
+def render_transfers_out(items):
+    if not items:
+        return _section_header("Transfers — Out") + _section_body(_empty())
+    lines = [_transfer_line(t, "out") for t in items]
+    return _section_header("Transfers — Out") + _section_body(_bullet_list(lines))
+
+
+def render_rumors(items):
+    if not items:
+        return _section_header("Rumors") + _section_body(_empty())
+    lines = []
+    for r in items:
+        badge = _reliability_badge(r.get("reliability", "medium"))
+        head = f'<strong>{E(r.get("headline") or "")}</strong>{badge}'
+        meta_bits = []
+        if r.get("source"):
+            meta_bits.append(_source_link(r.get("sourceUrl"), r.get("source")))
+        if r.get("date"):
+            meta_bits.append(E(r["date"]))
+        meta = f'<div style="font-size:12px;color:{INK_SOFT};margin-top:2px;">{" · ".join(meta_bits)}</div>' if meta_bits else ""
+        lines.append(head + meta)
+    return _section_header("Rumors") + _section_body(_bullet_list(lines))
+
+
+def _note_line(note):
+    text = E(note.get("text") or "")
+    if note.get("url"):
+        text += f' <a href="{E(note["url"])}" style="color:{RED_DARK};text-decoration:none;font-size:12px;">[source]</a>'
+    return text
+
+
+def render_squad(notes):
+    if not notes:
+        return _section_header("Squad News") + _section_body(_empty())
+    return _section_header("Squad News") + _section_body(_bullet_list([_note_line(n) for n in notes]))
+
+
+def render_pl(transfers, notes):
+    lines = []
+    for t in transfers or []:
+        name = t.get("player") or ""
+        move = f'{E(t.get("from") or "?")} → {E(t.get("to") or "?")}'
+        fee = f' · {E(t.get("fee"))}' if t.get("fee") else ""
+        date = f' <span style="color:{INK_SOFT};">{E(t.get("date"))}</span>' if t.get("date") else ""
+        src = f' <a href="{E(t["sourceUrl"])}" style="color:{RED_DARK};text-decoration:none;font-size:12px;">[source]</a>' if t.get("sourceUrl") else ""
+        lines.append(f'<strong>{E(name)}</strong> {move}{fee}{date}{src}')
+    for n in notes or []:
+        lines.append(_note_line(n))
+    if not lines:
+        return _section_header("Around the Premier League") + _section_body(_empty())
+    return _section_header("Around the Premier League") + _section_body(_bullet_list(lines))
+
+
+def render_fixtures(fixtures):
+    if not fixtures:
+        return _section_header("Upcoming") + _section_body(_empty())
+    return _section_header("Upcoming") + _section_body(_bullet_list([_note_line(n) for n in fixtures]))
+
+
+def render_footer():
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    return (
+        f'<tr><td style="padding:16px 28px 22px;border-top:1px solid {BORDER};background:{CARD_ALT};">'
+        f'<p style="margin:0;font-size:12px;color:{INK_SOFT};text-align:center;line-height:1.5;">'
+        f'Arsenal Tracker · Generated {E(ts)} · '
+        f'<a href="{E(SITE_URL)}" style="color:{RED_DARK};text-decoration:none;">View full tracker</a>'
+        f'</p></td></tr>'
+    )
+
+
+def render_email(odds_items, additions, narrative, today_str, preheader):
+    additions = additions or {}
+    narrative = narrative or {}
+
+    inner = (
+        render_header(today_str)
+        + render_intro(narrative.get("summary"))
+        + render_odds(odds_items, narrative.get("odds_commentary"))
+        + render_transfers_in(additions.get("transfers_in") or [])
+        + render_transfers_out(additions.get("transfers_out") or [])
+        + render_rumors(additions.get("rumors") or [])
+        + render_squad(narrative.get("squad_news") or [])
+        + render_pl(additions.get("pl_transfers") or [], narrative.get("around_pl_notes") or [])
+        + render_fixtures(narrative.get("fixtures") or [])
+        + render_footer()
+    )
+
+    return (
+        f'<!--preheader--><div style="display:none;font-size:1px;color:{BG};'
+        f'line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">{E(preheader)}</div>'
+        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+        f'style="background:{BG};padding:24px 0;margin:0;">'
+        f'<tr><td align="center">'
+        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" '
+        f'style="max-width:600px;background:#ffffff;border-radius:10px;overflow:hidden;'
+        f'box-shadow:0 1px 3px rgba(0,0,0,.06);'
+        f'font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;'
+        f'color:{INK};">'
+        f'{inner}'
+        f'</table>'
+        f'</td></tr></table>'
+    )
+
+
+# ---------- email transport ----------
 
 def send_email(html_body, subject_highlight, item_count):
     sender = os.environ["DIGEST_FROM"]
@@ -371,19 +640,13 @@ def send_failure_email(err_text):
     if not password:
         print("[warn] no GMAIL_APP_PASSWORD; cannot send failure email")
         return
-
-    body = (
-        "The Arsenal digest workflow failed while running.\n\n"
-        f"Error:\n{err_text}\n\n"
-        "Check the Actions log for full traceback."
-    )
+    body = f"The Arsenal digest workflow failed.\n\nError:\n{err_text}\n\nSee Actions log for details."
     msg = MIMEText(body)
     msg["Subject"] = "Arsenal Digest — FAILED"
     msg["From"] = sender
     msg["To"] = recipient
-    ctx = ssl.create_default_context()
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ctx) as server:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context()) as server:
             server.login(sender, password)
             server.sendmail(sender, [recipient], msg.as_string())
         print("[ok] sent failure email")
@@ -397,22 +660,36 @@ def main():
     try:
         refresh_odds_file()
         items = gather_news()
-        print(f"[info] gathered {len(items)} unique articles from {len(FEEDS)} feeds")
+        print(f"[info] gathered {len(items)} unique articles")
 
-        odds_snapshot = load_json("odds.json").get("items", [])
+        odds_items = load_json("odds.json").get("items", [])
+        today_str = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
 
         if not items:
-            html = (
-                "<h1 style='color:#EF0107'>Arsenal Digest</h1>"
-                "<p>No news items found in the last 3 days. Pipeline is alive — "
-                "quiet stretch, or a feed changed format.</p>"
+            html_body = render_email(
+                odds_items=odds_items,
+                additions={},
+                narrative={"summary": "Quiet news cycle. Nothing new picked up from the tracked feeds in the last 3 days."},
+                today_str=today_str,
+                preheader="Quiet news cycle",
             )
-            send_email(html, "quiet news cycle", 0)
+            send_email(html_body, "quiet news cycle", 0)
             return
 
-        result = generate_digest(items, odds_snapshot)
+        result = generate_digest(items, odds_items)
         apply_additions(result.get("additions") or {})
-        send_email(result["email_html"], result.get("subject_highlight", ""), len(items))
+
+        # Reload odds in case anything was updated during the run (harmless if unchanged)
+        odds_items = load_json("odds.json").get("items", [])
+
+        html_body = render_email(
+            odds_items=odds_items,
+            additions=result.get("additions") or {},
+            narrative=result.get("narrative") or {},
+            today_str=today_str,
+            preheader=result.get("subject_highlight", "Arsenal digest"),
+        )
+        send_email(html_body, result.get("subject_highlight", ""), len(items))
     except Exception:
         tb = traceback.format_exc()
         print(tb, file=sys.stderr)

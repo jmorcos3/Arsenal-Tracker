@@ -16,6 +16,20 @@
       "lastUpdated": "2026-07-22"
     },
     {
+      "competition": "FA Cup",
+      "odds": 12.00,
+      "impliedProbability": 0.0833,
+      "bestBookmaker": null,
+      "lastUpdated": "2026-07-22"
+    },
+    {
+      "competition": "Carabao Cup",
+      "odds": 18.00,
+      "impliedProbability": 0.0556,
+      "bestBookmaker": null,
+      "lastUpdated": "2026-07-22"
+    },
+    {
       "competition": "Double (PL + UCL)",
       "odds": 28.00,
       "impliedProbability": 0.0357,
