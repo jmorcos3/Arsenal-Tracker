@@ -1,12 +1,18 @@
 {
   "window": "Summer 2026",
-  "lastUpdated": "2026-07-25",
+  "lastUpdated": "2026-07-28",
   "in": [
     {
       "player": "Christos Tzolis",
       "club": "Club Brugge",
       "fee": "\u00a334m",
       "date": "2026-07-23"
+    },
+    {
+      "player": "Axel Donczew",
+      "club": "Cardiff City",
+      "date": "2026-07-27",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c4g621z2lvzo?at_medium=RSS&at_campaign=rss"
     }
   ],
   "out": []
