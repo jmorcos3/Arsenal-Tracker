@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-01",
+  "lastUpdated": "2026-08-04",
   "items": [
     {
       "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
@@ -27,6 +27,34 @@
       "source": "Sky Sports",
       "sourceUrl": "https://www.skysports.com/football/news/12691/13568924/vinicius-junior-transfer-news-real-madrid-open-to-possibility-of-arsenal-target-leaving-paper-talk",
       "date": "2026-07-31",
+      "reliability": "medium"
+    },
+    {
+      "headline": "Arsenal in talks to sign Newcastle's Guimaraes",
+      "source": "BBC Sport",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/ckg9k2yvywxo?at_medium=RSS&at_campaign=rss",
+      "date": "2026-08-04",
+      "reliability": "high"
+    },
+    {
+      "headline": "Could Vinicius Jr really be heading to Arsenal?",
+      "source": "BBC Sport",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/videos/cewr4xjzp7wo?at_medium=RSS&at_campaign=rss",
+      "date": "2026-08-03",
+      "reliability": "high"
+    },
+    {
+      "headline": "Arsenal target Vin\u00edcius says Mourinho 'wants me to be happy' at Real Madrid",
+      "source": "The Guardian",
+      "sourceUrl": "https://www.theguardian.com/football/2026/aug/04/arsenal-target-vinicius-junior-jose-mourinho-real-madrid",
+      "date": "2026-08-04",
+      "reliability": "medium"
+    },
+    {
+      "headline": "Where would Guimaraes fit in at Arsenal?",
+      "source": "Sky Sports",
+      "sourceUrl": "https://www.skysports.com/football/news/12040/13569644/bruno-guimaraes-to-arsenal-where-would-newcastle-captain-fit-in-and-what-would-it-mean-for-martin-zubimendi-martin-odegaard-myles-lewis-skelly",
+      "date": "2026-08-04",
       "reliability": "medium"
     }
   ]
