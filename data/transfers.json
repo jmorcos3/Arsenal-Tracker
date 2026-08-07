@@ -1,6 +1,6 @@
 {
   "window": "Summer 2026",
-  "lastUpdated": "2026-08-04",
+  "lastUpdated": "2026-08-07",
   "in": [
     {
       "player": "Christos Tzolis",
@@ -20,7 +20,22 @@
       "fee": "up to \u00a380m",
       "date": "2026-07-30",
       "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cgewqpp5e57o?at_medium=RSS&at_campaign=rss"
+    },
+    {
+      "player": "Christian Norgaard",
+      "club": "Arsenal",
+      "fee": "\u00a37m",
+      "date": "2026-08-05",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cm2gvlnjndpo"
     }
   ],
-  "out": []
+  "out": [
+    {
+      "player": "Christian Norgaard",
+      "club": "Everton",
+      "fee": "\u00a37m",
+      "date": "2026-08-05",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cm2gvlnjndpo"
+    }
+  ]
 }
