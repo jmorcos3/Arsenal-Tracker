@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-07",
+  "lastUpdated": "2026-08-10",
   "items": [
     {
       "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
@@ -63,6 +63,20 @@
       "date": "2026-08-06",
       "reliability": "medium",
       "sourceUrl": "https://www.theguardian.com/football/2026/aug/06/football-transfer-rumours-arsenal-ezri-konsa-raul-asencio-liverpool"
+    },
+    {
+      "headline": "Arsenal step up push for defensive cover with Timber and Saliba sidelined",
+      "source": "The Guardian",
+      "sourceUrl": "https://www.theguardian.com/football/2026/aug/10/arsenal-defensive-backup-jurrien-timber-william-saliba-sidelined-transfer-window",
+      "date": "2026-08-10",
+      "reliability": "high"
+    },
+    {
+      "headline": "Has Arsenal's indifferent pre-season revealed a surprise weakness?",
+      "source": "Sky Sports",
+      "sourceUrl": "https://www.skysports.com/football/news/12040/13571668/arsenal-have-looked-defensively-weak-in-pre-season-can-they-cope-without-william-saliba-as-premier-league-campaign-nears",
+      "date": "2026-08-10",
+      "reliability": "medium"
     }
   ]
 }
