@@ -1,0 +1,6 @@
+{
+  "note": "Per-match tactical breakdowns. Fields under `grounded` come from the match-data API and are never written by the LLM. Fields under `explained` are LLM-written commentary constrained to the grounded data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
+  "lastUpdated": null,
+  "conceptsTaught": [],
+  "matches": []
+}

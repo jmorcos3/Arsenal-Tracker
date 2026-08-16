@@ -18,6 +18,8 @@ from urllib.error import URLError
 import feedparser
 from anthropic import Anthropic
 
+from football_api import fetch_last_match, summarize_for_prompt
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "data"
 
@@ -31,7 +33,11 @@ FEEDS = [
 
 LOOKBACK_HOURS = 72
 MODEL = "claude-haiku-4-5-20251001"
+# The tactics write-up is the one piece of generated content a beginner can't
+# sanity-check for themselves, so it gets the stronger model.
+TACTICS_MODEL = "claude-sonnet-5"
 MAX_ODDS_HISTORY = 180
+MAX_TACTICS_HISTORY = 40
 
 ODDS_API_BASE = "https://api.the-odds-api.com/v4/sports"
 ODDS_SPORTS = {
@@ -308,6 +314,191 @@ Do NOT invent facts. If a category has nothing new, leave the array empty (or om
     raise RuntimeError("LLM did not return a publish_digest tool call")
 
 
+# ---------- LLM: tactical breakdown ----------
+
+TACTICS_TOOL = {
+    "name": "publish_tactics",
+    "description": "Emit a beginner-friendly tactical breakdown of one Arsenal match.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "whatHappened": {
+                "type": "string",
+                "description": "2-3 sentences on how the match actually played out, in plain English. No jargon at all — this is the on-ramp.",
+            },
+            "shape": {
+                "type": "object",
+                "properties": {
+                    "arsenalInPossession": {
+                        "type": "string",
+                        "description": "The shape Arsenal TYPICALLY take with the ball given the listed formation and personnel, e.g. '3-2-5'. This is a known pattern, not a measurement of this match.",
+                    },
+                    "arsenalOutOfPossession": {
+                        "type": "string",
+                        "description": "The shape Arsenal typically defend in, e.g. '4-4-2 mid block'.",
+                    },
+                    "plainEnglish": {
+                        "type": "string",
+                        "description": "2-3 sentences explaining WHY the shape changes between those two, and which player's movement causes it. Written for someone who has never heard the term.",
+                    },
+                },
+                "required": ["plainEnglish"],
+            },
+            "opponentPlan": {
+                "type": "string",
+                "description": "What the opposition were trying to do, and how Arsenal's setup answered it. Ground this in the listed opponent formation and the match statistics.",
+            },
+            "keyMoment": {
+                "type": "string",
+                "description": "The tactical turning point — a substitution, a shape change, or a goal that shifted the pattern. Reference a real minute or goal from the grounded data.",
+            },
+            "lesson": {
+                "type": "object",
+                "description": "The ONE concept to teach from this match. Must be a concept not already taught.",
+                "properties": {
+                    "conceptId": {"type": "string", "description": "id from the glossary, e.g. 'half-space'."},
+                    "term": {"type": "string"},
+                    "level": {"type": "integer", "description": "1, 2 or 3."},
+                    "explain": {
+                        "type": "string",
+                        "description": "3-4 sentences teaching the concept THROUGH what happened in this specific match. Concrete, not abstract.",
+                    },
+                    "spotIt": {
+                        "type": "string",
+                        "description": "One sentence: exactly what to watch for on screen in the next match to see this concept live.",
+                    },
+                },
+                "required": ["conceptId", "term", "level", "explain", "spotIt"],
+            },
+            "statTranslations": {
+                "type": "array",
+                "description": "Translate the most revealing 3-5 numbers into plain meaning. Only use numbers present in the grounded data.",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "stat": {"type": "string", "description": "e.g. 'xG 2.31 vs 0.84'"},
+                        "plain": {"type": "string", "description": "What that actually tells you, in one sentence."},
+                    },
+                    "required": ["stat", "plain"],
+                },
+            },
+            "nerdCorner": {
+                "type": "string",
+                "description": "One genuinely sharp observation for an obsessive fan — a pattern, a trade-off, a regression argument, or something the scoreline hides. Assume they already know the basics.",
+            },
+        },
+        "required": ["whatHappened", "shape", "opponentPlan", "lesson", "statTranslations", "nerdCorner"],
+    },
+}
+
+
+def generate_tactics(match, concepts_taught):
+    """Explain a match. Every fact must come from `match`; the model adds only interpretation."""
+    client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+    glossary = load_json("glossary.json").get("items", [])
+    taught = set(concepts_taught or [])
+    available = [g for g in glossary if g["id"] not in taught]
+    if not available:
+        # Curriculum complete — allow revisiting, deepest concepts first.
+        available = sorted(glossary, key=lambda g: -g["level"])
+
+    # Ramp: stay on level 1 until the basics are covered, then open up.
+    max_level = 1 if len(taught) < 6 else (2 if len(taught) < 12 else 3)
+    eligible = [g for g in available if g["level"] <= max_level] or available
+
+    concept_menu = "\n".join(
+        f"- {g['id']} (level {g['level']}) — {g['term']}: {g['short']}" for g in eligible
+    )
+
+    prompt = f"""You are writing the tactical education section of an Arsenal FC digest.
+
+THE READER: a passionate Arsenal fan who watches every match but has never been taught
+how to read tactics. They are smart and want to learn properly — they are not stupid,
+they just lack the vocabulary. Never condescend. Never pad. Explain like a good coach
+talking to an interested adult.
+
+GROUNDED MATCH DATA — this is the complete set of facts you may state:
+{summarize_for_prompt(match)}
+
+CONCEPTS ALREADY TAUGHT (do not repeat these): {', '.join(sorted(taught)) or '(none yet — this is lesson 1)'}
+
+CONCEPTS AVAILABLE TO TEACH THIS TIME (pick exactly one, the one this match illustrates best):
+{concept_menu}
+
+HARD RULES — a wrong claim here is worse than no claim, because the reader cannot catch it:
+
+1. Every score, minute, goalscorer, formation, player name and statistic you state must
+   appear verbatim in GROUNDED MATCH DATA above. Do not infer, round differently, or embellish.
+2. If a statistic is absent above, do not mention it, and do not guess at it. In particular
+   xG, PPDA and field tilt are often unavailable — say nothing rather than invent a number.
+3. The `shape` fields describe how this formation and these players TYPICALLY behave. Word
+   them as general patterns ("Arsenal usually...", "this shape tends to..."), never as a
+   measured claim about this specific match, because nobody measured it.
+4. Do not claim to know what was said at half-time, what the manager intended, or what a
+   player was thinking. Stick to what the shape and numbers support.
+5. `keyMoment` must reference something real from the data — a listed goal and its minute,
+   or the final scoreline pattern. If nothing in the data supports a turning point, describe
+   the match's overall pattern instead.
+
+Call the `publish_tactics` tool."""
+
+    resp = client.messages.create(
+        model=TACTICS_MODEL,
+        max_tokens=3000,
+        tools=[TACTICS_TOOL],
+        tool_choice={"type": "tool", "name": "publish_tactics"},
+        messages=[{"role": "user", "content": prompt}],
+    )
+    for block in resp.content:
+        if getattr(block, "type", None) == "tool_use" and block.name == "publish_tactics":
+            return block.input
+    raise RuntimeError("LLM did not return a publish_tactics tool call")
+
+
+def refresh_tactics(match):
+    """Store the breakdown for `match`, skipping fixtures already covered.
+
+    Returns the entry to render in this email, or None.
+    """
+    if not match or not match.get("fixtureId"):
+        return None
+
+    path = DATA_DIR / "tactics.json"
+    current = load_json("tactics.json") or {}
+    current.setdefault("matches", [])
+    current.setdefault("conceptsTaught", [])
+
+    existing = next((m for m in current["matches"] if m.get("fixtureId") == match["fixtureId"]), None)
+    if existing:
+        print(f"[info] tactics already recorded for fixture {match['fixtureId']}")
+        return existing
+
+    try:
+        explained = generate_tactics(match, current["conceptsTaught"])
+    except Exception as e:
+        print(f"[warn] tactics generation failed: {e}")
+        return None
+
+    entry = {
+        "fixtureId": match["fixtureId"],
+        "date": match["date"],
+        "grounded": match,
+        "explained": explained,
+    }
+    current["matches"].insert(0, entry)
+    current["matches"] = current["matches"][:MAX_TACTICS_HISTORY]
+
+    concept_id = (explained.get("lesson") or {}).get("conceptId")
+    if concept_id and concept_id not in current["conceptsTaught"]:
+        current["conceptsTaught"].append(concept_id)
+
+    current["lastUpdated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    path.write_text(json.dumps(current, indent=2) + "\n")
+    print(f"[ok] tactics recorded for {match['opponent']} ({concept_id})")
+    return entry
+
+
 # ---------- JSON merge / persist ----------
 
 def _norm(s):
@@ -563,6 +754,125 @@ def render_fixtures(fixtures):
     return _section_header("Upcoming") + _section_body(_bullet_list([_note_line(n) for n in fixtures]))
 
 
+def _tactics_callout(label, body, accent):
+    return (
+        f'<div style="margin:10px 0;padding:10px 14px;background:{CARD_ALT};'
+        f'border-left:3px solid {accent};border-radius:0 6px 6px 0;">'
+        f'<div style="font-size:10px;font-weight:700;color:{INK_SOFT};text-transform:uppercase;'
+        f'letter-spacing:.06em;margin-bottom:3px;">{E(label)}</div>'
+        f'<div style="font-size:14px;line-height:1.55;color:{INK};">{body}</div>'
+        f'</div>'
+    )
+
+
+def render_tactics(entry, lesson_number):
+    if not entry:
+        return ""
+
+    g = entry.get("grounded") or {}
+    x = entry.get("explained") or {}
+
+    score = f'{g.get("goalsFor")}–{g.get("goalsAgainst")}'
+    venue = "vs" if g.get("homeAway") == "H" else "away at"
+    header_line = (
+        f'<div style="font-size:15px;font-weight:700;color:{INK};margin-bottom:2px;">'
+        f'Arsenal {E(score)} {E(venue)} {E(g.get("opponent") or "?")}</div>'
+        f'<div style="font-size:12px;color:{INK_SOFT};margin-bottom:10px;">'
+        f'{E(g.get("competition") or "")} · {E(g.get("date") or "")}</div>'
+    )
+
+    body = header_line
+    if x.get("whatHappened"):
+        body += f'<p style="margin:0 0 4px;font-size:14px;line-height:1.6;">{E(x["whatHappened"])}</p>'
+
+    # Shape — the concept the whole feature is built around.
+    shape = x.get("shape") or {}
+    listed = g.get("arsenalFormation")
+    opp_listed = g.get("opponentFormation")
+    chips = []
+    if listed:
+        chips.append(("On the teamsheet", listed))
+    if shape.get("arsenalInPossession"):
+        chips.append(("With the ball", shape["arsenalInPossession"]))
+    if shape.get("arsenalOutOfPossession"):
+        chips.append(("Without the ball", shape["arsenalOutOfPossession"]))
+    if chips:
+        cells = "".join(
+            f'<td width="33%" valign="top" style="background:{CARD_ALT};border:1px solid {BORDER};'
+            f'border-radius:6px;padding:10px 6px;text-align:center;">'
+            f'<div style="font-size:9px;color:{INK_SOFT};text-transform:uppercase;'
+            f'letter-spacing:.05em;font-weight:700;">{E(label)}</div>'
+            f'<div style="font-size:19px;font-weight:700;color:{RED_DARK};margin-top:4px;">{E(value)}</div>'
+            f'</td>'
+            for label, value in chips
+        )
+        body += (
+            f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+            f'style="border-collapse:separate;border-spacing:5px;margin:10px 0 2px;">'
+            f'<tr>{cells}</tr></table>'
+        )
+        if opp_listed:
+            body += (
+                f'<div style="font-size:12px;color:{INK_SOFT};text-align:center;margin-bottom:4px;">'
+                f'{E(g.get("opponent") or "Opponent")} lined up {E(opp_listed)}</div>'
+            )
+    if shape.get("plainEnglish"):
+        body += _tactics_callout("Why the shape changes", E(shape["plainEnglish"]), GOLD)
+
+    if x.get("opponentPlan"):
+        body += _tactics_callout("What they tried", E(x["opponentPlan"]), INK_SOFT)
+    if x.get("keyMoment"):
+        body += _tactics_callout("Turning point", E(x["keyMoment"]), INK_SOFT)
+
+    # The lesson — the reason this section exists, so it gets the loudest styling.
+    lesson = x.get("lesson") or {}
+    if lesson.get("term"):
+        level = lesson.get("level") or 1
+        body += (
+            f'<div style="margin:14px 0 6px;padding:14px 16px;background:#fffdf5;'
+            f'border:2px solid {GOLD};border-radius:8px;">'
+            f'<div style="font-size:10px;font-weight:700;color:{GOLD};text-transform:uppercase;'
+            f'letter-spacing:.08em;">Lesson {lesson_number} · Level {level} of 3</div>'
+            f'<div style="font-size:17px;font-weight:700;color:{INK};margin:4px 0 6px;">'
+            f'{E(lesson["term"])}</div>'
+            f'<p style="margin:0 0 8px;font-size:14px;line-height:1.6;color:{INK};">'
+            f'{E(lesson.get("explain") or "")}</p>'
+            f'<div style="padding:8px 12px;background:#fff;border-radius:5px;'
+            f'border:1px solid {BORDER};font-size:13px;line-height:1.5;">'
+            f'<strong style="color:{RED_DARK};">Watch for it:</strong> {E(lesson.get("spotIt") or "")}'
+            f'</div></div>'
+        )
+
+    translations = x.get("statTranslations") or []
+    if translations:
+        rows = "".join(
+            f'<tr>'
+            f'<td valign="top" style="padding:6px 10px 6px 0;font-size:13px;font-weight:700;'
+            f'color:{RED_DARK};white-space:nowrap;">{E(t.get("stat") or "")}</td>'
+            f'<td valign="top" style="padding:6px 0;font-size:13px;line-height:1.5;color:{INK};'
+            f'border-bottom:1px solid {BORDER};">{E(t.get("plain") or "")}</td>'
+            f'</tr>'
+            for t in translations
+        )
+        body += (
+            f'<div style="font-size:10px;font-weight:700;color:{INK_SOFT};text-transform:uppercase;'
+            f'letter-spacing:.06em;margin:14px 0 2px;">By the numbers</div>'
+            f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+            f'style="border-collapse:collapse;">{rows}</table>'
+        )
+
+    if x.get("nerdCorner"):
+        body += (
+            f'<div style="margin:14px 0 0;padding:12px 14px;background:{INK};border-radius:8px;">'
+            f'<div style="font-size:10px;font-weight:700;color:{GOLD};text-transform:uppercase;'
+            f'letter-spacing:.08em;margin-bottom:4px;">Nerd corner</div>'
+            f'<div style="font-size:13px;line-height:1.6;color:#e8ecf0;">{E(x["nerdCorner"])}</div>'
+            f'</div>'
+        )
+
+    return _section_header("Tactics Lab") + _section_body(body)
+
+
 def render_footer():
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     return (
@@ -574,13 +884,15 @@ def render_footer():
     )
 
 
-def render_email(odds_items, additions, narrative, today_str, preheader):
+def render_email(odds_items, additions, narrative, today_str, preheader,
+                 tactics_entry=None, lesson_number=1):
     additions = additions or {}
     narrative = narrative or {}
 
     inner = (
         render_header(today_str)
         + render_intro(narrative.get("summary"))
+        + render_tactics(tactics_entry, lesson_number)
         + render_odds(odds_items, narrative.get("odds_commentary"))
         + render_transfers_in(additions.get("transfers_in") or [])
         + render_transfers_out(additions.get("transfers_out") or [])
@@ -659,6 +971,12 @@ def send_failure_email(err_text):
 def main():
     try:
         refresh_odds_file()
+
+        # Tactics runs before the news call so a feed outage can't cost us the
+        # match breakdown, which is the harder half to reproduce.
+        tactics_entry = refresh_tactics(fetch_last_match())
+        lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
+
         items = gather_news()
         print(f"[info] gathered {len(items)} unique articles")
 
@@ -672,6 +990,8 @@ def main():
                 narrative={"summary": "Quiet news cycle. Nothing new picked up from the tracked feeds in the last 3 days."},
                 today_str=today_str,
                 preheader="Quiet news cycle",
+                tactics_entry=tactics_entry,
+                lesson_number=lesson_number,
             )
             send_email(html_body, "quiet news cycle", 0)
             return
@@ -688,6 +1008,8 @@ def main():
             narrative=result.get("narrative") or {},
             today_str=today_str,
             preheader=result.get("subject_highlight", "Arsenal digest"),
+            tactics_entry=tactics_entry,
+            lesson_number=lesson_number,
         )
         send_email(html_body, result.get("subject_highlight", ""), len(items))
     except Exception:
