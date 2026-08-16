@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-13",
+  "lastUpdated": "2026-08-16",
   "items": [
     {
       "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
@@ -90,6 +90,13 @@
       "source": "BBC Sport",
       "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cx2v175j40zo?at_medium=RSS&at_campaign=rss",
       "date": "2026-08-13",
+      "reliability": "high"
+    },
+    {
+      "headline": "Arsenal express interest in signing Jarell Quansah from Bayer Leverkusen",
+      "source": "The Guardian",
+      "sourceUrl": "https://www.theguardian.com/football/2026/aug/14/arsenal-bayer-leverkusen-jarell-quansah-transfer-talks",
+      "date": "2026-08-14",
       "reliability": "high"
     }
   ]
