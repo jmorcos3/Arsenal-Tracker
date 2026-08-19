@@ -1,6 +1,6 @@
 {
   "window": "Summer 2026",
-  "lastUpdated": "2026-08-16",
+  "lastUpdated": "2026-08-19",
   "in": [
     {
       "player": "Christos Tzolis",
@@ -27,6 +27,13 @@
       "fee": "\u00a37m",
       "date": "2026-08-05",
       "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cm2gvlnjndpo"
+    },
+    {
+      "player": "Ezri Konsa",
+      "club": "Aston Villa",
+      "fee": "\u00a351m",
+      "date": "2026-08-19",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c98vz9jvg0vo?at_medium=RSS&at_campaign=rss"
     }
   ],
   "out": [

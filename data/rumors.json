@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-16",
+  "lastUpdated": "2026-08-19",
   "items": [
     {
       "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
@@ -97,6 +97,13 @@
       "source": "The Guardian",
       "sourceUrl": "https://www.theguardian.com/football/2026/aug/14/arsenal-bayer-leverkusen-jarell-quansah-transfer-talks",
       "date": "2026-08-14",
+      "reliability": "high"
+    },
+    {
+      "headline": "Arsenal prefer loan for Ethan Nwaneri to avoid permanent sale",
+      "source": "BBC Sport",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c4gd1r1nel2o?at_medium=RSS&at_campaign=rss",
+      "date": "2026-08-19",
       "reliability": "high"
     }
   ]
