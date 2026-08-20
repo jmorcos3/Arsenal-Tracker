@@ -10,16 +10,42 @@
   <header class="site-header">
     <div class="wrap">
       <h1>Arsenal Tracker</h1>
-      <p class="tagline">Trophy odds, summer transfers, rumors & squad news.</p>
+      <p class="tagline">Tactics, trophy odds, summer transfers, rumors &amp; squad news.</p>
       <p id="last-updated" class="last-updated"></p>
     </div>
   </header>
 
   <main class="wrap">
+    <section id="tactics-section" class="card">
+      <h2>Tactics Lab</h2>
+      <p class="section-note">
+        How the last match was actually played — plus one new concept each time, building up.
+      </p>
+      <div id="tactics-body"></div>
+    </section>
+
+    <section id="glossary-section" class="card">
+      <h2>Concept Library</h2>
+      <p class="section-note">
+        Every idea, in plain English. Concepts you've been taught are marked
+        <span class="learned-chip">learned</span>.
+      </p>
+      <div class="glossary-filters">
+        <button type="button" class="level-filter is-active" data-level="all">All</button>
+        <button type="button" class="level-filter" data-level="1">1 · Watch the game</button>
+        <button type="button" class="level-filter" data-level="2">2 · Read the structure</button>
+        <button type="button" class="level-filter" data-level="3">3 · Read the numbers</button>
+      </div>
+      <div id="glossary-list"></div>
+    </section>
+
     <section id="odds-section" class="card">
       <h2>Trophy Odds</h2>
       <p class="section-note">
-        Arsenal to win each trophy in 2026-27. Double = Premier League + Champions League.
+        Arsenal to win each trophy in 2026-27, priced by the
+        <a href="https://kalshi.com" target="_blank" rel="noopener">Kalshi</a> prediction market.
+        Contracts settle at $1, so the price is the market's implied probability — no bookmaker
+        margin baked in. Double = Premier League + Champions League.
       </p>
       <div id="odds-grid" class="odds-grid"></div>
     </section>

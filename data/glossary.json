@@ -1,0 +1,204 @@
+{
+  "note": "Evergreen football concepts, ordered as a learning path. Level 1 = watch the game, 2 = read the structure, 3 = read the numbers. Match lessons in tactics.json link here by id.",
+  "lastUpdated": "2026-08-16",
+  "items": [
+    {
+      "id": "formation",
+      "term": "Formation",
+      "level": 1,
+      "short": "The starting shape, written back-to-front.",
+      "plain": "A formation like 4-3-3 counts players in lines moving up the pitch: 4 defenders, 3 midfielders, 3 forwards (the goalkeeper is never counted). It tells you where players start. It tells you almost nothing about how a team actually plays — which is why the next concept matters more than this one.",
+      "arsenal": "Arsenal line up in a 4-3-3 on the teamsheet. They spend most of the match in a completely different shape.",
+      "spotIt": "At kickoff, before anyone moves. That is the only moment the formation is literally true."
+    },
+    {
+      "id": "shape-in-out",
+      "term": "In-possession vs out-of-possession shape",
+      "level": 1,
+      "short": "Every good team is two different shapes depending on who has the ball.",
+      "plain": "This is the single biggest unlock for watching modern football. A team's shape with the ball and without the ball are different formations entirely. Announcers say '4-3-3' and then you watch three centre-backs build the attack and wonder if you are going mad. You are not — the team changed shape the moment they won the ball.",
+      "arsenal": "Arsenal's 4-3-3 becomes roughly a 3-2-5 in possession: three at the back to build, two screening in front of them, five players spread across the last line. When they lose it, everyone folds back into a 4-4-2 or 4-5-1 block.",
+      "spotIt": "Watch the left-back when Arsenal have the ball in the opponent's half. If they are standing in central midfield rather than out by the touchline, you are watching a shape change."
+    },
+    {
+      "id": "press",
+      "term": "Pressing / high press",
+      "level": 1,
+      "short": "Hunting the ball high up the pitch instead of dropping off.",
+      "plain": "Rather than retreating and letting the opponent come, the team runs at whoever has the ball near their own goal. The aim is not just to win it back — it is to win it back 30 yards from the opponent's net, where a mistake becomes a goal immediately. It costs enormous physical energy and leaves space behind, which is the trade.",
+      "arsenal": "Arteta's teams press in coordinated waves, not individually. One forward's run is designed to cut off the sideways pass so the next presser knows exactly where the ball must go.",
+      "spotIt": "The moment an opposing goalkeeper gets the ball. If Arsenal's forwards sprint at the centre-backs rather than jog back, that is the press turning on."
+    },
+    {
+      "id": "pressing-trigger",
+      "term": "Pressing trigger",
+      "level": 1,
+      "short": "The specific cue that tells the whole team to go.",
+      "plain": "A press is not launched at random — it fires on a signal every player has rehearsed. Common triggers: a pass played backwards, a heavy first touch, the ball going to a player on their weak foot, or a pass to a full-back near the touchline (the touchline acts as an extra defender because the ball cannot escape sideways).",
+      "arsenal": "The backward pass is the classic trigger. Watch how Arsenal's line jumps forward in unison the instant an opponent turns toward their own goal.",
+      "spotIt": "Count 'one' when an opponent passes backwards, and watch three or four Arsenal players start sprinting on the same beat."
+    },
+    {
+      "id": "low-block",
+      "term": "Low block",
+      "level": 1,
+      "short": "Defending deep in two compact banks, inviting pressure.",
+      "plain": "The opposite plan to pressing. The team sits ten players behind the ball near their own box, squeezed tight so there is no gap to pass through, and concedes possession happily. The bet is that you can have the ball all day in front of them but never through them — and that one counter-attack will be worth more than your 70% possession.",
+      "arsenal": "Most teams that visit the Emirates set up this way. It is the puzzle Arsenal are built to solve, and why patient sideways passing is a feature, not boredom.",
+      "spotIt": "Both banks of defenders inside their own penalty area's width, with 40 yards of empty grass in front of them that nobody is contesting."
+    },
+    {
+      "id": "transition",
+      "term": "Transition",
+      "level": 1,
+      "short": "The chaotic 5-10 seconds right after possession changes hands.",
+      "plain": "The moment a team wins or loses the ball, both sides are briefly out of shape — attackers are upfield, defenders are spread. More goals come from these seconds than from any settled pattern of play. Coaches talk about them constantly because that is where matches are actually decided.",
+      "arsenal": "Arsenal's counter-pressing means the five seconds after losing the ball are treated as an attacking opportunity, not a defensive emergency.",
+      "spotIt": "Stop watching the ball for a second after a tackle and watch how fast players sprint to fix their positions. That scramble is the transition."
+    },
+    {
+      "id": "half-space",
+      "term": "Half-space",
+      "level": 1,
+      "short": "The vertical lane between the middle of the pitch and the wing.",
+      "plain": "Split the pitch into five vertical strips. The two strips between the central corridor and the touchlines are the half-spaces. They are the most dangerous real estate in football: a player there can shoot, pass square, or slide a ball in behind — and defenders hate it because it sits in the gap between the centre-back's zone and the full-back's zone, so neither is sure whose job it is.",
+      "arsenal": "Arsenal's right-sided half-space is the most rehearsed patch of grass in the squad. The number 10 occupying it is the pivot of the entire attack.",
+      "spotIt": "Draw two imaginary lines up the pitch from the edges of the penalty box. Attacking midfielders lurking on those lines are in the half-space."
+    },
+    {
+      "id": "overload",
+      "term": "Overload",
+      "level": 1,
+      "short": "Deliberately putting more players in one area than the opponent has.",
+      "plain": "Get four players into a zone the opponent defends with three, and somebody must be unmarked. That is the whole idea. The subtle version — 'overload to isolate' — is crowding one side on purpose so that when you switch the ball across, the winger on the far side is alone against one defender.",
+      "arsenal": "Arsenal routinely build a triangle overload down one flank, then swing the ball to the opposite winger in acres of space.",
+      "spotIt": "Count bodies. Five red shirts and three away shirts in the same corner of the screen is an overload in progress."
+    },
+    {
+      "id": "third-man",
+      "term": "Third-man run",
+      "level": 1,
+      "short": "A passes to B so that C can arrive unseen.",
+      "plain": "The defender tracks the ball and the obvious receiver. The pass to B is bait — B's job is a first-time lay-off to C, who has been running the whole time from somewhere the defender was not looking. It is the most reliable way to break a compact defence without dribbling past anyone.",
+      "arsenal": "The classic Arsenal version: winger into the striker's feet, striker lays it back, midfielder arrives late into the box at pace.",
+      "spotIt": "Watch the player who does NOT get the ball. If someone starts running before the first pass is played, they are the third man."
+    },
+    {
+      "id": "inverted-fullback",
+      "term": "Inverted full-back",
+      "level": 2,
+      "short": "A full-back who steps inside into midfield instead of hugging the touchline.",
+      "plain": "Traditionally full-backs run up and down the wing. An inverted full-back drifts into central midfield when their team has the ball. This does three jobs at once: it adds a passer in the middle, it clogs the space an opponent would counter-attack through, and it frees the winger to stay wide and one-on-one. It is the mechanism that turns a back four into a back three plus a midfielder.",
+      "arsenal": "This is how Arsenal's 4-3-3 becomes a 3-2-5. One full-back tucks in beside the holding midfielder, the other stays out to hold width.",
+      "spotIt": "Find the full-back on the team sheet, then find them on the pitch during an Arsenal attack. If they are standing near the centre circle, they have inverted."
+    },
+    {
+      "id": "rest-defence",
+      "term": "Rest defence",
+      "level": 2,
+      "short": "The players held back during your own attack, insuring against the counter.",
+      "plain": "While seven players attack, the remaining few are positioned specifically to kill a counter-attack before it starts. Good rest defence is why a team can commit numbers forward without being repeatedly caught. It is invisible when it works, which is why casual viewers never notice it and coaches obsess over it.",
+      "arsenal": "Arteta's non-negotiable. The two deepest players are positioned not where the ball is, but where the opponent's counter would run.",
+      "spotIt": "During an Arsenal attack, look at the halfway line. The two or three red shirts standing there doing apparently nothing are doing the most important job on the pitch."
+    },
+    {
+      "id": "switch",
+      "term": "Switch of play",
+      "level": 2,
+      "short": "A long diagonal that moves the ball to the opposite flank.",
+      "plain": "A defensive block can only cover so much width, so it slides toward the ball. Every second it spends sliding one way leaves the far side thinner. A switch punishes that — one 40-yard pass undoes 30 seconds of the opponent's shuffling and arrives at a winger with grass in front of him.",
+      "arsenal": "Arsenal grind teams sideways deliberately, waiting for the block to over-shift before releasing the switch.",
+      "spotIt": "The camera pans and suddenly there is a lone Arsenal winger with nobody near him. That is a switch landing."
+    },
+    {
+      "id": "overlap-underlap",
+      "term": "Overlap vs underlap",
+      "level": 2,
+      "short": "Running past your winger on the outside, or on the inside.",
+      "plain": "An overlap is the full-back sprinting around the outside of the winger toward the touchline — it stretches the defence wide and sets up crosses. An underlap is the run past the winger on the INSIDE, into the half-space — it aims at the gap between centre-back and full-back and sets up cutbacks. Underlaps are harder to defend because they attack a seam rather than a touchline.",
+      "arsenal": "Arsenal favour the underlap on the right, feeding runs into the space behind the opposing full-back rather than beside them.",
+      "spotIt": "When the full-back sprints past the winger, note which side they pass on. Touchline side = overlap. Goal side = underlap."
+    },
+    {
+      "id": "man-vs-zonal",
+      "term": "Man-marking vs zonal marking",
+      "level": 2,
+      "short": "Following a player everywhere, or defending a patch of grass.",
+      "plain": "Man-marking assigns each defender an opponent and follows them wherever they go — solid, but it lets attackers drag defenders out of position on purpose. Zonal marking assigns each defender an area and they mark whoever enters it — keeps the shape but creates handover moments at the seams between zones. Most teams mix the two, and the mixing points are where goals come from.",
+      "arsenal": "Opponents increasingly assign a dedicated man-marker to Arsenal's creative midfielder. Watching how Arsenal free him from that is a match-within-the-match.",
+      "spotIt": "Pick an Arsenal midfielder and watch only him for a minute. If one opponent goes everywhere he goes, including into weird areas, he is being man-marked."
+    },
+    {
+      "id": "progressive",
+      "term": "Progressive pass / carry",
+      "level": 2,
+      "short": "Moving the ball meaningfully closer to the opponent's goal.",
+      "plain": "Not all passes are equal. A progressive action advances the ball a substantial distance toward the goal (commonly 10+ metres closer, in the opponent's half). It separates players who genuinely move a team forward from players who pad their pass-completion percentage with safe five-yard sideways balls.",
+      "arsenal": "This is the stat that reveals which centre-back or midfielder is actually driving Arsenal up the pitch versus just keeping it ticking.",
+      "spotIt": "A defender dribbling forward with the ball while nobody closes him down — that carry is worth more than three sideways passes."
+    },
+    {
+      "id": "xg",
+      "term": "xG (expected goals)",
+      "level": 3,
+      "short": "The quality of a chance, from 0 to 1.",
+      "plain": "Every shot gets a value between 0 and 1 based on how often historically similar shots were scored — distance, angle, body part, defenders in the way, whether it followed a cross. A tap-in might be 0.76 xG; a 30-yard screamer might be 0.03. Add them up over a match and you get how many goals an average team would score from those chances. It measures the chances you created, not the finishing.",
+      "arsenal": "An Arsenal match ending 1-0 with a 2.6 to 0.4 xG split means the scoreline flattered the opponent enormously — Arsenal created enough to win by three.",
+      "spotIt": "Compare the xG line to the actual score. A big gap means luck, goalkeeping, or finishing was the story, not tactics."
+    },
+    {
+      "id": "xgot",
+      "term": "xGOT / post-shot xG",
+      "level": 3,
+      "short": "Chance quality recalculated after you see where the shot went.",
+      "plain": "Ordinary xG stops at the moment of the strike. xGOT adds the information of where the ball ended up in the goal frame. A shot worth 0.1 xG that flies into the top corner might be worth 0.6 xGOT. Comparing the two separates two different skills: xG measures how good the chance was, and xGOT minus xG measures how well it was struck. It is also the cleanest way to judge a goalkeeper — xGOT faced minus goals conceded is shot-stopping value.",
+      "arsenal": "When people argue about whether a striker is 'clinical', xGOT minus xG is the number that settles it.",
+      "spotIt": "Only in post-match data, not live — but it is the stat that tells you whether the keeper robbed you or you were wasteful."
+    },
+    {
+      "id": "ppda",
+      "term": "PPDA",
+      "level": 3,
+      "short": "Passes per defensive action — how hard a team presses. Lower is more aggressive.",
+      "plain": "Count how many passes the opponent completes in their own build-up area before your team makes a tackle, interception, or foul. A low number (say 8) means you are allowing barely a handful of passes before challenging — a ferocious press. A high number (say 18) means you are sitting off and letting them play. It is counter-intuitive because lower means more intense.",
+      "arsenal": "PPDA is the single best number for whether Arteta set up to suffocate the opponent or to absorb and counter.",
+      "spotIt": "Not visible live, but if it feels like Arsenal are hunting relentlessly, expect a PPDA under 10."
+    },
+    {
+      "id": "field-tilt",
+      "term": "Field tilt",
+      "level": 3,
+      "short": "Your share of the final-third touches — territorial dominance.",
+      "plain": "Possession percentage is a famously bad measure of control, because passing the ball between your own centre-backs counts the same as camping on the edge of their box. Field tilt fixes that by counting only touches in the attacking third. A team can have 55% possession and 75% field tilt (genuinely pinning the opponent back) or 65% possession and 45% field tilt (sterile domination in harmless areas).",
+      "arsenal": "When Arsenal beat a low block, field tilt shows it far more honestly than the possession bar on the broadcast.",
+      "spotIt": "Ask yourself where the ball actually was. If Arsenal had 65% possession but it was all in their own half, field tilt will be much lower."
+    },
+    {
+      "id": "set-piece-xg",
+      "term": "Set-piece xG",
+      "level": 3,
+      "short": "The share of chance quality created from corners and free-kicks.",
+      "plain": "Set pieces are the most coachable phase in football — they are the one moment where a rehearsed routine reliably beats individual quality, because the ball is stationary and you get to choose everyone's starting position. Clubs with dedicated set-piece coaches turn this into several extra points a season, which is the margin between fourth and first.",
+      "arsenal": "Arsenal's set-piece programme is a genuine competitive identity, not a footnote. Tracking what share of xG comes from dead balls is a direct read on it.",
+      "spotIt": "Watch the near post on Arsenal corners, and watch which player starts his run last. The late arrival is usually the target."
+    },
+    {
+      "id": "xg-overperformance",
+      "term": "xG overperformance (and regression)",
+      "level": 3,
+      "short": "Scoring more than your chances deserved — and why it rarely lasts.",
+      "plain": "If a player has 8 goals from 4.5 xG, they are +3.5. That is either elite finishing or good luck, and separating the two takes a season or more of data. The important part is that extreme overperformance almost always drifts back toward the expected rate — 'regression to the mean'. It is why a team winning on thin xG margins is fragile, and a team losing despite dominating xG is usually about to go on a run.",
+      "arsenal": "The most useful thing xG does for a fan is predict the near future better than the league table does.",
+      "spotIt": "When a rival is above Arsenal on points but well below on xG difference, expect that gap to close on its own."
+    },
+    {
+      "id": "line-breaking",
+      "term": "Line-breaking pass / packing",
+      "level": 3,
+      "short": "How many opponents a single pass takes out of the game.",
+      "plain": "A defence is organised in horizontal lines — forwards, midfield, defence. A pass that travels through a line eliminates every player it goes past, because they now have to turn and chase. 'Packing' counts exactly that: how many opponents were bypassed. One vertical pass through midfield can remove five players from the play, which no amount of sideways possession achieves.",
+      "arsenal": "The centre-back who can pass through the opponent's first line rather than around it is what lets Arsenal skip the slow build entirely.",
+      "spotIt": "When a pass goes between two opponents rather than around them, watch how many players have to spin and run back. That is packing."
+    }
+  ]
+}
