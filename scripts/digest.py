@@ -630,6 +630,43 @@ def latest_tactics_entry(max_age_days=10):
     return entry if (datetime.now(timezone.utc) - played).days <= max_age_days else None
 
 
+def _normalize_explained(explained):
+    """Coerce model output into the shape the renderer expects.
+
+    Tool inputs aren't schema-validated unless the tool is declared strict, so a
+    field documented as an object can come back as a bare string. Rather than let
+    that crash the run — or worse, persist and crash every later render — drop
+    anything malformed and keep what's usable.
+    """
+    if not isinstance(explained, dict):
+        return {}
+
+    clean = {}
+    for key in ("whatHappened", "opponentPlan", "keyMoment", "nerdCorner"):
+        value = explained.get(key)
+        if isinstance(value, str) and value.strip():
+            clean[key] = value
+
+    shape = explained.get("shape")
+    if isinstance(shape, dict):
+        clean["shape"] = {k: v for k, v in shape.items() if isinstance(v, str)}
+
+    lesson = explained.get("lesson")
+    if isinstance(lesson, dict) and isinstance(lesson.get("conceptId"), str):
+        clean["lesson"] = lesson
+    elif lesson is not None:
+        print(f"[warn] discarding malformed lesson ({type(lesson).__name__})")
+
+    rows = explained.get("statTranslations")
+    if isinstance(rows, list):
+        clean["statTranslations"] = [
+            r for r in rows
+            if isinstance(r, dict) and isinstance(r.get("stat"), str) and isinstance(r.get("plain"), str)
+        ]
+
+    return clean
+
+
 def match_key(date, opponent):
     """Stable identity for a fixture across both data paths.
 
@@ -671,9 +708,13 @@ def _research_entry(current):
         print(f"[info] research returned an already-recorded match ({key})")
         return None
 
-    explained = {k: v for k, v in result.items()
-                 if k not in {"matchFound", "match", "confidence"}}
-    concept_id = (explained.get("lesson") or {}).get("conceptId")
+    explained = _normalize_explained(
+        {k: v for k, v in result.items() if k not in {"matchFound", "match", "confidence"}}
+    )
+    if not explained.get("lesson"):
+        print("[warn] research returned no usable lesson; discarding")
+        return None
+    concept_id = explained["lesson"].get("conceptId")
     if concept_id and concept_id not in current["conceptsTaught"]:
         current["conceptsTaught"].append(concept_id)
 
@@ -722,10 +763,13 @@ def refresh_tactics(matches):
             continue
 
         try:
-            explained = generate_tactics(match, current["conceptsTaught"])
+            explained = _normalize_explained(generate_tactics(match, current["conceptsTaught"]))
         except Exception as e:
             # One bad fixture shouldn't cost us the rest of the backlog.
             print(f"[warn] tactics generation failed for {match.get('opponent')}: {e}")
+            continue
+        if not explained.get("lesson"):
+            print(f"[warn] no usable lesson for {match.get('opponent')}; skipping")
             continue
 
         entry = {

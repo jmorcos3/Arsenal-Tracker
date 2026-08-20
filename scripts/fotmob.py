@@ -12,6 +12,7 @@ change degrades to a missing stat rather than a failed run.
 """
 
 import json
+from datetime import datetime, timedelta, timezone
 from urllib.error import URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -19,6 +20,8 @@ from urllib.request import Request, urlopen
 API_BASE = "https://www.fotmob.com/api/data"
 ARSENAL_TEAM_ID = 9825
 FINISHED_PERIOD = "All"
+# Don't reach back into a finished season and spend lessons on stale matches.
+MAX_MATCH_AGE_DAYS = 45
 
 # FotMob stat labels -> our keys. Anything unlisted is ignored.
 STAT_KEYS = {
@@ -83,12 +86,16 @@ def fetch_recent_matches(count=3):
         return []
 
     fixtures = (((team.get("fixtures") or {}).get("allFixtures") or {}).get("fixtures")) or []
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=MAX_MATCH_AGE_DAYS)).strftime("%Y-%m-%d")
     finished = [
         f for f in fixtures
-        if (f.get("status") or {}).get("finished") and f.get("id")
+        if (f.get("status") or {}).get("finished")
+        and f.get("id")
+        and not _is_friendly(f)
+        and ((f.get("status") or {}).get("utcTime") or "")[:10] >= cutoff
     ]
     if not finished:
-        print("[info] fotmob returned no completed Arsenal fixtures")
+        print(f"[info] no completed competitive Arsenal fixture since {cutoff}")
         return []
 
     finished.sort(key=lambda f: (f.get("status") or {}).get("utcTime") or "")
@@ -98,6 +105,12 @@ def fetch_recent_matches(count=3):
         if match:
             matches.append(match)
     return matches
+
+
+def _is_friendly(fixture):
+    """Pre-season friendlies make poor teaching material and would burn lessons."""
+    name = ((fixture.get("tournament") or {}).get("name") or "").lower()
+    return "friendl" in name
 
 
 def fetch_match(match_id):
