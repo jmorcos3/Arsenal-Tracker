@@ -27,8 +27,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
           DIGEST_TO: jmorcos3@gmail.com
           DIGEST_FROM: jmorcos3@gmail.com
         run: python scripts/digest.py

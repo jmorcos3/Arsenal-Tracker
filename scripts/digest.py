@@ -19,6 +19,7 @@ import feedparser
 from anthropic import Anthropic
 
 from fotmob import fetch_recent_matches, summarize_for_prompt
+from kalshi import fetch_trophy_prices, double_item
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "data"
@@ -45,14 +46,8 @@ MAX_TACTICS_HISTORY = 40
 WEB_SEARCH_TOOL = {"type": "web_search_20260209", "name": "web_search", "max_uses": 10}
 MAX_RESEARCH_TURNS = 6
 
-ODDS_API_BASE = "https://api.the-odds-api.com/v4/sports"
-ODDS_SPORTS = {
-    "Premier League": "soccer_epl",
-    "Champions League": "soccer_uefa_champs_league",
-    "FA Cup": "soccer_fa_cup",
-    "Carabao Cup": "soccer_efl_cup",
-}
-INDIVIDUAL_COMPS = list(ODDS_SPORTS.keys())
+# Order the trophy cards appear in, on the site and in the email.
+INDIVIDUAL_COMPS = ["Premier League", "Champions League", "FA Cup", "Carabao Cup"]
 
 SITE_URL = os.environ.get("SITE_URL", "https://github.com/jmorcos3/Arsenal-Tracker")
 
@@ -97,99 +92,54 @@ def gather_news():
 
 # ---------- odds ----------
 
-def fetch_arsenal_odds(sport_key, api_key):
-    url = (
-        f"{ODDS_API_BASE}/{sport_key}/odds"
-        f"?apiKey={api_key}&regions=uk&markets=outrights&oddsFormat=decimal"
-    )
-    try:
-        req = Request(url, headers={"User-Agent": "arsenal-tracker/1.0"})
-        with urlopen(req, timeout=15) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-    except (URLError, ValueError, TimeoutError) as e:
-        print(f"[warn] odds fetch failed for {sport_key}: {e}")
-        return None, None
-
-    best_price, best_book = None, None
-    for event in data:
-        for bm in event.get("bookmakers", []):
-            for market in bm.get("markets", []):
-                if market.get("key") != "outrights":
-                    continue
-                for outcome in market.get("outcomes", []):
-                    name = (outcome.get("name") or "").lower()
-                    if "arsenal" in name and "arsenal fan token" not in name:
-                        price = outcome.get("price")
-                        if isinstance(price, (int, float)) and (best_price is None or price > best_price):
-                            best_price = float(price)
-                            best_book = bm.get("title") or bm.get("key")
-    return best_price, best_book
-
-
 def refresh_odds_file():
-    api_key = os.environ.get("ODDS_API_KEY")
-    if not api_key:
-        print("[info] ODDS_API_KEY not set; skipping live odds refresh")
-        return
+    """Refresh trophy prices from Kalshi.
 
+    Kalshi needs no key, so unlike the old bookmaker feed this can't silently
+    stop updating because a secret was never set. Competitions with no open
+    market keep their previous value rather than blanking out.
+    """
     odds_path = DATA_DIR / "odds.json"
     current = json.loads(odds_path.read_text()) if odds_path.exists() else {"items": [], "history": []}
     prev_map = {i["competition"]: i for i in current.get("items", [])}
 
+    live = fetch_trophy_prices()
+    if not live:
+        print("[warn] no Kalshi prices returned; leaving odds untouched")
+        return
+
+    by_name = {i["competition"]: i for i in live}
     new_items = []
-    live_snapshot = {"date": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
-
     for comp_name in INDIVIDUAL_COMPS:
-        sport_key = ODDS_SPORTS[comp_name]
-        price, book = fetch_arsenal_odds(sport_key, api_key)
-        if price is None:
-            prev = prev_map.get(comp_name)
-            if prev:
-                new_items.append(prev)
-                print(f"[warn] no live odds for {comp_name}; keeping previous value {prev.get('odds')}")
-            else:
-                new_items.append({
-                    "competition": comp_name, "odds": None,
-                    "impliedProbability": None, "bestBookmaker": None,
-                    "lastUpdated": current.get("lastUpdated", ""),
-                })
-                print(f"[warn] no live odds for {comp_name} and no previous value")
-            continue
-        new_items.append({
-            "competition": comp_name,
-            "odds": round(price, 2),
-            "impliedProbability": round(1.0 / price, 4),
-            "bestBookmaker": book,
-            "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-        })
-        live_snapshot[comp_name] = round(price, 2)
+        item = by_name.get(comp_name) or prev_map.get(comp_name)
+        if item:
+            new_items.append(item)
+            if comp_name not in by_name:
+                print(f"[warn] no live Kalshi market for {comp_name}; keeping previous value")
 
-    pl_price = next((i["odds"] for i in new_items if i["competition"] == "Premier League" and i["odds"]), None)
-    ucl_price = next((i["odds"] for i in new_items if i["competition"] == "Champions League" and i["odds"]), None)
-    if pl_price and ucl_price:
-        double_price = round(pl_price * ucl_price, 2)
-        new_items.append({
-            "competition": "Double (PL + UCL)",
-            "odds": double_price,
-            "impliedProbability": round(1.0 / double_price, 4),
-            "bestBookmaker": "Implied (product of individual odds)",
-            "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-        })
-        live_snapshot["Double (PL + UCL)"] = double_price
-    elif prev_map.get("Double (PL + UCL)"):
-        new_items.append(prev_map["Double (PL + UCL)"])
+    double = double_item(new_items) or prev_map.get("Double (PL + UCL)")
+    if double:
+        new_items.append(double)
+
+    snapshot = {"date": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
+    for item in new_items:
+        if item.get("impliedProbability") is not None:
+            # Store probability, not decimal odds — it's what Kalshi actually
+            # quotes, and it makes the history directly chartable.
+            snapshot[item["competition"]] = item["impliedProbability"]
 
     history = current.get("history", [])
-    if len(live_snapshot) > 1:
-        history.append(live_snapshot)
+    if len(snapshot) > 1:
+        history.append(snapshot)
         history = history[-MAX_ODDS_HISTORY:]
 
     odds_path.write_text(json.dumps({
         "lastUpdated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "source": "Kalshi",
         "items": new_items,
         "history": history,
     }, indent=2) + "\n")
-    print(f"[ok] odds refreshed")
+    print(f"[ok] odds refreshed from Kalshi ({len(live)} live markets)")
 
 
 # ---------- LLM: structured digest ----------
@@ -931,16 +881,20 @@ def render_odds(odds_items, commentary):
 
     def cell(comp):
         item = by_name.get(comp)
-        odds = "—" if not item or item.get("odds") is None else f'{item["odds"]:.2f}'
-        prob = "" if not item or item.get("impliedProbability") is None else f'{item["impliedProbability"] * 100:.1f}%'
-        book = "" if not item or not item.get("bestBookmaker") else E(item["bestBookmaker"])
+        # Kalshi quotes probability directly, so that leads; decimal odds follow
+        # for anyone used to reading a bookmaker price.
+        prob = "—" if not item or item.get("impliedProbability") is None else f'{item["impliedProbability"] * 100:.1f}%'
+        odds = "" if not item or item.get("odds") is None else f'{item["odds"]:.2f} decimal'
+        spread = ""
+        if item and item.get("bidCents") is not None and item.get("askCents") is not None:
+            spread = f'{item["bidCents"]}–{item["askCents"]}\u00a2 bid/ask'
         return (
             f'<td width="25%" valign="top" style="background:{CARD_ALT};border:1px solid {BORDER};'
             f'border-radius:6px;padding:12px 6px;text-align:center;">'
             f'<div style="font-size:10px;color:{INK_SOFT};text-transform:uppercase;letter-spacing:.05em;font-weight:600;">{E(comp)}</div>'
-            f'<div style="font-size:22px;font-weight:700;color:{RED_DARK};margin:6px 0 2px;">{E(odds)}</div>'
-            f'<div style="font-size:11px;color:{INK_SOFT};">{E(prob)}</div>'
-            f'<div style="font-size:10px;color:{INK_SOFT};margin-top:2px;">{book}</div>'
+            f'<div style="font-size:22px;font-weight:700;color:{RED_DARK};margin:6px 0 2px;">{E(prob)}</div>'
+            f'<div style="font-size:11px;color:{INK_SOFT};">{E(odds)}</div>'
+            f'<div style="font-size:10px;color:{INK_SOFT};margin-top:2px;">{E(spread)}</div>'
             f'</td>'
         )
 
@@ -954,18 +908,23 @@ def render_odds(odds_items, commentary):
     double = by_name.get("Double (PL + UCL)")
     double_row = ""
     if double and double.get("odds") is not None:
-        prob = f'{double["impliedProbability"] * 100:.2f}%' if double.get("impliedProbability") is not None else ""
+        prob = f'{double["impliedProbability"] * 100:.1f}%' if double.get("impliedProbability") is not None else ""
         double_row = (
             f'<div style="margin-top:10px;padding:8px 12px;background:{CARD_ALT};'
             f'border:1px solid {BORDER};border-radius:6px;text-align:center;font-size:13px;color:{INK_SOFT};">'
-            f'Double (PL + UCL): <strong style="color:{RED_DARK};font-size:16px;">{double["odds"]:.2f}</strong>'
-            f'{f" · {E(prob)}" if prob else ""}'
+            f'Double (PL + UCL): <strong style="color:{RED_DARK};font-size:16px;">{E(prob)}</strong>'
+            f' · {double["odds"]:.2f} decimal'
             f'</div>'
         )
 
     commentary_html = f'<p style="margin:8px 0 0;color:{INK_SOFT};font-size:13px;font-style:italic;">{E(commentary)}</p>' if commentary else ""
+    attribution = (
+        f'<p style="margin:8px 0 0;color:{INK_SOFT};font-size:11px;text-align:center;">'
+        f'Live prices from <a href="https://kalshi.com" style="color:{RED_DARK};text-decoration:none;">Kalshi</a>'
+        f' — contracts settle at $1, so the price is the market\u2019s implied probability.</p>'
+    )
 
-    return _section_header("Trophy Odds") + _section_body(grid + double_row + commentary_html)
+    return _section_header("Trophy Odds") + _section_body(grid + double_row + commentary_html + attribution)
 
 
 def _transfer_line(t, direction):

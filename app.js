@@ -155,16 +155,23 @@ function renderOdds(data) {
     return;
   }
   grid.innerHTML = data.items.map(item => {
-    const oddsDisplay = item.odds == null ? '—' : String(item.odds);
-    const prob = (item.impliedProbability != null)
-      ? ` <span class="prob">(${(item.impliedProbability * 100).toFixed(1)}%)</span>` : '';
-    const book = item.bestBookmaker
-      ? `<div class="book">${escapeHTML(item.bestBookmaker)}</div>` : '';
+    // Kalshi prices are probabilities, so lead with the percentage and keep
+    // decimal odds as the secondary read.
+    const prob = item.impliedProbability == null
+      ? '—' : `${(item.impliedProbability * 100).toFixed(1)}%`;
+    const dec = item.odds == null ? '' : `${item.odds} decimal`;
+    const spread = (item.bidCents != null && item.askCents != null)
+      ? `<div class="spread">${item.bidCents}–${item.askCents}\u00a2 bid/ask</div>` : '';
+    const link = item.marketUrl
+      ? `<a class="market-link" href="${escapeAttr(item.marketUrl)}" target="_blank" rel="noopener">Kalshi market →</a>`
+      : '';
     return `
       <div class="odds-item">
         <div class="comp">${escapeHTML(item.competition)}</div>
-        <div class="value">${escapeHTML(oddsDisplay)}${prob}</div>
-        ${book}
+        <div class="value">${escapeHTML(prob)}</div>
+        <div class="book">${escapeHTML(dec)}</div>
+        ${spread}
+        ${link}
         <div class="updated">Updated ${escapeHTML(item.lastUpdated || '')}</div>
       </div>
     `;

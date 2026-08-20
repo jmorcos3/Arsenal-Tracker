@@ -270,3 +270,14 @@ footer { padding: 20px 0 40px; color: var(--ink-soft); text-align: center; }
 .source-line { margin: 16px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
 .source-line a { color: var(--arsenal-red-dark); text-decoration: none; font-weight: 600; }
 .source-line a:hover { text-decoration: underline; }
+
+.odds-item .spread { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+.odds-item .market-link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--arsenal-red-dark);
+  text-decoration: none;
+}
+.odds-item .market-link:hover { text-decoration: underline; }
