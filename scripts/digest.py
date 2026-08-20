@@ -18,7 +18,7 @@ from urllib.error import URLError
 import feedparser
 from anthropic import Anthropic
 
-from football_api import fetch_recent_matches, summarize_for_prompt
+from fotmob import fetch_recent_matches, summarize_for_prompt
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "data"
@@ -39,9 +39,9 @@ TACTICS_MODEL = "claude-opus-5"
 MAX_ODDS_HISTORY = 180
 MAX_TACTICS_HISTORY = 40
 
-# Server-side search: free tiers of the match-data APIs don't cover the current
-# season, so the tactical facts are researched from published reports instead
-# and every entry records the URLs they came from.
+# Fallback only. FotMob is the primary source; if its unofficial API changes
+# shape, the digest researches the match from published reports instead and
+# records the URLs it used on the entry.
 WEB_SEARCH_TOOL = {"type": "web_search_20260209", "name": "web_search", "max_uses": 10}
 MAX_RESEARCH_TURNS = 6
 

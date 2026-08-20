@@ -1,165 +1,158 @@
 {
-  "note": "Per-match tactical breakdowns. Fields under `grounded` come from the match-data API and are never written by the LLM. Fields under `explained` are LLM-written commentary constrained to the grounded data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
+  "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
   "lastUpdated": "2026-08-20",
   "conceptsTaught": [
-    "shape-in-out"
+    "low-block"
   ],
   "matches": [
     {
-      "fixtureId": 1052443,
+      "fixtureId": 5793186,
       "date": "2026-08-16",
-      "backfilled": true,
       "grounded": {
-        "fixtureId": 1052443,
+        "fixtureId": 5793186,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-manchester-city/2ub5zk#5793186",
         "date": "2026-08-16",
-        "competition": "FA Community Shield",
-        "round": "Final",
-        "venue": "Wembley Stadium",
+        "competition": "Community Shield",
+        "round": "final",
         "homeAway": "H",
         "opponent": "Manchester City",
-        "opponentId": 50,
+        "opponentId": 8456,
         "goalsFor": 3,
         "goalsAgainst": 0,
-        "result": "W",
-        "arsenalFormation": "4-2-3-1",
+        "arsenalFormation": "4-3-3",
         "opponentFormation": "4-2-3-1",
-        "arsenalCoach": "M. Arteta",
-        "opponentCoach": "E. Maresca",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Enzo Maresca",
         "arsenalXI": [
           "David Raya",
           "Ben White",
           "Cristhian Mosquera",
-          "Gabriel Magalhaes",
+          "Gabriel",
           "Riccardo Calafiori",
-          "Bruno Guimaraes",
+          "Martin Ødegaard",
+          "Bruno Guimarães",
           "Myles Lewis-Skelly",
           "Noni Madueke",
-          "Martin Odegaard",
-          "Christos Tzolis",
-          "Kai Havertz"
+          "Kai Havertz",
+          "Christos Tzolis"
         ],
         "opponentXI": [
           "Gianluigi Donnarumma",
           "Abdukodir Khusanov",
-          "Ruben Dias",
+          "Rúben Dias",
           "Josko Gvardiol",
           "Nico O'Reilly",
           "Elliot Anderson",
           "Mateo Kovacic",
           "Antoine Semenyo",
           "Phil Foden",
-          "Jeremy Doku",
+          "Jérémy Doku",
           "Erling Haaland"
         ],
         "stats": {
           "arsenal": {
-            "xg": 2.97,
-            "possession": 54.3,
-            "shotsOnTarget": 9,
-            "touchesInBox": 35
+            "possession": 41,
+            "xg": 2.16,
+            "shots": 9,
+            "shotsOnTarget": 5,
+            "touchesInBox": 27,
+            "bigChances": 4,
+            "bigChancesMissed": 1,
+            "accuratePasses": 352,
+            "corners": 2,
+            "shotsInBox": 8,
+            "xgOpenPlay": 2.16,
+            "xgSetPlay": 0.0,
+            "xgot": 2.53,
+            "passesOppositionHalf": 110,
+            "tackles": 16,
+            "interceptions": 10,
+            "saves": 4,
+            "fouls": 12
           },
           "opponent": {
-            "xg": 0.43,
-            "possession": 45.7,
-            "shotsOnTarget": 1,
-            "touchesInBox": 13
+            "possession": 59,
+            "xg": 1.12,
+            "shots": 12,
+            "shotsOnTarget": 5,
+            "touchesInBox": 34,
+            "bigChances": 1,
+            "bigChancesMissed": 1,
+            "accuratePasses": 519,
+            "corners": 4,
+            "shotsInBox": 7,
+            "xgOpenPlay": 1.1,
+            "xgSetPlay": 0.02,
+            "xgot": 0.34,
+            "passesOppositionHalf": 310,
+            "tackles": 11,
+            "interceptions": 4,
+            "saves": 2,
+            "fouls": 11
           }
         },
         "goalscorers": [
           {
-            "player": "R. Calafiori",
+            "player": "Riccardo Calafiori",
             "minute": 1,
             "team": "Arsenal",
-            "detail": "Normal Goal (23 seconds)"
+            "assist": "Myles Lewis-Skelly"
           },
           {
-            "player": "K. Havertz",
+            "player": "Kai Havertz",
             "minute": 28,
             "team": "Arsenal",
-            "detail": "Normal Goal"
+            "assist": "Christos Tzolis"
           },
           {
-            "player": "M. Odegaard",
+            "player": "Martin Ødegaard",
             "minute": 48,
             "team": "Arsenal",
-            "detail": "Normal Goal"
+            "assist": "Christos Tzolis"
           }
         ],
-        "substitutions": [
-          {
-            "minute": 46,
-            "team": "Arsenal",
-            "on": "Declan Rice",
-            "off": "Bruno Guimaraes"
-          },
-          {
-            "minute": 60,
-            "team": "Arsenal",
-            "on": "Bukayo Saka",
-            "off": "Noni Madueke"
-          },
-          {
-            "minute": 60,
-            "team": "Arsenal",
-            "on": "Piero Hincapie",
-            "off": "Riccardo Calafiori"
-          },
-          {
-            "minute": 75,
-            "team": "Arsenal",
-            "on": "Martin Zubimendi",
-            "off": "Kai Havertz"
-          },
-          {
-            "minute": 84,
-            "team": "Arsenal",
-            "on": "Eberechi Eze",
-            "off": "Martin Odegaard"
-          }
-        ],
-        "provenance": "Backfilled by hand from published sources, not the match API.",
-        "sources": [
-          "https://en.wikipedia.org/wiki/2026_FA_Community_Shield",
-          "https://www.thefa.com/news/2026/aug/16/fa-community-shield-2026-report-16082026",
-          "https://learning.coachesvoice.com/cv/arsenal-man-city-2026-community-shield-tactics/",
-          "https://theanalyst.com/articles/arsenal-vs-manchester-city-stats-community-shield-2026"
-        ]
+        "result": "W"
       },
       "explained": {
-        "whatHappened": "Arsenal scored after 23 seconds and City never recovered from it. Havertz made it two before the half hour, Odegaard added a third three minutes into the second half, and from there Arsenal simply managed the game. City's front four barely got into the Arsenal box all afternoon.",
+        "whatHappened": "Arsenal scored after 23 seconds and never trailed. What the scoreline hides is that City had more of the ball, more shots and more touches in Arsenal's box — Arsenal won by creating four clear chances to City's one and putting them away.",
         "shape": {
           "arsenalInPossession": "3-2-5",
           "arsenalOutOfPossession": "4-4-2",
-          "plainEnglish": "Both teams handed in the same teamsheet \u2014 4-2-3-1 \u2014 and then played nothing like each other, which is the clearest possible demonstration of why the teamsheet is only a starting point. Without the ball Arsenal folded into a rigid, flat 4-4-2 block that City could not pass through. City meanwhile transformed on the ball: their right-back tucked inside to make a back three, Kovacic dropped in alone as the single pivot behind, and their left-back pushed high up the pitch. Two identical formations on paper, two completely different shapes in reality."
+          "plainEnglish": "Arsenal started 4-3-3 and City 4-2-3-1, but neither held that shape for long. With the ball Arsenal's left-back steps inside, which turns the back four into a back three and pushes five players onto the last line. Without the ball — which was most of this match — Arsenal folded into two compact banks of four and let City pass in front of them."
         },
-        "opponentPlan": "Maresca's City tried to build patiently through a 3-1 base \u2014 three at the back with one holding midfielder \u2014 using Semenyo and Doku to hold the width and Foden dropping deep to collect the ball between Arsenal's lines. The idea was to pull Arsenal's block apart and find Haaland. It produced 0.43 xG and a single shot on target, because Arsenal's two banks of four never opened up far enough for the pass into Foden to be worth anything.",
-        "keyMoment": "The first goal, 23 seconds in. Lewis-Skelly slid a pass between Khusanov and Dias, and Calafiori ran from out to in across Khusanov to finish. That set the pattern for the entire match: City chasing from the opening seconds, and the same defensive seam getting attacked over and over \u2014 Khusanov was directly involved in all three goals.",
+        "opponentPlan": "Maresca's City did what they were set up to do: 59% of the ball and 310 passes in Arsenal's half, against Arsenal's 110 in theirs. They got 34 touches in the Arsenal box to Arsenal's 27. What they could not do was turn any of that into a clear opening — one big chance all afternoon, and an xGOT of 0.34 says the few shots they did work were struck straight at Raya.",
+        "keyMoment": "The first goal, 23 seconds in. Lewis-Skelly found Calafiori for a finish before City had touched the ball. That one moment set the terms for everything after it: Arsenal could sit deep and defend a lead, and City had to come out, which is exactly the game Arsenal wanted.",
         "lesson": {
-          "conceptId": "shape-in-out",
-          "term": "In-possession vs out-of-possession shape",
+          "conceptId": "low-block",
+          "term": "Low block",
           "level": 1,
-          "explain": "This match is the ideal place to start, because both managers submitted a 4-2-3-1 and the two teams looked nothing alike. Arsenal's 4-2-3-1 became a flat 4-4-2 the moment City had the ball \u2014 two banks of four with Odegaard pushing up alongside Havertz. City's 4-2-3-1 became a 3-1 build-up shape the moment they had it, with Khusanov stepping inside to make a back three. Neither team held the shape you would have read in the programme for more than a few seconds at a time. Formations are a starting position, not a description of how a team plays.",
-          "spotIt": "Next match, wait for Arsenal to lose the ball and count the lines: you should see four defenders and four midfielders in two flat rows, with two players left ahead of them. That is the 4-4-2 the teamsheet never mentions."
+          "explain": "This is the match to learn it from, because the stats look like Arsenal lost. City had 59% of the ball, 12 shots to 9, and 34 touches in the box to 27. Arsenal deliberately gave all of that away: they dropped into two banks of four, defended the space in front of their own goal rather than chasing the ball, and made 16 tackles and 10 interceptions doing it. A low block concedes territory on purpose and bets that the opponent will never get a clean look at goal. City managed one big chance. Arsenal managed four.",
+          "spotIt": "Next match, when Arsenal are ahead and the opponent has the ball, stop watching the ball and look at the shape. Two flat rows of four, squeezed into the width of the penalty area, with nobody chasing out to press — that is the low block doing its job, and it is not the same thing as being under pressure."
         },
         "statTranslations": [
           {
-            "stat": "xG 2.97 vs 0.43",
-            "plain": "Arsenal created chances worth about three goals and City about four-tenths of one \u2014 so 3-0 was, unusually, an honest scoreline rather than a flattering one."
+            "stat": "Big chances 4 vs 1",
+            "plain": "The number that actually explains a 3-0. Arsenal made four genuinely clear openings; City made one."
           },
           {
-            "stat": "9 shots on target vs 1",
-            "plain": "Donnarumma was tested nine times; Raya essentially once all afternoon."
+            "stat": "xG 2.16 vs 1.12",
+            "plain": "Arsenal's chances were worth about 2.2 goals and City's about 1.1 — a real edge, but much closer than 3-0 suggests."
           },
           {
-            "stat": "35 touches in the box vs 13",
-            "plain": "Nearly three times as much presence in the area that actually decides matches \u2014 this is where the dominance really shows up."
+            "stat": "xGOT 2.53 vs 0.34",
+            "plain": "Where the match was won. Arsenal struck their shots far better than the chances deserved; City struck theirs far worse, firing straight at Raya."
           },
           {
-            "stat": "Possession 54.3% vs 45.7%",
-            "plain": "Almost an even split of the ball, which is the surprising part: Arsenal did not need to monopolise possession to control the game completely."
+            "stat": "Possession 41% vs 59%",
+            "plain": "Arsenal had well under half the ball and were entirely content with that."
+          },
+          {
+            "stat": "Passes in the opposition half: 110 vs 310",
+            "plain": "City spent almost three times as much of the match camped in Arsenal's territory — and still lost 3-0."
           }
         ],
-        "nerdCorner": "Put the possession split next to the box-touch split and you have the single best argument against possession as a measure of control. Arsenal had 54.3% of the ball \u2014 statistically a coin flip \u2014 but 35 touches in the City box to 13, and a 9-1 edge on target. Territory in the areas that matter, not raw ball share, is what separated the sides. The other thread worth pulling: all three goals arrived down Khusanov's side, and the first two came from a run made from out-to-in across him. That is not three coincidences in one afternoon; that is a scouted weakness being attacked repeatedly on purpose."
+        "nerdCorner": "The xG-to-xGOT gap is the whole story and it cuts both ways. Arsenal turned 2.16 xG into 2.53 xGOT — their finishing beat the quality of the chances. City turned 1.12 into 0.34, meaning their shooting was dreadful relative to the openings. That combined swing is worth roughly two and a half goals of finishing, and it is the least repeatable thing in football: expect both numbers to drift back toward their xG over a season. The more durable read is the big-chance count. Conceding 59% possession and 310 opposition-half passes while allowing exactly one clear sight of goal is a defensive structure working precisely as designed, and that part does repeat."
       }
     }
   ]
