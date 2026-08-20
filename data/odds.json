@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-20T15:17:05+00:00",
+  "lastUpdated": "2026-08-20T15:33:07+00:00",
   "source": "Kalshi",
   "items": [
     {
@@ -13,7 +13,7 @@
       "priceCents": 44.5,
       "bidCents": 44,
       "askCents": 45,
-      "openInterest": 184187.0,
+      "openInterest": 185898.86,
       "lastUpdated": "2026-08-20"
     },
     {
@@ -69,6 +69,14 @@
     }
   ],
   "history": [
+    {
+      "date": "2026-08-20",
+      "Premier League": 0.445,
+      "Champions League": 0.135,
+      "FA Cup": 0.205,
+      "Carabao Cup": 0.225,
+      "Double (PL + UCL)": 0.0601
+    },
     {
       "date": "2026-08-20",
       "Premier League": 0.445,
