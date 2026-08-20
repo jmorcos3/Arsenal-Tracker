@@ -1,6 +1,166 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from the match-data API and are never written by the LLM. Fields under `explained` are LLM-written commentary constrained to the grounded data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": null,
-  "conceptsTaught": [],
-  "matches": []
+  "lastUpdated": "2026-08-20",
+  "conceptsTaught": [
+    "shape-in-out"
+  ],
+  "matches": [
+    {
+      "fixtureId": 1052443,
+      "date": "2026-08-16",
+      "backfilled": true,
+      "grounded": {
+        "fixtureId": 1052443,
+        "date": "2026-08-16",
+        "competition": "FA Community Shield",
+        "round": "Final",
+        "venue": "Wembley Stadium",
+        "homeAway": "H",
+        "opponent": "Manchester City",
+        "opponentId": 50,
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "result": "W",
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "M. Arteta",
+        "opponentCoach": "E. Maresca",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Cristhian Mosquera",
+          "Gabriel Magalhaes",
+          "Riccardo Calafiori",
+          "Bruno Guimaraes",
+          "Myles Lewis-Skelly",
+          "Noni Madueke",
+          "Martin Odegaard",
+          "Christos Tzolis",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Gianluigi Donnarumma",
+          "Abdukodir Khusanov",
+          "Ruben Dias",
+          "Josko Gvardiol",
+          "Nico O'Reilly",
+          "Elliot Anderson",
+          "Mateo Kovacic",
+          "Antoine Semenyo",
+          "Phil Foden",
+          "Jeremy Doku",
+          "Erling Haaland"
+        ],
+        "stats": {
+          "arsenal": {
+            "xg": 2.97,
+            "possession": 54.3,
+            "shotsOnTarget": 9,
+            "touchesInBox": 35
+          },
+          "opponent": {
+            "xg": 0.43,
+            "possession": 45.7,
+            "shotsOnTarget": 1,
+            "touchesInBox": 13
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "R. Calafiori",
+            "minute": 1,
+            "team": "Arsenal",
+            "detail": "Normal Goal (23 seconds)"
+          },
+          {
+            "player": "K. Havertz",
+            "minute": 28,
+            "team": "Arsenal",
+            "detail": "Normal Goal"
+          },
+          {
+            "player": "M. Odegaard",
+            "minute": 48,
+            "team": "Arsenal",
+            "detail": "Normal Goal"
+          }
+        ],
+        "substitutions": [
+          {
+            "minute": 46,
+            "team": "Arsenal",
+            "on": "Declan Rice",
+            "off": "Bruno Guimaraes"
+          },
+          {
+            "minute": 60,
+            "team": "Arsenal",
+            "on": "Bukayo Saka",
+            "off": "Noni Madueke"
+          },
+          {
+            "minute": 60,
+            "team": "Arsenal",
+            "on": "Piero Hincapie",
+            "off": "Riccardo Calafiori"
+          },
+          {
+            "minute": 75,
+            "team": "Arsenal",
+            "on": "Martin Zubimendi",
+            "off": "Kai Havertz"
+          },
+          {
+            "minute": 84,
+            "team": "Arsenal",
+            "on": "Eberechi Eze",
+            "off": "Martin Odegaard"
+          }
+        ],
+        "provenance": "Backfilled by hand from published sources, not the match API.",
+        "sources": [
+          "https://en.wikipedia.org/wiki/2026_FA_Community_Shield",
+          "https://www.thefa.com/news/2026/aug/16/fa-community-shield-2026-report-16082026",
+          "https://learning.coachesvoice.com/cv/arsenal-man-city-2026-community-shield-tactics/",
+          "https://theanalyst.com/articles/arsenal-vs-manchester-city-stats-community-shield-2026"
+        ]
+      },
+      "explained": {
+        "whatHappened": "Arsenal scored after 23 seconds and City never recovered from it. Havertz made it two before the half hour, Odegaard added a third three minutes into the second half, and from there Arsenal simply managed the game. City's front four barely got into the Arsenal box all afternoon.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2",
+          "plainEnglish": "Both teams handed in the same teamsheet \u2014 4-2-3-1 \u2014 and then played nothing like each other, which is the clearest possible demonstration of why the teamsheet is only a starting point. Without the ball Arsenal folded into a rigid, flat 4-4-2 block that City could not pass through. City meanwhile transformed on the ball: their right-back tucked inside to make a back three, Kovacic dropped in alone as the single pivot behind, and their left-back pushed high up the pitch. Two identical formations on paper, two completely different shapes in reality."
+        },
+        "opponentPlan": "Maresca's City tried to build patiently through a 3-1 base \u2014 three at the back with one holding midfielder \u2014 using Semenyo and Doku to hold the width and Foden dropping deep to collect the ball between Arsenal's lines. The idea was to pull Arsenal's block apart and find Haaland. It produced 0.43 xG and a single shot on target, because Arsenal's two banks of four never opened up far enough for the pass into Foden to be worth anything.",
+        "keyMoment": "The first goal, 23 seconds in. Lewis-Skelly slid a pass between Khusanov and Dias, and Calafiori ran from out to in across Khusanov to finish. That set the pattern for the entire match: City chasing from the opening seconds, and the same defensive seam getting attacked over and over \u2014 Khusanov was directly involved in all three goals.",
+        "lesson": {
+          "conceptId": "shape-in-out",
+          "term": "In-possession vs out-of-possession shape",
+          "level": 1,
+          "explain": "This match is the ideal place to start, because both managers submitted a 4-2-3-1 and the two teams looked nothing alike. Arsenal's 4-2-3-1 became a flat 4-4-2 the moment City had the ball \u2014 two banks of four with Odegaard pushing up alongside Havertz. City's 4-2-3-1 became a 3-1 build-up shape the moment they had it, with Khusanov stepping inside to make a back three. Neither team held the shape you would have read in the programme for more than a few seconds at a time. Formations are a starting position, not a description of how a team plays.",
+          "spotIt": "Next match, wait for Arsenal to lose the ball and count the lines: you should see four defenders and four midfielders in two flat rows, with two players left ahead of them. That is the 4-4-2 the teamsheet never mentions."
+        },
+        "statTranslations": [
+          {
+            "stat": "xG 2.97 vs 0.43",
+            "plain": "Arsenal created chances worth about three goals and City about four-tenths of one \u2014 so 3-0 was, unusually, an honest scoreline rather than a flattering one."
+          },
+          {
+            "stat": "9 shots on target vs 1",
+            "plain": "Donnarumma was tested nine times; Raya essentially once all afternoon."
+          },
+          {
+            "stat": "35 touches in the box vs 13",
+            "plain": "Nearly three times as much presence in the area that actually decides matches \u2014 this is where the dominance really shows up."
+          },
+          {
+            "stat": "Possession 54.3% vs 45.7%",
+            "plain": "Almost an even split of the ball, which is the surprising part: Arsenal did not need to monopolise possession to control the game completely."
+          }
+        ],
+        "nerdCorner": "Put the possession split next to the box-touch split and you have the single best argument against possession as a measure of control. Arsenal had 54.3% of the ball \u2014 statistically a coin flip \u2014 but 35 touches in the City box to 13, and a 9-1 edge on target. Territory in the areas that matter, not raw ball share, is what separated the sides. The other thread worth pulling: all three goals arrived down Khusanov's side, and the first two came from a run made from out-to-in across him. That is not three coincidences in one afternoon; that is a scouted weakness being attacked repeatedly on purpose."
+      }
+    }
+  ]
 }

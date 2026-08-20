@@ -79,23 +79,33 @@ def _side(fixture, team_id):
     return "home" if fixture["teams"]["home"]["id"] == team_id else "away"
 
 
-def fetch_last_match():
-    """Most recently completed Arsenal fixture, with formations and stats.
+def fetch_recent_matches(count=3):
+    """The last `count` completed Arsenal fixtures, oldest first.
 
-    Returns None when the key is missing, the API fails, or no finished match
-    is available — every caller must handle that.
+    Fetching several rather than one matters during a congested week: the digest
+    runs every 3 days, so a league game plus a cup tie would otherwise mean the
+    earlier match is never written up at all.
+
+    Returns [] when the key is missing, the API fails, or nothing has been
+    played — every caller must handle that.
     """
     if not os.environ.get("FOOTBALL_API_KEY"):
         print("[info] FOOTBALL_API_KEY not set; skipping tactical breakdown")
-        return None
+        return []
 
-    fixtures = _get("fixtures", {"team": ARSENAL_TEAM_ID, "last": 1, "status": "FT-AET-PEN"})
+    fixtures = _get("fixtures", {"team": ARSENAL_TEAM_ID, "last": count, "status": "FT-AET-PEN"})
     if not fixtures:
         if fixtures is not None:
             print("[info] no completed Arsenal fixture returned")
-        return None
+        return []
 
-    fx = fixtures[0]
+    matches = [_build_match(fx) for fx in fixtures]
+    matches = [m for m in matches if m]
+    matches.sort(key=lambda m: m.get("date") or "")
+    return matches
+
+
+def _build_match(fx):
     fixture_id = fx["fixture"]["id"]
     side = _side(fx, ARSENAL_TEAM_ID)
     opp_side = "away" if side == "home" else "home"

@@ -18,7 +18,7 @@ from urllib.error import URLError
 import feedparser
 from anthropic import Anthropic
 
-from football_api import fetch_last_match, summarize_for_prompt
+from football_api import fetch_recent_matches, summarize_for_prompt
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "data"
@@ -456,47 +456,76 @@ Call the `publish_tactics` tool."""
     raise RuntimeError("LLM did not return a publish_tactics tool call")
 
 
-def refresh_tactics(match):
-    """Store the breakdown for `match`, skipping fixtures already covered.
+def latest_tactics_entry(max_age_days=10):
+    """Most recent stored breakdown, if it's still topical.
 
-    Returns the entry to render in this email, or None.
+    Covers the run where nothing new was played but the last match hasn't been
+    emailed yet — without re-sending an old write-up through an international
+    break.
     """
-    if not match or not match.get("fixtureId"):
+    matches = (load_json("tactics.json") or {}).get("matches") or []
+    if not matches:
         return None
+    entry = matches[0]
+    try:
+        played = datetime.strptime(entry["date"], "%Y-%m-%d").replace(tzinfo=timezone.utc)
+    except (KeyError, TypeError, ValueError):
+        return None
+    return entry if (datetime.now(timezone.utc) - played).days <= max_age_days else None
 
+
+def refresh_tactics(matches):
+    """Write up every supplied fixture that isn't already covered.
+
+    Matches arrive oldest-first so lessons are taught in the order they were
+    played. Returns the newest entry for the email, or None.
+    """
     path = DATA_DIR / "tactics.json"
     current = load_json("tactics.json") or {}
     current.setdefault("matches", [])
     current.setdefault("conceptsTaught", [])
 
-    existing = next((m for m in current["matches"] if m.get("fixtureId") == match["fixtureId"]), None)
-    if existing:
-        print(f"[info] tactics already recorded for fixture {match['fixtureId']}")
-        return existing
+    newest = None
+    wrote = False
 
-    try:
-        explained = generate_tactics(match, current["conceptsTaught"])
-    except Exception as e:
-        print(f"[warn] tactics generation failed: {e}")
-        return None
+    for match in matches or []:
+        if not match or not match.get("fixtureId"):
+            continue
 
-    entry = {
-        "fixtureId": match["fixtureId"],
-        "date": match["date"],
-        "grounded": match,
-        "explained": explained,
-    }
-    current["matches"].insert(0, entry)
-    current["matches"] = current["matches"][:MAX_TACTICS_HISTORY]
+        existing = next((m for m in current["matches"] if m.get("fixtureId") == match["fixtureId"]), None)
+        if existing:
+            newest = existing
+            continue
 
-    concept_id = (explained.get("lesson") or {}).get("conceptId")
-    if concept_id and concept_id not in current["conceptsTaught"]:
-        current["conceptsTaught"].append(concept_id)
+        try:
+            explained = generate_tactics(match, current["conceptsTaught"])
+        except Exception as e:
+            # One bad fixture shouldn't cost us the rest of the backlog.
+            print(f"[warn] tactics generation failed for {match.get('opponent')}: {e}")
+            continue
 
-    current["lastUpdated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    path.write_text(json.dumps(current, indent=2) + "\n")
-    print(f"[ok] tactics recorded for {match['opponent']} ({concept_id})")
-    return entry
+        entry = {
+            "fixtureId": match["fixtureId"],
+            "date": match["date"],
+            "grounded": match,
+            "explained": explained,
+        }
+        current["matches"].insert(0, entry)
+        newest = entry
+        wrote = True
+
+        concept_id = (explained.get("lesson") or {}).get("conceptId")
+        if concept_id and concept_id not in current["conceptsTaught"]:
+            current["conceptsTaught"].append(concept_id)
+        print(f"[ok] tactics recorded for {match['opponent']} ({concept_id})")
+
+    if wrote:
+        current["matches"].sort(key=lambda m: m.get("date") or "", reverse=True)
+        current["matches"] = current["matches"][:MAX_TACTICS_HISTORY]
+        current["lastUpdated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        path.write_text(json.dumps(current, indent=2) + "\n")
+
+    return newest
 
 
 # ---------- JSON merge / persist ----------
@@ -974,7 +1003,7 @@ def main():
 
         # Tactics runs before the news call so a feed outage can't cost us the
         # match breakdown, which is the harder half to reproduce.
-        tactics_entry = refresh_tactics(fetch_last_match())
+        tactics_entry = refresh_tactics(fetch_recent_matches()) or latest_tactics_entry()
         lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
 
         items = gather_news()
