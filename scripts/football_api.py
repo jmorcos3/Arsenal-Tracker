@@ -6,11 +6,13 @@ invent them, which is what keeps the tactical write-up trustworthy for someone
 who can't yet spot a wrong claim on their own.
 
 Requires FOOTBALL_API_KEY (free tier at https://dashboard.api-football.com).
-Returns None everywhere if the key is absent, so the digest degrades cleanly.
+Returns an empty list if the key is absent or the plan rejects a query, so the
+digest degrades cleanly rather than failing the run.
 """
 
 import json
 import os
+from datetime import datetime, timedelta, timezone
 from urllib.error import URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -93,16 +95,58 @@ def fetch_recent_matches(count=3):
         print("[info] FOOTBALL_API_KEY not set; skipping tactical breakdown")
         return []
 
-    fixtures = _get("fixtures", {"team": ARSENAL_TEAM_ID, "last": count, "status": "FT-AET-PEN"})
+    fixtures = _fetch_fixture_list(count)
     if not fixtures:
-        if fixtures is not None:
-            print("[info] no completed Arsenal fixture returned")
+        print("[info] no completed Arsenal fixture available")
         return []
 
-    matches = [_build_match(fx) for fx in fixtures]
-    matches = [m for m in matches if m]
+    matches = [m for m in (_build_match(fx) for fx in fixtures) if m]
     matches.sort(key=lambda m: m.get("date") or "")
-    return matches
+    return matches[-count:]
+
+
+def _season_for(moment):
+    """API-Football labels European seasons by their starting year."""
+    return moment.year if moment.month >= 7 else moment.year - 1
+
+
+def _fetch_fixture_list(count):
+    """Completed Arsenal fixtures, newest last.
+
+    The free plan rejects the `last` parameter outright, so this walks a series
+    of query shapes and uses the first that returns data, logging each attempt.
+    Scoping by season is the form the free tier documents as supported.
+    """
+    now = datetime.now(timezone.utc)
+    season = _season_for(now)
+    window_start = (now - timedelta(days=45)).strftime("%Y-%m-%d")
+    today = now.strftime("%Y-%m-%d")
+    team = ARSENAL_TEAM_ID
+
+    attempts = [
+        ("season+status", {"team": team, "season": season, "status": "FT-AET-PEN"}),
+        ("season+date-range", {"team": team, "season": season, "from": window_start, "to": today}),
+        ("season only", {"team": team, "season": season}),
+        ("last (paid plans only)", {"team": team, "last": count, "status": "FT-AET-PEN"}),
+    ]
+
+    for label, params in attempts:
+        resp = _get("fixtures", params)
+        if not resp:
+            print(f"[info] fixtures via {label}: nothing usable")
+            continue
+        finished = [fx for fx in resp if _is_finished(fx)]
+        print(f"[ok] fixtures via {label}: {len(resp)} returned, {len(finished)} completed")
+        if finished:
+            finished.sort(key=lambda fx: (fx.get("fixture") or {}).get("date") or "")
+            return finished[-count:]
+
+    return []
+
+
+def _is_finished(fx):
+    short = (((fx.get("fixture") or {}).get("status")) or {}).get("short")
+    return short in {"FT", "AET", "PEN"}
 
 
 def _build_match(fx):
