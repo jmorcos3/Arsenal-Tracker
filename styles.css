@@ -266,3 +266,7 @@ footer { padding: 20px 0 40px; color: var(--ink-soft); text-align: center; }
   .transfers-columns { grid-template-columns: 1fr; }
   .site-header h1 { font-size: 26px; }
 }
+
+.source-line { margin: 16px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+.source-line a { color: var(--arsenal-red-dark); text-decoration: none; font-weight: 600; }
+.source-line a:hover { text-decoration: underline; }

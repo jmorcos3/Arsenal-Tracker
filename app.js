@@ -93,7 +93,17 @@ function renderTactics(data, glossary) {
         <div class="nerd-kicker">Nerd corner</div>
         <p>${escapeHTML(x.nerdCorner)}</p>
       </div>` : ''}
+    ${renderSourceLine(g.sources, match.confidence)}
   `;
+}
+
+function renderSourceLine(sources, confidence) {
+  if (!sources || !sources.length) return '';
+  const links = sources.map((url, i) =>
+    `<a href="${escapeAttr(url)}" target="_blank" rel="noopener">[${i + 1}]</a>`
+  ).join(' · ');
+  const note = confidence ? ` · sourcing confidence: ${escapeHTML(confidence)}` : '';
+  return `<p class="source-line">Sources: ${links}${note}</p>`;
 }
 
 function callout(label, text, tone) {

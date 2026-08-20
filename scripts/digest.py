@@ -34,10 +34,16 @@ FEEDS = [
 LOOKBACK_HOURS = 72
 MODEL = "claude-haiku-4-5-20251001"
 # The tactics write-up is the one piece of generated content a beginner can't
-# sanity-check for themselves, so it gets the stronger model.
-TACTICS_MODEL = "claude-sonnet-5"
+# sanity-check for themselves, so it gets the strongest model.
+TACTICS_MODEL = "claude-opus-5"
 MAX_ODDS_HISTORY = 180
 MAX_TACTICS_HISTORY = 40
+
+# Server-side search: free tiers of the match-data APIs don't cover the current
+# season, so the tactical facts are researched from published reports instead
+# and every entry records the URLs they came from.
+WEB_SEARCH_TOOL = {"type": "web_search_20260209", "name": "web_search", "max_uses": 10}
+MAX_RESEARCH_TURNS = 6
 
 ODDS_API_BASE = "https://api.the-odds-api.com/v4/sports"
 ODDS_SPORTS = {
@@ -322,6 +328,65 @@ TACTICS_TOOL = {
     "input_schema": {
         "type": "object",
         "properties": {
+            "matchFound": {
+                "type": "boolean",
+                "description": "False if you could not confirm a completed Arsenal match to write up. If false, set it and stop — do not invent one.",
+            },
+            "match": {
+                "type": "object",
+                "description": "The verified facts. Every field here must be supported by a source you actually retrieved.",
+                "properties": {
+                    "date": {"type": "string", "description": "YYYY-MM-DD."},
+                    "opponent": {"type": "string"},
+                    "competition": {"type": "string"},
+                    "homeAway": {"type": "string", "enum": ["H", "A"]},
+                    "goalsFor": {"type": "integer", "description": "Arsenal's goals."},
+                    "goalsAgainst": {"type": "integer"},
+                    "arsenalFormation": {
+                        "type": "string",
+                        "description": "Starting formation as reported, e.g. '4-3-3'. Omit entirely if no source states it — do not guess from the XI.",
+                    },
+                    "opponentFormation": {"type": "string", "description": "Omit if unreported."},
+                    "arsenalXI": {"type": "array", "items": {"type": "string"}},
+                    "goalscorers": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "player": {"type": "string"},
+                                "minute": {"type": "integer"},
+                                "team": {"type": "string"},
+                            },
+                            "required": ["player", "team"],
+                        },
+                    },
+                    "stats": {
+                        "type": "array",
+                        "description": "Reported match statistics. Include only figures you actually found (xG, possession, shots, shots on target, corners, touches in box).",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "label": {"type": "string"},
+                                "arsenal": {"type": "string"},
+                                "opponent": {"type": "string"},
+                            },
+                            "required": ["label", "arsenal", "opponent"],
+                        },
+                    },
+                    "sources": {
+                        "type": "array",
+                        "description": "URLs you actually retrieved and drew facts from. At least one. Never cite a URL you did not open.",
+                        "items": {"type": "string"},
+                    },
+                },
+                "required": ["date", "opponent", "competition", "homeAway",
+                             "goalsFor", "goalsAgainst", "sources"],
+            },
+            "confidence": {
+                "type": "string",
+                "enum": ["high", "medium", "low"],
+                "description": "high = score, formations and stats all confirmed by reliable sources; medium = score confirmed, some detail missing; low = only the basics confirmed.",
+            },
             "whatHappened": {
                 "type": "string",
                 "description": "2-3 sentences on how the match actually played out, in plain English. No jargon at all — this is the on-ramp.",
@@ -387,15 +452,13 @@ TACTICS_TOOL = {
                 "description": "One genuinely sharp observation for an obsessive fan — a pattern, a trade-off, a regression argument, or something the scoreline hides. Assume they already know the basics.",
             },
         },
-        "required": ["whatHappened", "shape", "opponentPlan", "lesson", "statTranslations", "nerdCorner"],
+        "required": ["matchFound"],
     },
 }
 
 
-def generate_tactics(match, concepts_taught):
-    """Explain a match. Every fact must come from `match`; the model adds only interpretation."""
-    client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-
+def _concept_menu(concepts_taught):
+    """Eligible lessons plus the level cap, so the curriculum ramps."""
     glossary = load_json("glossary.json").get("items", [])
     taught = set(concepts_taught or [])
     available = [g for g in glossary if g["id"] not in taught]
@@ -403,20 +466,113 @@ def generate_tactics(match, concepts_taught):
         # Curriculum complete — allow revisiting, deepest concepts first.
         available = sorted(glossary, key=lambda g: -g["level"])
 
-    # Ramp: stay on level 1 until the basics are covered, then open up.
     max_level = 1 if len(taught) < 6 else (2 if len(taught) < 12 else 3)
     eligible = [g for g in available if g["level"] <= max_level] or available
+    menu = "\n".join(f"- {g['id']} (level {g['level']}) — {g['term']}: {g['short']}" for g in eligible)
+    return taught, menu
 
-    concept_menu = "\n".join(
-        f"- {g['id']} (level {g['level']}) — {g['term']}: {g['short']}" for g in eligible
-    )
+
+READER_BRIEF = """THE READER: a passionate Arsenal fan who watches every match but has never been taught
+how to read tactics. They are smart and want to learn properly — they are not stupid,
+they just lack the vocabulary. Never condescend. Never pad. Explain like a good coach
+talking to an interested adult."""
+
+
+def research_and_generate_tactics(concepts_taught, known_keys):
+    """Research Arsenal's most recent match on the web, then write it up.
+
+    Used because no free match-data API covers the current season. Claude does the
+    searching server-side and must cite the pages it actually opened, so a beginner
+    who can't fact-check the analysis can at least follow it back to a source.
+    """
+    client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+    taught, menu = _concept_menu(concepts_taught)
+    today = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
+
+    already = "\n".join(f"- {k}" for k in sorted(known_keys)) or "(none yet)"
 
     prompt = f"""You are writing the tactical education section of an Arsenal FC digest.
 
-THE READER: a passionate Arsenal fan who watches every match but has never been taught
-how to read tactics. They are smart and want to learn properly — they are not stupid,
-they just lack the vocabulary. Never condescend. Never pad. Explain like a good coach
-talking to an interested adult.
+TODAY: {today}
+
+{READER_BRIEF}
+
+YOUR JOB, in order:
+
+1. Use web search to find Arsenal's most recently COMPLETED first-team match as of today.
+   Confirm the competition, the date, the final score, and who scored.
+2. Search again for that specific match's team news and statistics — the starting
+   formations, the starting XI, and whatever match statistics were published
+   (xG, possession, shots, shots on target, corners, touches in the box).
+3. Search once more for tactical analysis of that match if any exists.
+4. Then call `publish_tactics` with what you actually verified.
+
+ALREADY WRITTEN UP (if the most recent match is one of these, set matchFound=false —
+do not write it up twice):
+{already}
+
+CONCEPTS ALREADY TAUGHT (do not repeat these): {', '.join(sorted(taught)) or '(none yet — this is lesson 1)'}
+
+CONCEPTS AVAILABLE TO TEACH THIS TIME (pick exactly one, the one this match illustrates best):
+{menu}
+
+HARD RULES — a wrong claim here is worse than no claim, because the reader cannot catch it:
+
+1. Every score, minute, goalscorer, formation, player name and statistic must come from
+   a page you actually retrieved. Do not fill gaps from memory or from what seems likely.
+2. `match.sources` must list the URLs you genuinely opened and used. Never cite a page
+   you did not read.
+3. If a formation is not reported anywhere you found, omit the field. Do not reconstruct
+   it from the starting XI — a list of names does not tell you the shape.
+4. If a statistic is absent, do not mention it and do not estimate it. xG, PPDA and field
+   tilt are often unpublished; say nothing rather than invent a number.
+5. The `shape` fields describe how this formation and these players TYPICALLY behave. Word
+   them as general patterns ("Arsenal usually...", "this shape tends to..."), never as a
+   measured claim about this specific match, because nobody measured it.
+6. Do not claim to know what was said at half-time, what the manager intended, or what a
+   player was thinking. Stick to what the shape and the numbers support.
+7. Set `confidence` honestly. If you only confirmed the score, that is "low" — say so
+   rather than dressing up thin sourcing.
+8. If you cannot confirm a completed match at all, call `publish_tactics` with
+   matchFound=false and nothing else. Never invent a fixture."""
+
+    messages = [{"role": "user", "content": prompt}]
+    tools = [WEB_SEARCH_TOOL, TACTICS_TOOL]
+
+    for turn in range(MAX_RESEARCH_TURNS):
+        resp = client.messages.create(
+            model=TACTICS_MODEL,
+            max_tokens=16000,
+            tools=tools,
+            messages=messages,
+        )
+        for block in resp.content:
+            if getattr(block, "type", None) == "tool_use" and block.name == "publish_tactics":
+                return block.input
+
+        # Server tools run in their own loop; `pause_turn` means it hit the
+        # iteration cap mid-research and needs resuming with no extra prompting.
+        if resp.stop_reason != "pause_turn":
+            print(f"[warn] research ended with stop_reason={resp.stop_reason} and no tactics")
+            return None
+        messages.append({"role": "assistant", "content": resp.content})
+        print(f"[info] research paused at turn {turn + 1}; resuming")
+
+    print("[warn] research did not converge within turn limit")
+    return None
+
+
+def generate_tactics(match, concepts_taught):
+    """Explain a match. Every fact must come from `match`; the model adds only interpretation."""
+    client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+    taught, concept_menu = _concept_menu(concepts_taught)
+
+    prompt = f"""You are writing the tactical education section of an Arsenal FC digest.
+
+{READER_BRIEF}
+
+Set matchFound=true. You do not need to fill the `match` object — the facts below are
+already recorded from a structured data source.
 
 GROUNDED MATCH DATA — this is the complete set of facts you may state:
 {summarize_for_prompt(match)}
@@ -474,11 +630,73 @@ def latest_tactics_entry(max_age_days=10):
     return entry if (datetime.now(timezone.utc) - played).days <= max_age_days else None
 
 
+def match_key(date, opponent):
+    """Stable identity for a fixture across both data paths.
+
+    The API path has a fixtureId; researched matches don't, so date + opponent
+    is the key both can produce.
+    """
+    return f"{(date or '')[:10]}|{_norm(opponent)}"
+
+
+def _entry_keys(entries):
+    keys = set()
+    for e in entries:
+        g = e.get("grounded") or {}
+        keys.add(match_key(g.get("date"), g.get("opponent")))
+    return keys
+
+
+def _research_entry(current):
+    """Build one tactics entry by web research, or None if nothing new/verifiable."""
+    known = _entry_keys(current["matches"])
+    try:
+        result = research_and_generate_tactics(current["conceptsTaught"], known)
+    except Exception as e:
+        print(f"[warn] tactics research failed: {e}")
+        return None
+
+    if not result or not result.get("matchFound"):
+        print("[info] research found no new completed match to write up")
+        return None
+
+    match = result.get("match") or {}
+    if not match.get("sources"):
+        # Unsourced facts are exactly what this feature exists to avoid.
+        print("[warn] research returned no sources; discarding")
+        return None
+
+    key = match_key(match.get("date"), match.get("opponent"))
+    if key in known:
+        print(f"[info] research returned an already-recorded match ({key})")
+        return None
+
+    explained = {k: v for k, v in result.items()
+                 if k not in {"matchFound", "match", "confidence"}}
+    concept_id = (explained.get("lesson") or {}).get("conceptId")
+    if concept_id and concept_id not in current["conceptsTaught"]:
+        current["conceptsTaught"].append(concept_id)
+
+    print(f"[ok] tactics researched for {match.get('opponent')} "
+          f"({concept_id}, confidence={result.get('confidence')}, "
+          f"{len(match['sources'])} sources)")
+
+    return {
+        "date": (match.get("date") or "")[:10],
+        "researched": True,
+        "confidence": result.get("confidence"),
+        "grounded": match,
+        "explained": explained,
+    }
+
+
 def refresh_tactics(matches):
     """Write up every supplied fixture that isn't already covered.
 
     Matches arrive oldest-first so lessons are taught in the order they were
-    played. Returns the newest entry for the email, or None.
+    played. Falls back to web research when no structured data is available,
+    which is the normal path on the free API tiers. Returns the newest entry
+    for the email, or None.
     """
     path = DATA_DIR / "tactics.json"
     current = load_json("tactics.json") or {}
@@ -487,6 +705,12 @@ def refresh_tactics(matches):
 
     newest = None
     wrote = False
+
+    if not matches:
+        entry = _research_entry(current)
+        if entry:
+            current["matches"].insert(0, entry)
+            newest, wrote = entry, True
 
     for match in matches or []:
         if not match or not match.get("fixtureId"):
@@ -897,6 +1121,21 @@ def render_tactics(entry, lesson_number):
             f'letter-spacing:.08em;margin-bottom:4px;">Nerd corner</div>'
             f'<div style="font-size:13px;line-height:1.6;color:#e8ecf0;">{E(x["nerdCorner"])}</div>'
             f'</div>'
+        )
+
+    # Provenance: these write-ups are researched from published reports, so the
+    # reader needs to be able to follow any claim back to where it came from.
+    sources = g.get("sources") or []
+    if sources:
+        links = " · ".join(
+            f'<a href="{E(url)}" style="color:{RED_DARK};text-decoration:none;">[{i}]</a>'
+            for i, url in enumerate(sources, 1)
+        )
+        confidence = entry.get("confidence")
+        note = f' · sourcing confidence: {E(confidence)}' if confidence else ""
+        body += (
+            f'<p style="margin:12px 0 0;font-size:11px;color:{INK_SOFT};line-height:1.5;">'
+            f'Sources: {links}{note}</p>'
         )
 
     return _section_header("Tactics Lab") + _section_body(body)

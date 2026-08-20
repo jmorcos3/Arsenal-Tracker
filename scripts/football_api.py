@@ -12,7 +12,7 @@ digest degrades cleanly rather than failing the run.
 
 import json
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from urllib.error import URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -119,14 +119,12 @@ def _fetch_fixture_list(count):
     """
     now = datetime.now(timezone.utc)
     season = _season_for(now)
-    window_start = (now - timedelta(days=45)).strftime("%Y-%m-%d")
-    today = now.strftime("%Y-%m-%d")
     team = ARSENAL_TEAM_ID
 
+    # Kept to two shapes: on the free tier every query fails the plan check, and
+    # each wasted attempt still costs a request against the daily quota.
     attempts = [
         ("season+status", {"team": team, "season": season, "status": "FT-AET-PEN"}),
-        ("season+date-range", {"team": team, "season": season, "from": window_start, "to": today}),
-        ("season only", {"team": team, "season": season}),
         ("last (paid plans only)", {"team": team, "last": count, "status": "FT-AET-PEN"}),
     ]
 
