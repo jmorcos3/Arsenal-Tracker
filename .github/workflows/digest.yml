@@ -46,8 +46,10 @@ jobs:
             git push
           fi
 
+      # Only when digest.py never got far enough to report the error itself —
+      # it drops .failure-notified when it sends its own alert.
       - name: Notify on unhandled failure
-        if: failure()
+        if: failure() && hashFiles('.failure-notified') == ''
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           DIGEST_TO: jmorcos3@gmail.com

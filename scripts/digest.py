@@ -56,6 +56,9 @@ INDIVIDUAL_COMPS = list(ODDS_SPORTS.keys())
 
 SITE_URL = os.environ.get("SITE_URL", "https://github.com/jmorcos3/Arsenal-Tracker")
 
+# Marker so the workflow does not also send its "script never started" alert.
+FAILURE_SENTINEL = ".failure-notified"
+
 
 # ---------- news gathering ----------
 
@@ -1273,6 +1276,9 @@ def send_failure_email(err_text):
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context()) as server:
             server.login(sender, password)
             server.sendmail(sender, [recipient], msg.as_string())
+        # Tells the workflow's fallback notifier to stand down: it exists for
+        # failures this script never got to see, and its wording says so.
+        (REPO_ROOT / FAILURE_SENTINEL).touch()
         print("[ok] sent failure email")
     except Exception as e:
         print(f"[warn] failure email send failed: {e}")
