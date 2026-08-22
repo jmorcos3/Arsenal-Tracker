@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-20",
+  "lastUpdated": "2026-08-22",
   "items": [
     {
       "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
@@ -132,6 +132,27 @@
       "source": "The Guardian",
       "sourceUrl": "https://www.theguardian.com/football/2026/aug/20/arteta-desire-ambition-title-defence-myles-lewis-skelly-will-stay-arsenal",
       "date": "2026-08-20",
+      "reliability": "high"
+    },
+    {
+      "headline": "Atletico Madrid willing to sell Julian Alvarez to Arsenal",
+      "source": "Sky Sports",
+      "sourceUrl": "https://www.skysports.com/football/news/12691/13575656/arsenal-transfer-news-atletico-madrid-finally-shift-julian-alvarez-position-and-now-willing-to-sell-striker-to-the-gunners-paper-talk",
+      "date": "2026-08-21",
+      "reliability": "medium"
+    },
+    {
+      "headline": "Gary Neville urges Arsenal to sign Julian Alvarez before transfer deadline",
+      "source": "Sky Sports",
+      "sourceUrl": "https://www.skysports.com/football/news/12691/13575645/arsenal-transfer-news-julian-alvarez-would-add-magic-to-gunners-frontline-says-gary-neville-as-he-urges-them-to-sign-atletico-madrid-striker",
+      "date": "2026-08-21",
+      "reliability": "medium"
+    },
+    {
+      "headline": "Ian Wright questions Arsenal's handling of Gabriel Martinelli's potential exit",
+      "source": "BBC Sport",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cj636ewwz46o?at_medium=RSS&at_campaign=rss",
+      "date": "2026-08-22",
       "reliability": "high"
     }
   ]
