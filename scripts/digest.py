@@ -33,7 +33,12 @@ FEEDS = [
     ("Sky Sports — Transfers", "https://www.skysports.com/rss/12691"),
 ]
 
-LOOKBACK_HOURS = 72
+# News window. Derived from the last successful send so it always matches the
+# actual cadence; the fallback covers the longest normal gap (Thu -> Tue).
+DEFAULT_LOOKBACK_HOURS = 120
+MIN_LOOKBACK_HOURS = 12
+MAX_LOOKBACK_HOURS = 336
+STATE_FILE = "state.json"
 MODEL = "claude-haiku-4-5-20251001"
 # The tactics write-up is the one piece of generated content a beginner can't
 # sanity-check for themselves, so it gets the strongest model.
@@ -58,8 +63,39 @@ FAILURE_SENTINEL = ".failure-notified"
 
 # ---------- news gathering ----------
 
+def news_window():
+    """(cutoff, hours) for this run, measured from the last successful digest.
+
+    Falling back to a fixed window would either miss news over the long
+    weekend gap or repeat it on the short one, depending on the constant.
+    """
+    now = datetime.now(timezone.utc)
+    last = (load_json(STATE_FILE) or {}).get("lastDigestAt")
+    if last:
+        try:
+            previous = datetime.fromisoformat(last)
+            hours = (now - previous).total_seconds() / 3600
+            if hours <= MAX_LOOKBACK_HOURS:
+                # A manual re-run soon after a send gets a short window rather
+                # than the full default, so it doesn't replay days of old news.
+                hours = max(hours, MIN_LOOKBACK_HOURS)
+                return now - timedelta(hours=hours), hours
+            print(f"[info] last send was {hours:.0f}h ago, beyond the cap; using default window")
+        except (TypeError, ValueError):
+            print("[warn] unreadable lastDigestAt; using default window")
+    return now - timedelta(hours=DEFAULT_LOOKBACK_HOURS), DEFAULT_LOOKBACK_HOURS
+
+
+def record_send():
+    path = DATA_DIR / STATE_FILE
+    state = load_json(STATE_FILE) or {}
+    state["lastDigestAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    path.write_text(json.dumps(state, indent=2) + "\n")
+
+
 def gather_news():
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=LOOKBACK_HOURS)
+    cutoff, hours = news_window()
+    print(f"[info] news window: {hours:.0f}h")
     items = []
     for source, url in FEEDS:
         try:
@@ -88,7 +124,7 @@ def gather_news():
         if k and k not in seen:
             seen.add(k)
             unique.append(it)
-    return unique
+    return unique, hours
 
 
 # ---------- odds ----------
@@ -206,7 +242,7 @@ def load_json(name):
     return json.loads(p.read_text()) if p.exists() else {}
 
 
-def generate_digest(items, odds_snapshot):
+def generate_digest(items, odds_snapshot, lookback_hours=DEFAULT_LOOKBACK_HOURS):
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
     articles_block = "\n\n".join(
@@ -231,7 +267,7 @@ def generate_digest(items, odds_snapshot):
     prompt = f"""You are producing structured content for an Arsenal FC news digest.
 
 TODAY: {today}
-LOOKBACK: last {LOOKBACK_HOURS} hours
+LOOKBACK: last {lookback_hours:.0f} hours
 
 CURRENT LIVE ODDS (Arsenal to win each trophy):
 {odds_lines}
@@ -530,7 +566,36 @@ def _strictify(node):
     return node
 
 
-STRICT_TACTICS_TOOL = dict(_strictify(copy.deepcopy(TACTICS_TOOL)), strict=True)
+def _build_grounded_tool():
+    """Schema for the FotMob path, where the match facts are already verified.
+
+    The research schema lets the model decline via `matchFound` and requires
+    nothing else — correct when it has to find the match itself, but wrong here.
+    Under strict validation that made a bare {"matchFound": true} a *valid*
+    response, which is exactly what silently dropped Coventry. On this path the
+    model is handed the data, so every content field is mandatory.
+    """
+    tool = copy.deepcopy(TACTICS_TOOL)
+    schema = tool["input_schema"]
+    for research_only in ("matchFound", "match", "confidence", "sources"):
+        schema["properties"].pop(research_only, None)
+    schema["required"] = list(schema["properties"].keys())
+
+    lesson = schema["properties"].get("lesson", {})
+    if "properties" in lesson:
+        lesson["required"] = list(lesson["properties"].keys())
+    shape = schema["properties"].get("shape", {})
+    if "properties" in shape:
+        shape["required"] = list(shape["properties"].keys())
+
+    tool["description"] = (
+        "Emit a beginner-friendly tactical breakdown of the Arsenal match whose "
+        "verified data is given in the prompt. Every field is required."
+    )
+    return dict(_strictify(tool), strict=True)
+
+
+GROUNDED_TACTICS_TOOL = _build_grounded_tool()
 
 
 def generate_tactics(match, concepts_taught):
@@ -587,7 +652,7 @@ Call the `publish_tactics` tool."""
     # is what stops `lesson` coming back as a bare string. If the schema is
     # rejected for any reason, fall back rather than lose the write-up entirely.
     try:
-        return call(STRICT_TACTICS_TOOL)
+        return call(GROUNDED_TACTICS_TOOL)
     except Exception as e:
         if "strict" not in str(e).lower() and "schema" not in str(e).lower():
             raise
@@ -753,7 +818,8 @@ def refresh_tactics(matches):
             continue
         if not explained.get("whatHappened"):
             # Nothing usable at all — a lesson alone is not worth an entry.
-            print(f"[warn] no usable write-up for {match.get('opponent')}; skipping")
+            print(f"[warn] no usable write-up for {match.get('opponent')}; skipping "
+                  f"(model returned keys: {sorted(explained.keys()) or 'none'})")
             continue
         if not explained.get("lesson"):
             # Keep the breakdown; only the teaching slot is lost. Discarding the
@@ -898,7 +964,7 @@ def render_header(today_str):
         f'<h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:-0.01em;">'
         f'Arsenal Digest</h1>'
         f'<p style="margin:6px 0 0;color:rgba(255,255,255,0.9);font-size:13px;">'
-        f'{E(today_str)} · {LOOKBACK_HOURS // 24}-day recap</p>'
+        f'{E(today_str)} · since the last digest</p>'
         f'</td></tr>'
     )
 
@@ -1290,7 +1356,7 @@ def main():
         tactics_entry = refresh_tactics(fetch_recent_matches()) or latest_tactics_entry()
         lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
 
-        items = gather_news()
+        items, lookback_hours = gather_news()
         print(f"[info] gathered {len(items)} unique articles")
 
         odds_items = load_json("odds.json").get("items", [])
@@ -1307,9 +1373,10 @@ def main():
                 lesson_number=lesson_number,
             )
             send_email(html_body, "quiet news cycle", 0)
+            record_send()
             return
 
-        result = generate_digest(items, odds_items)
+        result = generate_digest(items, odds_items, lookback_hours)
         apply_additions(result.get("additions") or {})
 
         # Reload odds in case anything was updated during the run (harmless if unchanged)
@@ -1325,6 +1392,7 @@ def main():
             lesson_number=lesson_number,
         )
         send_email(html_body, result.get("subject_highlight", ""), len(items))
+        record_send()
     except Exception:
         tb = traceback.format_exc()
         print(tb, file=sys.stderr)
