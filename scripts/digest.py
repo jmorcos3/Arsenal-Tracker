@@ -1,5 +1,6 @@
 """Fetch Arsenal news, refresh live odds, update tracker JSON, email a digest."""
 
+import copy
 import html
 import json
 import os
@@ -515,6 +516,23 @@ HARD RULES — a wrong claim here is worse than no claim, because the reader can
     return None
 
 
+
+def _strictify(node):
+    """Recursively set additionalProperties:false, as strict tool use requires."""
+    if isinstance(node, dict):
+        if node.get("type") == "object" and "properties" in node:
+            node["additionalProperties"] = False
+        for value in node.values():
+            _strictify(value)
+    elif isinstance(node, list):
+        for value in node:
+            _strictify(value)
+    return node
+
+
+STRICT_TACTICS_TOOL = dict(_strictify(copy.deepcopy(TACTICS_TOOL)), strict=True)
+
+
 def generate_tactics(match, concepts_taught):
     """Explain a match. Every fact must come from `match`; the model adds only interpretation."""
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
@@ -552,17 +570,29 @@ HARD RULES — a wrong claim here is worse than no claim, because the reader can
 
 Call the `publish_tactics` tool."""
 
-    resp = client.messages.create(
-        model=TACTICS_MODEL,
-        max_tokens=3000,
-        tools=[TACTICS_TOOL],
-        tool_choice={"type": "tool", "name": "publish_tactics"},
-        messages=[{"role": "user", "content": prompt}],
-    )
-    for block in resp.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "publish_tactics":
-            return block.input
-    raise RuntimeError("LLM did not return a publish_tactics tool call")
+    def call(tool):
+        resp = client.messages.create(
+            model=TACTICS_MODEL,
+            max_tokens=3000,
+            tools=[tool],
+            tool_choice={"type": "tool", "name": "publish_tactics"},
+            messages=[{"role": "user", "content": prompt}],
+        )
+        for block in resp.content:
+            if getattr(block, "type", None) == "tool_use" and block.name == "publish_tactics":
+                return block.input
+        raise RuntimeError("LLM did not return a publish_tactics tool call")
+
+    # Strict tool use validates the input against the schema server-side, which
+    # is what stops `lesson` coming back as a bare string. If the schema is
+    # rejected for any reason, fall back rather than lose the write-up entirely.
+    try:
+        return call(STRICT_TACTICS_TOOL)
+    except Exception as e:
+        if "strict" not in str(e).lower() and "schema" not in str(e).lower():
+            raise
+        print(f"[warn] strict tool use rejected ({e}); retrying without it")
+        return call(TACTICS_TOOL)
 
 
 def latest_tactics_entry(max_age_days=10):
@@ -721,9 +751,15 @@ def refresh_tactics(matches):
             # One bad fixture shouldn't cost us the rest of the backlog.
             print(f"[warn] tactics generation failed for {match.get('opponent')}: {e}")
             continue
-        if not explained.get("lesson"):
-            print(f"[warn] no usable lesson for {match.get('opponent')}; skipping")
+        if not explained.get("whatHappened"):
+            # Nothing usable at all — a lesson alone is not worth an entry.
+            print(f"[warn] no usable write-up for {match.get('opponent')}; skipping")
             continue
+        if not explained.get("lesson"):
+            # Keep the breakdown; only the teaching slot is lost. Discarding the
+            # whole match here is what silently dropped Coventry from the Aug 22
+            # digest.
+            print(f"[warn] no usable lesson for {match.get('opponent')}; storing write-up without one")
 
         entry = {
             "fixtureId": match["fixtureId"],
