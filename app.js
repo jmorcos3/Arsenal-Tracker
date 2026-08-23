@@ -1,5 +1,5 @@
 (async function () {
-  const [odds, transfers, plTransfers, rumors, sources, tactics, glossary] = await Promise.all([
+  const [odds, transfers, plTransfers, rumors, sources, tactics, glossary, fixtures] = await Promise.all([
     fetchJSON('data/odds.json'),
     fetchJSON('data/transfers.json'),
     fetchJSON('data/pl-transfers.json'),
@@ -7,16 +7,18 @@
     fetchJSON('data/sources.json'),
     fetchJSON('data/tactics.json'),
     fetchJSON('data/glossary.json'),
+    fetchJSON('data/fixtures.json'),
   ]);
 
   renderTactics(tactics, glossary);
   renderGlossary(glossary, tactics);
+  renderFixtures(fixtures);
   renderOdds(odds);
   renderTransfers(transfers);
   renderPLTransfers(plTransfers);
   renderRumors(rumors);
   renderSources(sources);
-  renderLastUpdated([odds, transfers, plTransfers, rumors, tactics]);
+  renderLastUpdated([odds, transfers, plTransfers, rumors, tactics, fixtures]);
 })();
 
 async function fetchJSON(path) {
@@ -146,6 +148,20 @@ function renderGlossary(data, tactics) {
       });
     });
   });
+}
+
+function renderFixtures(data) {
+  const list = document.getElementById('fixtures-list');
+  const items = (data && data.items) || [];
+  if (!items.length) { list.innerHTML = '<li class="empty">No upcoming fixtures.</li>'; return; }
+  list.innerHTML = items.map(f => `
+    <li>
+      <span class="fixture-venue ${f.homeAway === 'H' ? 'is-home' : 'is-away'}">${f.homeAway === 'H' ? 'H' : 'A'}</span>
+      <span class="fixture-opponent">${escapeHTML(f.opponent || '?')}</span>
+      <span class="fixture-comp">${escapeHTML(f.competition || '')}</span>
+      <span class="fixture-when">${escapeHTML(f.kickoffLocal || f.date || '')}</span>
+    </li>
+  `).join('');
 }
 
 function renderOdds(data) {

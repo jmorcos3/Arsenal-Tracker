@@ -19,7 +19,7 @@ from urllib.error import URLError
 import feedparser
 from anthropic import Anthropic
 
-from fotmob import fetch_recent_matches, summarize_for_prompt
+from fotmob import fetch_recent_matches, fetch_upcoming_fixtures, summarize_for_prompt
 from kalshi import fetch_trophy_prices, double_item
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -177,6 +177,21 @@ def refresh_odds_file():
         "history": history,
     }, indent=2) + "\n")
     print(f"[ok] odds refreshed from Kalshi ({len(live)} live markets)")
+
+
+def refresh_fixtures(count=5):
+    """Store the next fixtures, keeping the previous list if the fetch fails."""
+    path = DATA_DIR / "fixtures.json"
+    fixtures = fetch_upcoming_fixtures(count)
+    if not fixtures:
+        print("[warn] no upcoming fixtures returned; keeping previous list")
+        return (load_json("fixtures.json") or {}).get("items", [])
+    path.write_text(json.dumps({
+        "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "timezone": "America/New_York",
+        "items": fixtures,
+    }, indent=2) + "\n")
+    return fixtures
 
 
 # ---------- LLM: structured digest ----------
@@ -1109,10 +1124,32 @@ def render_pl(transfers, notes):
     return _section_header("Around the Premier League") + _section_body(_bullet_list(lines))
 
 
-def render_fixtures(fixtures):
-    if not fixtures:
-        return _section_header("Upcoming") + _section_body(_empty())
-    return _section_header("Upcoming") + _section_body(_bullet_list([_note_line(n) for n in fixtures]))
+def render_fixtures(fixtures, notes=None):
+    """Next fixtures from FotMob, with any LLM notes appended below."""
+    body = ""
+    if fixtures:
+        rows = "".join(
+            f'<tr>'
+            f'<td valign="top" style="padding:7px 10px 7px 0;font-size:13px;color:{INK_SOFT};'
+            f'white-space:nowrap;">{E(f.get("kickoffLocal") or f.get("date") or "")}</td>'
+            f'<td valign="top" style="padding:7px 8px 7px 0;font-size:12px;font-weight:700;'
+            f'color:{RED_DARK if f.get("homeAway") == "H" else INK_SOFT};">'
+            f'{"H" if f.get("homeAway") == "H" else "A"}</td>'
+            f'<td valign="top" style="padding:7px 10px 7px 0;font-size:14px;font-weight:600;'
+            f'color:{INK};border-bottom:1px solid {BORDER};">{E(f.get("opponent") or "?")}</td>'
+            f'<td valign="top" style="padding:7px 0;font-size:12px;color:{INK_SOFT};'
+            f'border-bottom:1px solid {BORDER};text-align:right;">{E(f.get("competition") or "")}</td>'
+            f'</tr>'
+            for f in fixtures
+        )
+        body += (
+            f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+            f'style="border-collapse:collapse;">{rows}</table>'
+            f'<p style="margin:8px 0 0;font-size:11px;color:{INK_SOFT};">Kickoff times in ET.</p>'
+        )
+    if notes:
+        body += _bullet_list([_note_line(n) for n in notes])
+    return _section_header("Next 5 Fixtures") + _section_body(body or _empty())
 
 
 def _tactics_callout(label, body, accent):
@@ -1261,7 +1298,7 @@ def render_footer():
 
 
 def render_email(odds_items, additions, narrative, today_str, preheader,
-                 tactics_entry=None, lesson_number=1):
+                 tactics_entry=None, lesson_number=1, fixtures=None):
     additions = additions or {}
     narrative = narrative or {}
 
@@ -1275,7 +1312,7 @@ def render_email(odds_items, additions, narrative, today_str, preheader,
         + render_rumors(additions.get("rumors") or [])
         + render_squad(narrative.get("squad_news") or [])
         + render_pl(additions.get("pl_transfers") or [], narrative.get("around_pl_notes") or [])
-        + render_fixtures(narrative.get("fixtures") or [])
+        + render_fixtures(fixtures or [], narrative.get("fixtures") or [])
         + render_footer()
     )
 
@@ -1354,6 +1391,7 @@ def main():
         # Tactics runs before the news call so a feed outage can't cost us the
         # match breakdown, which is the harder half to reproduce.
         tactics_entry = refresh_tactics(fetch_recent_matches()) or latest_tactics_entry()
+        fixtures = refresh_fixtures()
         lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
 
         items, lookback_hours = gather_news()
@@ -1371,6 +1409,7 @@ def main():
                 preheader="Quiet news cycle",
                 tactics_entry=tactics_entry,
                 lesson_number=lesson_number,
+                fixtures=fixtures,
             )
             send_email(html_body, "quiet news cycle", 0)
             record_send()
@@ -1390,6 +1429,7 @@ def main():
             preheader=result.get("subject_highlight", "Arsenal digest"),
             tactics_entry=tactics_entry,
             lesson_number=lesson_number,
+            fixtures=fixtures,
         )
         send_email(html_body, result.get("subject_highlight", ""), len(items))
         record_send()

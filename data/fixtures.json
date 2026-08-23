@@ -1,0 +1,51 @@
+{
+  "lastUpdated": "2026-08-23",
+  "timezone": "America/New_York",
+  "items": [
+    {
+      "fixtureId": 5795426,
+      "date": "2026-08-31",
+      "kickoffUtc": "2026-08-31T19:00:00.000Z",
+      "kickoffLocal": "Mon Aug 31, 3:00 PM EDT",
+      "opponent": "Aston Villa",
+      "competition": "Premier League",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 5795435,
+      "date": "2026-09-06",
+      "kickoffUtc": "2026-09-06T15:30:00.000Z",
+      "kickoffLocal": "Sun Sep 6, 11:30 AM EDT",
+      "opponent": "Chelsea",
+      "competition": "Premier League",
+      "homeAway": "H"
+    },
+    {
+      "fixtureId": 5795453,
+      "date": "2026-09-12",
+      "kickoffUtc": "2026-09-12T19:00:00.000Z",
+      "kickoffLocal": "Sat Sep 12, 3:00 PM EDT",
+      "opponent": "Sunderland",
+      "competition": "Premier League",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 5795457,
+      "date": "2026-09-19",
+      "kickoffUtc": "2026-09-19T14:00:00.000Z",
+      "kickoffLocal": "Sat Sep 19, 10:00 AM EDT",
+      "opponent": "Brighton",
+      "competition": "Premier League",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 5795465,
+      "date": "2026-10-10",
+      "kickoffUtc": "2026-10-10T11:30:00.000Z",
+      "kickoffLocal": "Sat Oct 10, 7:30 AM EDT",
+      "opponent": "Leeds",
+      "competition": "Premier League",
+      "homeAway": "H"
+    }
+  ]
+}

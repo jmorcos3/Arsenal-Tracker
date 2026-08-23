@@ -281,3 +281,34 @@ footer { padding: 20px 0 40px; color: var(--ink-soft); text-align: center; }
   text-decoration: none;
 }
 .odds-item .market-link:hover { text-decoration: underline; }
+
+.fixture-list { list-style: none; padding: 0; margin: 0; }
+.fixture-list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  column-gap: 12px;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+.fixture-list li:last-child { border-bottom: none; }
+.fixture-venue {
+  grid-column: 1; grid-row: 1 / span 2;
+  font-size: 11px; font-weight: 700;
+  width: 24px; height: 24px; line-height: 24px;
+  text-align: center; border-radius: 50%;
+}
+.fixture-venue.is-home { background: var(--arsenal-red-dark); color: #fff; }
+.fixture-venue.is-away { background: #eceff3; color: var(--ink-soft); }
+.fixture-opponent { grid-column: 2; grid-row: 1; font-weight: 600; }
+.fixture-when {
+  grid-column: 3; grid-row: 1 / span 2;
+  font-size: 13px; color: var(--ink-soft);
+  white-space: nowrap; text-align: right;
+}
+.fixture-comp { grid-column: 2; grid-row: 2; font-size: 12px; color: var(--ink-soft); }
+
+@media (max-width: 520px) {
+  .fixture-list li { grid-template-columns: auto 1fr; }
+  .fixture-when { grid-column: 2; grid-row: 3; text-align: left; }
+}
