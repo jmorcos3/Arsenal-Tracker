@@ -1,6 +1,6 @@
 {
   "window": "Summer 2026",
-  "lastUpdated": "2026-08-22",
+  "lastUpdated": "2026-08-25",
   "in": [
     {
       "player": "Christos Tzolis",
@@ -43,6 +43,13 @@
       "fee": "\u00a37m",
       "date": "2026-08-05",
       "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cm2gvlnjndpo"
+    },
+    {
+      "player": "Gabriel Martinelli",
+      "club": "Al-Hilal",
+      "fee": "at least \u00a350m",
+      "date": "2026-08-24",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cgk4k444rmmo?at_medium=RSS&at_campaign=rss"
     }
   ]
 }
