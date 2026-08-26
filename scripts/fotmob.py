@@ -101,7 +101,7 @@ def fetch_recent_matches(count=3):
     finished.sort(key=lambda f: (f.get("status") or {}).get("utcTime") or "")
     matches = []
     for fixture in finished[-count:]:
-        match = fetch_match(fixture["id"])
+        match = fetch_match(fixture["id"], fixture.get("pageUrl"))
         if match:
             matches.append(match)
     return matches
@@ -113,8 +113,12 @@ def _is_friendly(fixture):
     return "friendl" in name
 
 
-def fetch_match(match_id):
-    """Full detail for one fixture, or None."""
+def fetch_match(match_id, page_url=None):
+    """Full detail for one fixture, or None.
+
+    `page_url` comes from the fixture list; the match-detail payload carries no
+    canonical link of its own.
+    """
     payload = _get("matchDetails", {"matchId": match_id})
     if not payload:
         return None
@@ -132,7 +136,8 @@ def fetch_match(match_id):
     match = {
         "fixtureId": match_id,
         "source": "fotmob",
-        "sourceUrl": f"https://www.fotmob.com/matches/x/x/x#{match_id}",
+        "sourceUrl": (f"https://www.fotmob.com{page_url}" if page_url
+                      else f"https://www.fotmob.com/match/{match_id}"),
         "date": (general.get("matchTimeUTCDate") or "")[:10],
         "competition": general.get("leagueName") or general.get("parentLeagueName"),
         "round": general.get("leagueRoundName"),

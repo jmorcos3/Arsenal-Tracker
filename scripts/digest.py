@@ -685,7 +685,9 @@ def latest_tactics_entry(max_age_days=10):
     matches = (load_json("tactics.json") or {}).get("matches") or []
     if not matches:
         return None
-    entry = matches[0]
+    # Pick by date rather than list position, so "most recent" can never depend
+    # on the file happening to be sorted correctly.
+    entry = max(matches, key=lambda m: (m.get("date") or ""))
     try:
         played = datetime.strptime(entry["date"], "%Y-%m-%d").replace(tzinfo=timezone.utc)
     except (KeyError, TypeError, ValueError):
