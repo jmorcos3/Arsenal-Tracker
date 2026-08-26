@@ -1,20 +1,20 @@
 {
-  "lastUpdated": "2026-08-25T16:58:44+00:00",
+  "lastUpdated": "2026-08-26T23:34:09+00:00",
   "source": "Kalshi",
   "items": [
     {
       "competition": "Premier League",
-      "odds": 1.94,
-      "impliedProbability": 0.515,
+      "odds": 1.9,
+      "impliedProbability": 0.525,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXPREMIERLEAGUE-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxpremierleague",
-      "priceCents": 51.5,
-      "bidCents": 51,
-      "askCents": 52,
-      "openInterest": 292529.66,
-      "lastUpdated": "2026-08-25"
+      "priceCents": 52.5,
+      "bidCents": 52,
+      "askCents": 53,
+      "openInterest": 294812.03,
+      "lastUpdated": "2026-08-26"
     },
     {
       "competition": "Champions League",
@@ -27,45 +27,85 @@
       "priceCents": 14.5,
       "bidCents": 14,
       "askCents": 15,
-      "openInterest": 117419.25,
-      "lastUpdated": "2026-08-25"
+      "openInterest": 119688.28,
+      "lastUpdated": "2026-08-26"
     },
     {
       "competition": "FA Cup",
-      "odds": 3.39,
-      "impliedProbability": 0.295,
+      "odds": 3.51,
+      "impliedProbability": 0.285,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXFACUP-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxfacup",
-      "priceCents": 29.5,
-      "bidCents": 28,
+      "priceCents": 28.5,
+      "bidCents": 26,
       "askCents": 31,
-      "openInterest": 3302.66,
-      "lastUpdated": "2026-08-25"
+      "openInterest": 3297.87,
+      "lastUpdated": "2026-08-26"
     },
     {
       "competition": "Carabao Cup",
-      "odds": 2.94,
-      "impliedProbability": 0.34,
+      "odds": 3.17,
+      "impliedProbability": 0.315,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXEFLCUP-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxeflcup",
-      "priceCents": 34.0,
-      "bidCents": 24,
-      "askCents": 44,
-      "openInterest": 3146.23,
-      "lastUpdated": "2026-08-25"
+      "priceCents": 31.5,
+      "bidCents": 28,
+      "askCents": 35,
+      "openInterest": 3703.74,
+      "lastUpdated": "2026-08-26"
     },
     {
-      "competition": "Double (PL + UCL)",
-      "odds": 13.39,
-      "impliedProbability": 0.0747,
-      "bestBookmaker": "Implied (product of the two Kalshi markets)",
+      "competition": "Community Shield",
+      "odds": 1.0,
+      "impliedProbability": 1.0,
+      "bestBookmaker": "Settled \u2014 Arsenal won it",
+      "source": "settled",
+      "priceCents": 100.0,
+      "lastUpdated": "2026-08-26"
+    },
+    {
+      "competition": "The Pent",
+      "legs": "PL + UCL + FA Cup + Carabao + Shield",
+      "odds": 146.32,
+      "impliedProbability": 0.0068,
+      "bestBookmaker": "Implied (product of the legs)",
       "source": "derived",
-      "priceCents": 7.47,
-      "lastUpdated": "2026-08-25"
+      "priceCents": 0.68,
+      "lastUpdated": "2026-08-26"
+    },
+    {
+      "competition": "The Quad",
+      "legs": "PL + UCL + FA Cup + Carabao",
+      "odds": 146.32,
+      "impliedProbability": 0.0068,
+      "bestBookmaker": "Implied (product of the legs)",
+      "source": "derived",
+      "priceCents": 0.68,
+      "lastUpdated": "2026-08-26"
+    },
+    {
+      "competition": "The Treble",
+      "legs": "PL + UCL + FA Cup",
+      "odds": 46.09,
+      "impliedProbability": 0.0217,
+      "bestBookmaker": "Implied (product of the legs)",
+      "source": "derived",
+      "priceCents": 2.17,
+      "lastUpdated": "2026-08-26"
+    },
+    {
+      "competition": "The Duo",
+      "legs": "PL + UCL",
+      "odds": 13.14,
+      "impliedProbability": 0.0761,
+      "bestBookmaker": "Implied (product of the legs)",
+      "source": "derived",
+      "priceCents": 7.61,
+      "lastUpdated": "2026-08-26"
     }
   ],
   "history": [
@@ -75,7 +115,7 @@
       "Champions League": 0.135,
       "FA Cup": 0.205,
       "Carabao Cup": 0.225,
-      "Double (PL + UCL)": 0.0601
+      "The Duo": 0.0601
     },
     {
       "date": "2026-08-20",
@@ -83,7 +123,7 @@
       "Champions League": 0.135,
       "FA Cup": 0.205,
       "Carabao Cup": 0.225,
-      "Double (PL + UCL)": 0.0601
+      "The Duo": 0.0601
     },
     {
       "date": "2026-08-22",
@@ -91,7 +131,7 @@
       "Champions League": 0.135,
       "FA Cup": 0.235,
       "Carabao Cup": 0.31,
-      "Double (PL + UCL)": 0.0668
+      "The Duo": 0.0668
     },
     {
       "date": "2026-08-25",
@@ -99,7 +139,19 @@
       "Champions League": 0.145,
       "FA Cup": 0.295,
       "Carabao Cup": 0.34,
-      "Double (PL + UCL)": 0.0747
+      "The Duo": 0.0747
+    },
+    {
+      "date": "2026-08-26",
+      "Premier League": 0.525,
+      "Champions League": 0.145,
+      "FA Cup": 0.285,
+      "Carabao Cup": 0.315,
+      "Community Shield": 1.0,
+      "The Pent": 0.0068,
+      "The Quad": 0.0068,
+      "The Treble": 0.0217,
+      "The Duo": 0.0761
     }
   ]
 }

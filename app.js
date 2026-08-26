@@ -150,24 +150,36 @@ function renderGlossary(data, tactics) {
 
 function renderOdds(data) {
   const grid = document.getElementById('odds-grid');
+  const multiplesGrid = document.getElementById('multiples-grid');
   if (!data || !data.items || !data.items.length) {
     grid.innerHTML = '<p class="empty">No odds yet.</p>';
+    multiplesGrid.innerHTML = '';
     return;
   }
-  grid.innerHTML = data.items.map(item => {
+  // Parlays live in their own row so the trophies read as one set of five.
+  const card = item => {
     // Kalshi prices are probabilities, so lead with the percentage and keep
     // decimal odds as the secondary read.
     const prob = item.impliedProbability == null
       ? '—' : `${(item.impliedProbability * 100).toFixed(1)}%`;
-    const dec = item.odds == null ? '' : `${item.odds} decimal`;
-    const spread = (item.bidCents != null && item.askCents != null)
+    const settled = item.source === 'settled';
+    const derived = item.source === 'derived';
+    // A settled trophy has no price to quote, and a parlay has no market of
+    // its own — neither gets a decimal price or a spread.
+    const dec = settled ? 'Won' : (item.odds == null ? '' : `${item.odds} decimal`);
+    const spread = (!settled && item.bidCents != null && item.askCents != null)
       ? `<div class="spread">${item.bidCents}–${item.askCents}\u00a2 bid/ask</div>` : '';
+    const legs = item.legs ? `<div class="legs">${escapeHTML(item.legs)}</div>` : '';
     const link = item.marketUrl
       ? `<a class="market-link" href="${escapeAttr(item.marketUrl)}" target="_blank" rel="noopener">Kalshi market →</a>`
       : '';
+    const classes = ['odds-item'];
+    if (settled) classes.push('is-settled');
+    if (derived) classes.push('is-parlay');
     return `
-      <div class="odds-item">
+      <div class="${classes.join(' ')}">
         <div class="comp">${escapeHTML(item.competition)}</div>
+        ${legs}
         <div class="value">${escapeHTML(prob)}</div>
         <div class="book">${escapeHTML(dec)}</div>
         ${spread}
@@ -175,7 +187,11 @@ function renderOdds(data) {
         <div class="updated">Updated ${escapeHTML(item.lastUpdated || '')}</div>
       </div>
     `;
-  }).join('');
+  };
+
+  const items = data.items;
+  grid.innerHTML = items.filter(i => i.source !== 'derived').map(card).join('');
+  multiplesGrid.innerHTML = items.filter(i => i.source === 'derived').map(card).join('');
 }
 
 function renderTransfers(data) {

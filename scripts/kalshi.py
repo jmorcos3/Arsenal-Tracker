@@ -9,6 +9,9 @@ No API key: the market-data endpoints are unauthenticated.
 Season tickers carry a year suffix (KXPREMIERLEAGUE-27-ARS), so markets are
 discovered from the series rather than hardcoded, and the tracker keeps working
 when the season rolls over.
+
+The Community Shield has no Kalshi market — it is already won — so it is a fixed
+100% carried alongside the four live prices.
 """
 
 import json
@@ -26,6 +29,26 @@ SERIES = {
     "Champions League": "KXUCL",
     "FA Cup": "KXFACUP",
     "Carabao Cup": "KXEFLCUP",
+}
+
+SHIELD = "Community Shield"
+
+# The named parlays, largest first. Each is the product of its legs, which
+# assumes independence — the same squad plays all five, so treat it as a
+# sketch rather than a price.
+MULTIPLES = [
+    ("The Pent", ["Premier League", "Champions League", "FA Cup", "Carabao Cup", SHIELD]),
+    ("The Quad", ["Premier League", "Champions League", "FA Cup", "Carabao Cup"]),
+    ("The Treble", ["Premier League", "Champions League", "FA Cup"]),
+    ("The Duo", ["Premier League", "Champions League"]),
+]
+
+LEG_LABELS = {
+    "Premier League": "PL",
+    "Champions League": "UCL",
+    "FA Cup": "FA Cup",
+    "Carabao Cup": "Carabao",
+    SHIELD: "Shield",
 }
 
 
@@ -130,27 +153,54 @@ def fetch_trophy_prices():
     return items
 
 
-def double_item(items):
-    """PL + UCL parlay, priced as the product of the two probabilities.
+def shield_item(last_updated=None):
+    """The Community Shield, already won, as a fixed 100%.
 
-    Independence is an approximation — the same squad plays both — but it is the
-    same assumption the previous bookmaker-derived figure made.
+    Kalshi has no market for it, so it is asserted rather than priced. It still
+    belongs in the list: every multiple that includes it needs a leg to
+    multiply, and the tracker should show the trophy Arsenal actually has.
+    """
+    return {
+        "competition": SHIELD,
+        "odds": 1.0,
+        "impliedProbability": 1.0,
+        "bestBookmaker": "Settled — Arsenal won it",
+        "source": "settled",
+        "priceCents": 100.0,
+        "lastUpdated": last_updated or datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+    }
+
+
+def multiple_items(items):
+    """The Pent, Quad, Treble and Duo, each priced as the product of its legs.
+
+    A multiple whose legs are not all present is skipped rather than priced off
+    a partial set, which would quietly overstate it.
     """
     by_name = {i["competition"]: i for i in items}
-    pl = by_name.get("Premier League")
-    ucl = by_name.get("Champions League")
-    if not pl or not ucl:
-        return None
+    out = []
 
-    probability = pl["impliedProbability"] * ucl["impliedProbability"]
-    if probability <= 0:
-        return None
-    return {
-        "competition": "Double (PL + UCL)",
-        "odds": round(1.0 / probability, 2),
-        "impliedProbability": round(probability, 4),
-        "bestBookmaker": "Implied (product of the two Kalshi markets)",
-        "source": "derived",
-        "priceCents": round(probability * 100, 2),
-        "lastUpdated": pl["lastUpdated"],
-    }
+    for name, legs in MULTIPLES:
+        priced = [by_name.get(leg) for leg in legs]
+        if any(p is None or p.get("impliedProbability") is None for p in priced):
+            print(f"[warn] skipping {name}: missing a leg")
+            continue
+
+        probability = 1.0
+        for p in priced:
+            probability *= p["impliedProbability"]
+        if probability <= 0:
+            continue
+
+        out.append({
+            "competition": name,
+            "legs": " + ".join(LEG_LABELS[leg] for leg in legs),
+            "odds": round(1.0 / probability, 2),
+            "impliedProbability": round(probability, 4),
+            "bestBookmaker": "Implied (product of the legs)",
+            "source": "derived",
+            "priceCents": round(probability * 100, 2),
+            "lastUpdated": priced[0]["lastUpdated"],
+        })
+
+    return out

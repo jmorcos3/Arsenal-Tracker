@@ -19,7 +19,7 @@ import feedparser
 from anthropic import Anthropic
 
 from fotmob import fetch_recent_matches, summarize_for_prompt
-from kalshi import fetch_trophy_prices, double_item
+from kalshi import fetch_trophy_prices, multiple_items, shield_item
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "data"
@@ -48,6 +48,8 @@ MAX_RESEARCH_TURNS = 6
 
 # Order the trophy cards appear in, on the site and in the email.
 INDIVIDUAL_COMPS = ["Premier League", "Champions League", "FA Cup", "Carabao Cup"]
+# Shown after the priced competitions; already won, so it carries no market.
+SETTLED_COMPS = ["Community Shield"]
 
 SITE_URL = os.environ.get("SITE_URL", "https://github.com/jmorcos3/Arsenal-Tracker")
 
@@ -117,9 +119,8 @@ def refresh_odds_file():
             if comp_name not in by_name:
                 print(f"[warn] no live Kalshi market for {comp_name}; keeping previous value")
 
-    double = double_item(new_items) or prev_map.get("Double (PL + UCL)")
-    if double:
-        new_items.append(double)
+    new_items.append(shield_item())
+    new_items.extend(multiple_items(new_items))
 
     snapshot = {"date": datetime.now(timezone.utc).strftime("%Y-%m-%d")}
     for item in new_items:
@@ -884,9 +885,11 @@ def render_odds(odds_items, commentary):
         # Kalshi quotes probability directly, so that leads; decimal odds follow
         # for anyone used to reading a bookmaker price.
         prob = "—" if not item or item.get("impliedProbability") is None else f'{item["impliedProbability"] * 100:.1f}%'
-        odds = "" if not item or item.get("odds") is None else f'{item["odds"]:.2f} decimal'
+        settled = bool(item) and item.get("source") == "settled"
+        # A settled trophy has no price to quote — say it is won instead.
+        odds = "Won" if settled else ("" if not item or item.get("odds") is None else f'{item["odds"]:.2f} decimal')
         spread = ""
-        if item and item.get("bidCents") is not None and item.get("askCents") is not None:
+        if item and not settled and item.get("bidCents") is not None and item.get("askCents") is not None:
             spread = f'{item["bidCents"]}–{item["askCents"]}\u00a2 bid/ask'
         return (
             f'<td width="25%" valign="top" style="background:{CARD_ALT};border:1px solid {BORDER};'
@@ -898,24 +901,34 @@ def render_odds(odds_items, commentary):
             f'</td>'
         )
 
+    def multiple_cell(name):
+        item = by_name.get(name)
+        prob = "—" if not item or item.get("impliedProbability") is None else f'{item["impliedProbability"] * 100:.1f}%'
+        legs = (item or {}).get("legs", "")
+        return (
+            f'<td width="25%" valign="top" style="background:{CARD_ALT};border:1px solid {BORDER};'
+            f'border-radius:6px;padding:10px 6px;text-align:center;">'
+            f'<div style="font-size:12px;font-weight:700;color:{INK_SOFT};">{E(name)}</div>'
+            f'<div style="font-size:10px;color:{INK_SOFT};margin-top:2px;">{E(legs)}</div>'
+            f'<div style="font-size:18px;font-weight:700;color:{RED_DARK};margin-top:4px;">{E(prob)}</div>'
+            f'</td>'
+        )
+
     grid = (
         f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
         f'style="border-collapse:separate;border-spacing:6px;">'
-        f'<tr>{cell("Premier League")}{cell("Champions League")}{cell("FA Cup")}{cell("Carabao Cup")}</tr>'
+        f'<tr>{cell("Premier League")}{cell("Champions League")}{cell("FA Cup")}</tr>'
+        f'<tr>{cell("Carabao Cup")}{cell("Community Shield")}<td width="25%"></td></tr>'
         f'</table>'
     )
 
-    double = by_name.get("Double (PL + UCL)")
-    double_row = ""
-    if double and double.get("odds") is not None:
-        prob = f'{double["impliedProbability"] * 100:.1f}%' if double.get("impliedProbability") is not None else ""
-        double_row = (
-            f'<div style="margin-top:10px;padding:8px 12px;background:{CARD_ALT};'
-            f'border:1px solid {BORDER};border-radius:6px;text-align:center;font-size:13px;color:{INK_SOFT};">'
-            f'Double (PL + UCL): <strong style="color:{RED_DARK};font-size:16px;">{E(prob)}</strong>'
-            f' · {double["odds"]:.2f} decimal'
-            f'</div>'
-        )
+    multiples_row = (
+        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+        f'style="border-collapse:separate;border-spacing:6px;margin-top:4px;">'
+        f'<tr>{multiple_cell("The Pent")}{multiple_cell("The Quad")}'
+        f'{multiple_cell("The Treble")}{multiple_cell("The Duo")}</tr>'
+        f'</table>'
+    )
 
     commentary_html = f'<p style="margin:8px 0 0;color:{INK_SOFT};font-size:13px;font-style:italic;">{E(commentary)}</p>' if commentary else ""
     attribution = (
@@ -924,7 +937,7 @@ def render_odds(odds_items, commentary):
         f' — contracts settle at $1, so the price is the market\u2019s implied probability.</p>'
     )
 
-    return _section_header("Trophy Odds") + _section_body(grid + double_row + commentary_html + attribution)
+    return _section_header("Trophy Odds") + _section_body(grid + multiples_row + commentary_html + attribution)
 
 
 def _transfer_line(t, direction):
