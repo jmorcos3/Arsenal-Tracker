@@ -46,13 +46,20 @@
         <a href="https://kalshi.com" target="_blank" rel="noopener">Kalshi</a> prediction market.
         Contracts settle at $1, so the price is the market's implied probability — no bookmaker
         margin baked in. The Community Shield is already won, so it sits at 100% with no market
-        behind it. The four multiples below it — Pent, Quad, Treble, Duo — multiply their legs and
+        behind it. The four multiples below it — Pent, Quad, Treble, Double — multiply their legs and
         assume the competitions are independent, which the same squad playing all five makes only
         roughly true.
       </p>
       <div id="odds-grid" class="odds-grid is-trophies"></div>
       <h3 class="odds-subhead">Multiples</h3>
       <div id="multiples-grid" class="odds-grid"></div>
+
+      <!-- Only rendered when an Arsenal player prices inside the top 20 -->
+      <div id="ballon-block" hidden>
+        <h3 class="odds-subhead">Ballon d'Or Watch</h3>
+        <p class="section-note" id="ballon-note"></p>
+        <div id="ballon-grid" class="odds-grid"></div>
+      </div>
     </section>
 
     <section id="transfers-section" class="card">

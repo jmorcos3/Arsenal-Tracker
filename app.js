@@ -166,7 +166,7 @@ function renderOdds(data) {
     const derived = item.source === 'derived';
     // A settled trophy has no price to quote, and a parlay has no market of
     // its own — neither gets a decimal price or a spread.
-    const dec = settled ? 'Won' : (item.odds == null ? '' : `${item.odds} decimal`);
+    const dec = settled ? 'Won' : (item.odds == null ? '' : `${item.odds.toFixed(1)} decimal`);
     const spread = (!settled && item.bidCents != null && item.askCents != null)
       ? `<div class="spread">${item.bidCents}–${item.askCents}\u00a2 bid/ask</div>` : '';
     const legs = item.legs ? `<div class="legs">${escapeHTML(item.legs)}</div>` : '';
@@ -192,6 +192,43 @@ function renderOdds(data) {
   const items = data.items;
   grid.innerHTML = items.filter(i => i.source !== 'derived').map(card).join('');
   multiplesGrid.innerHTML = items.filter(i => i.source === 'derived').map(card).join('');
+  renderBallon(data.ballonDor);
+}
+
+// Present in odds.json only when an Arsenal player prices inside the top 20,
+// so its presence is the whole condition for showing the block.
+function renderBallon(ballon) {
+  const block = document.getElementById('ballon-block');
+  if (!ballon || !ballon.arsenal || !ballon.arsenal.length) {
+    block.hidden = true;
+    return;
+  }
+
+  const leader = ballon.leader || {};
+  document.getElementById('ballon-note').textContent =
+    `Arsenal players inside the top 20 of Kalshi's ${ballon.fieldSize}-strong field, `
+    + `led by ${leader.player} at ${(leader.probability * 100).toFixed(1)}%. `
+    + 'Players on the same price share a rank rather than being split alphabetically.';
+
+  document.getElementById('ballon-grid').innerHTML = ballon.arsenal.map(e => {
+    const tied = e.tiedWith
+      ? `Tied with ${e.tiedWith} other${e.tiedWith === 1 ? '' : 's'}`
+      : 'Outright';
+    return `
+      <div class="odds-item is-ballon">
+        <div class="comp">${escapeHTML(e.player)}</div>
+        <div class="legs">${escapeHTML(`${e.tiedWith ? 'T' : ''}${e.rank} of ${ballon.fieldSize}`)}</div>
+        <div class="value">${escapeHTML((e.probability * 100).toFixed(1))}%</div>
+        <div class="book">${escapeHTML(tied)}</div>
+        ${ballon.marketUrl
+          ? `<a class="market-link" href="${escapeAttr(ballon.marketUrl)}" target="_blank" rel="noopener">Kalshi market →</a>`
+          : ''}
+        <div class="updated">Updated ${escapeHTML(ballon.lastUpdated || '')}</div>
+      </div>
+    `;
+  }).join('');
+
+  block.hidden = false;
 }
 
 function renderTransfers(data) {

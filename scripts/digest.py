@@ -19,7 +19,7 @@ import feedparser
 from anthropic import Anthropic
 
 from fotmob import fetch_recent_matches, summarize_for_prompt
-from kalshi import fetch_trophy_prices, multiple_items, shield_item
+from kalshi import fetch_ballon_dor, fetch_trophy_prices, multiple_items, shield_item
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "data"
@@ -131,15 +131,26 @@ def refresh_odds_file():
 
     history = current.get("history", [])
     if len(snapshot) > 1:
-        history.append(snapshot)
+        # One row per day: a second run on the same date replaces the first
+        # rather than stacking a duplicate point onto the chart.
+        if history and history[-1].get("date") == snapshot["date"]:
+            history[-1] = snapshot
+        else:
+            history.append(snapshot)
         history = history[-MAX_ODDS_HISTORY:]
 
-    odds_path.write_text(json.dumps({
+    payload = {
         "lastUpdated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": "Kalshi",
         "items": new_items,
         "history": history,
-    }, indent=2) + "\n")
+    }
+    # Absent unless an Arsenal player prices inside the top 20, so the site can
+    # treat its presence as the whole condition for showing the section.
+    ballon = fetch_ballon_dor()
+    if ballon:
+        payload["ballonDor"] = ballon
+    odds_path.write_text(json.dumps(payload, indent=2) + "\n")
     print(f"[ok] odds refreshed from Kalshi ({len(live)} live markets)")
 
 
@@ -877,7 +888,7 @@ def render_intro(summary):
     )
 
 
-def render_odds(odds_items, commentary):
+def render_odds(odds_items, commentary, ballon=None):
     by_name = {i["competition"]: i for i in odds_items}
 
     def cell(comp):
@@ -887,7 +898,7 @@ def render_odds(odds_items, commentary):
         prob = "—" if not item or item.get("impliedProbability") is None else f'{item["impliedProbability"] * 100:.1f}%'
         settled = bool(item) and item.get("source") == "settled"
         # A settled trophy has no price to quote — say it is won instead.
-        odds = "Won" if settled else ("" if not item or item.get("odds") is None else f'{item["odds"]:.2f} decimal')
+        odds = "Won" if settled else ("" if not item or item.get("odds") is None else f'{item["odds"]:.1f} decimal')
         spread = ""
         if item and not settled and item.get("bidCents") is not None and item.get("askCents") is not None:
             spread = f'{item["bidCents"]}–{item["askCents"]}\u00a2 bid/ask'
@@ -926,9 +937,26 @@ def render_odds(odds_items, commentary):
         f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
         f'style="border-collapse:separate;border-spacing:6px;margin-top:4px;">'
         f'<tr>{multiple_cell("The Pent")}{multiple_cell("The Quad")}'
-        f'{multiple_cell("The Treble")}{multiple_cell("The Duo")}</tr>'
+        f'{multiple_cell("The Treble")}{multiple_cell("The Double")}</tr>'
         f'</table>'
     )
+
+    # Only present when an Arsenal player prices inside the top 20.
+    ballon_row = ""
+    if ballon and ballon.get("arsenal"):
+        names = ", ".join(
+            f'{e["player"]} ({"T" if e.get("tiedWith") else ""}{e["rank"]}, '
+            f'{e["probability"] * 100:.1f}%)'
+            for e in ballon["arsenal"]
+        )
+        ballon_row = (
+            f'<div style="margin-top:10px;padding:8px 12px;background:{CARD_ALT};'
+            f'border:1px solid {BORDER};border-radius:6px;font-size:13px;color:{INK_SOFT};">'
+            f'<strong style="color:{RED_DARK};">Ballon d\u2019Or top 20:</strong> {E(names)}'
+            f' \u00b7 field of {ballon.get("fieldSize", "?")}, led by '
+            f'{E(ballon["leader"]["player"])} at {ballon["leader"]["probability"] * 100:.1f}%'
+            f'</div>'
+        )
 
     commentary_html = f'<p style="margin:8px 0 0;color:{INK_SOFT};font-size:13px;font-style:italic;">{E(commentary)}</p>' if commentary else ""
     attribution = (
@@ -937,7 +965,8 @@ def render_odds(odds_items, commentary):
         f' — contracts settle at $1, so the price is the market\u2019s implied probability.</p>'
     )
 
-    return _section_header("Trophy Odds") + _section_body(grid + multiples_row + commentary_html + attribution)
+    return _section_header("Trophy Odds") + _section_body(
+        grid + multiples_row + ballon_row + commentary_html + attribution)
 
 
 def _transfer_line(t, direction):
@@ -1172,7 +1201,7 @@ def render_footer():
 
 
 def render_email(odds_items, additions, narrative, today_str, preheader,
-                 tactics_entry=None, lesson_number=1):
+                 tactics_entry=None, lesson_number=1, ballon=None):
     additions = additions or {}
     narrative = narrative or {}
 
@@ -1180,7 +1209,7 @@ def render_email(odds_items, additions, narrative, today_str, preheader,
         render_header(today_str)
         + render_intro(narrative.get("summary"))
         + render_tactics(tactics_entry, lesson_number)
-        + render_odds(odds_items, narrative.get("odds_commentary"))
+        + render_odds(odds_items, narrative.get("odds_commentary"), ballon)
         + render_transfers_in(additions.get("transfers_in") or [])
         + render_transfers_out(additions.get("transfers_out") or [])
         + render_rumors(additions.get("rumors") or [])
@@ -1270,7 +1299,9 @@ def main():
         items = gather_news()
         print(f"[info] gathered {len(items)} unique articles")
 
-        odds_items = load_json("odds.json").get("items", [])
+        odds_file = load_json("odds.json")
+        odds_items = odds_file.get("items", [])
+        ballon = odds_file.get("ballonDor")
         today_str = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
 
         if not items:
@@ -1282,6 +1313,7 @@ def main():
                 preheader="Quiet news cycle",
                 tactics_entry=tactics_entry,
                 lesson_number=lesson_number,
+                ballon=ballon,
             )
             send_email(html_body, "quiet news cycle", 0)
             return
@@ -1290,7 +1322,9 @@ def main():
         apply_additions(result.get("additions") or {})
 
         # Reload odds in case anything was updated during the run (harmless if unchanged)
-        odds_items = load_json("odds.json").get("items", [])
+        odds_file = load_json("odds.json")
+        odds_items = odds_file.get("items", [])
+        ballon = odds_file.get("ballonDor")
 
         html_body = render_email(
             odds_items=odds_items,
@@ -1300,6 +1334,7 @@ def main():
             preheader=result.get("subject_highlight", "Arsenal digest"),
             tactics_entry=tactics_entry,
             lesson_number=lesson_number,
+            ballon=ballon,
         )
         send_email(html_body, result.get("subject_highlight", ""), len(items))
     except Exception:

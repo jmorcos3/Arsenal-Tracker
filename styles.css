@@ -288,6 +288,8 @@ footer { padding: 20px 0 40px; color: var(--ink-soft); text-align: center; }
   letter-spacing: .06em;
 }
 .odds-item.is-parlay { background: #fff; border-style: dashed; }
+#ballon-block[hidden] { display: none; }
+#ballon-block .section-note { margin: 0 0 10px; }
 .odds-item.is-settled .book { font-weight: 700; font-style: normal; color: #15803d; }
 .odds-item .market-link {
   display: inline-block;

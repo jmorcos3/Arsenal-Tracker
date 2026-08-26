@@ -15,6 +15,7 @@ The Community Shield has no Kalshi market — it is already won — so it is a f
 """
 
 import json
+import unicodedata
 from datetime import datetime, timezone
 from urllib.error import URLError
 from urllib.parse import urlencode
@@ -33,6 +34,22 @@ SERIES = {
 
 SHIELD = "Community Shield"
 
+BALLON_SERIES = "KXBALLONDOR"
+BALLON_TOP_N = 20
+
+# Kalshi lists Ballon d'Or candidates by name with no club, so the squad has to
+# be named here. Worth a look each transfer window.
+ARSENAL_SQUAD = [
+    "David Raya", "Kepa Arrizabalaga",
+    "Ben White", "William Saliba", "Gabriel", "Gabriel Magalhaes",
+    "Cristhian Mosquera", "Riccardo Calafiori", "Jurrien Timber",
+    "Myles Lewis-Skelly", "Piero Hincapie", "Ezri Konsa",
+    "Martin Odegaard", "Declan Rice", "Martin Zubimendi", "Mikel Merino",
+    "Bruno Guimaraes", "Ethan Nwaneri", "Axel Donczew",
+    "Bukayo Saka", "Noni Madueke", "Leandro Trossard", "Eberechi Eze",
+    "Kai Havertz", "Viktor Gyokeres", "Christos Tzolis",
+]
+
 # The named parlays, largest first. Each is the product of its legs, which
 # assumes independence — the same squad plays all five, so treat it as a
 # sketch rather than a price.
@@ -40,7 +57,7 @@ MULTIPLES = [
     ("The Pent", ["Premier League", "Champions League", "FA Cup", "Carabao Cup", SHIELD]),
     ("The Quad", ["Premier League", "Champions League", "FA Cup", "Carabao Cup"]),
     ("The Treble", ["Premier League", "Champions League", "FA Cup"]),
-    ("The Duo", ["Premier League", "Champions League"]),
+    ("The Double", ["Premier League", "Champions League"]),
 ]
 
 LEG_LABELS = {
@@ -106,8 +123,14 @@ def _price(market):
     alone would systematically overstate Arsenal's chances.
     """
     bid, ask = _money(market, "yes_bid_dollars"), _money(market, "yes_ask_dollars")
-    if bid is not None and ask is not None and 0 < (bid + ask) / 2 < 1:
-        return (bid + ask) / 2, bid, ask
+    # A zero side is an absent quote, not a price of zero. Averaging it in would
+    # halve the price of every one-sided market — the whole tail of the Ballon
+    # d'Or field sits on a lone 1c ask — so fall back to the side that exists.
+    quoted = [side for side in (bid, ask) if side]
+    if quoted:
+        mid = sum(quoted) / len(quoted)
+        if 0 < mid < 1:
+            return mid, bid, ask
     last = _money(market, "last_price_dollars")
     if last is not None and 0 < last < 1:
         return last, bid, ask
@@ -136,7 +159,7 @@ def fetch_trophy_prices():
         ticker = market.get("ticker")
         items.append({
             "competition": competition,
-            "odds": round(1.0 / probability, 2),
+            "odds": round(1.0 / probability, 1),
             "impliedProbability": round(probability, 4),
             "bestBookmaker": "Kalshi",
             "source": "kalshi",
@@ -172,7 +195,7 @@ def shield_item(last_updated=None):
 
 
 def multiple_items(items):
-    """The Pent, Quad, Treble and Duo, each priced as the product of its legs.
+    """The Pent, Quad, Treble and Double, each priced as the product of its legs.
 
     A multiple whose legs are not all present is skipped rather than priced off
     a partial set, which would quietly overstate it.
@@ -195,12 +218,77 @@ def multiple_items(items):
         out.append({
             "competition": name,
             "legs": " + ".join(LEG_LABELS[leg] for leg in legs),
-            "odds": round(1.0 / probability, 2),
+            "odds": round(1.0 / probability, 1),
             "impliedProbability": round(probability, 4),
             "bestBookmaker": "Implied (product of the legs)",
             "source": "derived",
-            "priceCents": round(probability * 100, 2),
+            "priceCents": round(probability * 100, 1),
             "lastUpdated": priced[0]["lastUpdated"],
         })
 
     return out
+
+
+def _normalize_name(name):
+    """Kalshi writes names unaccented ("Ousmane Dembele"), so compare stripped.
+
+    NFD leaves 'ø' intact, so it is mapped explicitly before the accent strip.
+    """
+    lowered = (name or "").lower().replace("ø", "o").replace("æ", "ae").replace("ł", "l")
+    decomposed = unicodedata.normalize("NFD", lowered)
+    return "".join(c for c in decomposed if c.isalpha() and not unicodedata.combining(c))
+
+
+_SQUAD_KEYS = {_normalize_name(n) for n in ARSENAL_SQUAD}
+
+
+def fetch_ballon_dor():
+    """Arsenal players priced inside the top 20 of Kalshi's Ballon d'Or field.
+
+    Ranking is standard competition ranking — players on the same price share
+    the best rank they could hold. The tail of this market is a long tie on one
+    cent, so breaking it alphabetically would include or drop players at random.
+
+    Returns None when no Arsenal player makes the cut, which is the normal case
+    and keeps the section off the page entirely.
+    """
+    payload = _get("markets", {"series_ticker": BALLON_SERIES, "status": "open", "limit": 300})
+    if not payload:
+        return None
+
+    field = []
+    for market in payload.get("markets") or []:
+        probability, _, _ = _price(market)
+        if probability is None:
+            continue
+        field.append({
+            "player": market.get("yes_sub_title") or market.get("ticker"),
+            "probability": round(probability, 4),
+        })
+    if not field:
+        print("[warn] no priced Ballon d'Or markets")
+        return None
+
+    field.sort(key=lambda e: e["probability"], reverse=True)
+    for entry in field:
+        better = [e for e in field if e["probability"] > entry["probability"]]
+        same = [e for e in field if e["probability"] == entry["probability"]]
+        entry["rank"] = len(better) + 1
+        entry["tiedWith"] = len(same) - 1
+
+    arsenal = [
+        e for e in field
+        if _normalize_name(e["player"]) in _SQUAD_KEYS and e["rank"] <= BALLON_TOP_N
+    ]
+    if not arsenal:
+        print("[ok] no Arsenal player in the Ballon d'Or top 20")
+        return None
+
+    print(f"[ok] ballon d'or: {', '.join(e['player'] for e in arsenal)}")
+    return {
+        "marketUrl": "https://kalshi.com/markets/kxballondor",
+        "fieldSize": len(field),
+        "leader": field[0],
+        "arsenal": arsenal,
+        "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+    }
