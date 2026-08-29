@@ -1,10 +1,160 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-08-20",
+  "lastUpdated": "2026-08-29",
   "conceptsTaught": [
-    "low-block"
+    "low-block",
+    "shape-in-out"
   ],
   "matches": [
+    {
+      "fixtureId": 5795363,
+      "date": "2026-08-21",
+      "grounded": {
+        "fixtureId": 5795363,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/x/x/x#5795363",
+        "date": "2026-08-21",
+        "competition": "Premier League",
+        "round": "1",
+        "homeAway": "H",
+        "opponent": "Coventry City",
+        "opponentId": 8669,
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-3-3",
+        "opponentFormation": "4-3-3",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Frank Lampard",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Cristhian Mosquera",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Martin \u00d8degaard",
+          "Myles Lewis-Skelly",
+          "Declan Rice",
+          "Bukayo Saka",
+          "Kai Havertz",
+          "Christos Tzolis"
+        ],
+        "opponentXI": [
+          "Carl Rushworth",
+          "Milan van Ewijk",
+          "Bobby Thomas",
+          "Aur\u00e8le Amenda",
+          "Jay Dasilva",
+          "Caleb Yirenkyi",
+          "Matt Grimes",
+          "Frank Onyeka",
+          "Loum Tchaouna",
+          "Ellis Simms",
+          "Brandon Thomas-Asante"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 64,
+            "xg": 1.88,
+            "shots": 20,
+            "shotsOnTarget": 6,
+            "touchesInBox": 36,
+            "bigChances": 1,
+            "bigChancesMissed": 0,
+            "accuratePasses": 565,
+            "corners": 8,
+            "shotsInBox": 10,
+            "xgOpenPlay": 1.62,
+            "xgSetPlay": 0.26,
+            "xgot": 2.44,
+            "passesOppositionHalf": 335,
+            "tackles": 9,
+            "interceptions": 5,
+            "saves": 1,
+            "fouls": 10
+          },
+          "opponent": {
+            "possession": 36,
+            "xg": 0.2,
+            "shots": 4,
+            "shotsOnTarget": 1,
+            "touchesInBox": 3,
+            "bigChances": 1,
+            "bigChancesMissed": 1,
+            "accuratePasses": 271,
+            "corners": 2,
+            "shotsInBox": 1,
+            "xgOpenPlay": 0.2,
+            "xgSetPlay": 0.0,
+            "xgot": 0.04,
+            "passesOppositionHalf": 159,
+            "tackles": 4,
+            "interceptions": 9,
+            "saves": 2,
+            "fouls": 13
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Kai Havertz",
+            "minute": 15,
+            "team": "Arsenal",
+            "assist": "Riccardo Calafiori"
+          },
+          {
+            "player": "Bukayo Saka",
+            "minute": 23,
+            "team": "Arsenal",
+            "assist": null
+          },
+          {
+            "player": "Martin \u00d8degaard",
+            "minute": 49,
+            "team": "Arsenal",
+            "assist": "Ben White"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal took control early and never gave it back: Kai Havertz scored on 15 minutes from a Riccardo Calafiori pass, and Bukayo Saka made it two on 23. Four minutes into the second half Martin \u00d8degaard added a third, set up by Ben White. Arsenal had 20 shots to Coventry's 4 and kept a clean sheet, with David Raya making just one save all afternoon.",
+        "opponentPlan": "Coventry set up in a matching 4-3-3, which on paper means every Arsenal player has a direct opponent, but they spent the game defending rather than pressing: 36% possession, only 159 passes in the opposition half to Arsenal's 335, and just 3 touches in the Arsenal box all match. Their 9 interceptions against Arsenal's 5 tells you they were sitting off, reading passing lanes and trying to spring forward rather than hunting the ball. Arsenal's answer was simply to keep the ball moving and stretch that back line \u2014 8 corners, 10 shots from inside the box, and 36 touches in Coventry's penalty area meant Lampard's side were pinned in and never got the platform to counter.",
+        "keyMoment": "The 23rd minute. Havertz's opener on 15 already forced Coventry to chase the game, but Saka's second eight minutes later removed any incentive for them to come out, and the pattern was fixed for the next 70 minutes. \u00d8degaard's goal on 49 \u2014 assisted by Ben White, a full-back \u2014 was the same pattern simply repeating after the break.",
+        "nerdCorner": "Look at the one line that refuses to fit the story: big chances, 1 apiece. Coventry created exactly as many clear openings as Arsenal did, off 4 shots and 3 box touches \u2014 a wildly efficient use of their few moments forward. Arsenal's 1.88 xG was assembled from volume, not a single knockout opportunity: 20 shots, 8 corners, 36 box touches, and a 1 goalkeeper save total for Raya that flatters the defensive work as much as it describes it. The gap between xG 1.88 and xGOT 2.44 says the finishing outperformed the chances by a meaningful margin, which is the sort of thing that regresses. The process here \u2014 pinning a matching 4-3-3 in its own third and refusing to let it out \u2014 is far more repeatable than the conversion rate that turned it into 3-0.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-3-3 high press",
+          "plainEnglish": "On paper both teams lined up 4-3-3, but a team's shape on the teamsheet is only the shape they defend in. With the ball, an Arteta side like this usually slides one full-back inside next to the holding midfielder and pushes the other high, so the back four becomes a back three, two players screen in front of it, and five attackers spread across the last line. The movement of the full-backs \u2014 Calafiori and White here \u2014 is what turns one shape into the other, which is why a defender ends up credited with an assist."
+        },
+        "lesson": {
+          "conceptId": "shape-in-out",
+          "term": "In-possession vs out-of-possession shape",
+          "level": 1,
+          "explain": "Both teams were recorded as 4-3-3, yet the game looked nothing like a mirror match \u2014 because 4-3-3 only describes how you defend. With the ball, this Arsenal side rearranges: a full-back tucks into midfield, the other pushes high, and the back four effectively becomes a back three feeding five attackers along the last line. That is why Calafiori and Ben White \u2014 both defenders on the teamsheet \u2014 are the two names credited with assists here, for Havertz on 15 and \u00d8degaard on 49. A defender producing the final pass is not a fluke; it is the shape doing what it is designed to do."
+        },
+        "statTranslations": [
+          {
+            "stat": "Possession 64% vs 36%",
+            "plain": "Arsenal had the ball roughly two minutes in every three, so the shape you were watching for most of the afternoon was the in-possession one, not the 4-3-3."
+          },
+          {
+            "stat": "Passes in opposition half 335 vs 159",
+            "plain": "Arsenal did more than twice as much of their passing inside Coventry's half, meaning the game was played almost entirely in one direction."
+          },
+          {
+            "stat": "Touches in opposition box 36 vs 3",
+            "plain": "Arsenal got into the danger area a dozen times for every one time Coventry did \u2014 the clearest single measure of territorial control."
+          },
+          {
+            "stat": "xG 1.88 vs 0.2, xGOT 2.44 vs 0.04",
+            "plain": "Arsenal's shots were worth roughly 1.88 goals by quality alone, but 2.44 once you account for where they were placed \u2014 the finishing was better than the chances."
+          },
+          {
+            "stat": "Shots 20 vs 4, shots inside box 10 vs 1",
+            "plain": "Arsenal shot five times as often, and half their attempts came from inside the box, which is where shots actually get converted."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5793186,
       "date": "2026-08-16",
@@ -30,8 +180,8 @@
           "Cristhian Mosquera",
           "Gabriel",
           "Riccardo Calafiori",
-          "Martin Ødegaard",
-          "Bruno Guimarães",
+          "Martin \u00d8degaard",
+          "Bruno Guimar\u00e3es",
           "Myles Lewis-Skelly",
           "Noni Madueke",
           "Kai Havertz",
@@ -40,14 +190,14 @@
         "opponentXI": [
           "Gianluigi Donnarumma",
           "Abdukodir Khusanov",
-          "Rúben Dias",
+          "R\u00faben Dias",
           "Josko Gvardiol",
           "Nico O'Reilly",
           "Elliot Anderson",
           "Mateo Kovacic",
           "Antoine Semenyo",
           "Phil Foden",
-          "Jérémy Doku",
+          "J\u00e9r\u00e9my Doku",
           "Erling Haaland"
         ],
         "stats": {
@@ -106,7 +256,7 @@
             "assist": "Christos Tzolis"
           },
           {
-            "player": "Martin Ødegaard",
+            "player": "Martin \u00d8degaard",
             "minute": 48,
             "team": "Arsenal",
             "assist": "Christos Tzolis"
@@ -115,20 +265,20 @@
         "result": "W"
       },
       "explained": {
-        "whatHappened": "Arsenal scored after 23 seconds and never trailed. What the scoreline hides is that City had more of the ball, more shots and more touches in Arsenal's box — Arsenal won by creating four clear chances to City's one and putting them away.",
+        "whatHappened": "Arsenal scored after 23 seconds and never trailed. What the scoreline hides is that City had more of the ball, more shots and more touches in Arsenal's box \u2014 Arsenal won by creating four clear chances to City's one and putting them away.",
         "shape": {
           "arsenalInPossession": "3-2-5",
           "arsenalOutOfPossession": "4-4-2",
-          "plainEnglish": "Arsenal started 4-3-3 and City 4-2-3-1, but neither held that shape for long. With the ball Arsenal's left-back steps inside, which turns the back four into a back three and pushes five players onto the last line. Without the ball — which was most of this match — Arsenal folded into two compact banks of four and let City pass in front of them."
+          "plainEnglish": "Arsenal started 4-3-3 and City 4-2-3-1, but neither held that shape for long. With the ball Arsenal's left-back steps inside, which turns the back four into a back three and pushes five players onto the last line. Without the ball \u2014 which was most of this match \u2014 Arsenal folded into two compact banks of four and let City pass in front of them."
         },
-        "opponentPlan": "Maresca's City did what they were set up to do: 59% of the ball and 310 passes in Arsenal's half, against Arsenal's 110 in theirs. They got 34 touches in the Arsenal box to Arsenal's 27. What they could not do was turn any of that into a clear opening — one big chance all afternoon, and an xGOT of 0.34 says the few shots they did work were struck straight at Raya.",
+        "opponentPlan": "Maresca's City did what they were set up to do: 59% of the ball and 310 passes in Arsenal's half, against Arsenal's 110 in theirs. They got 34 touches in the Arsenal box to Arsenal's 27. What they could not do was turn any of that into a clear opening \u2014 one big chance all afternoon, and an xGOT of 0.34 says the few shots they did work were struck straight at Raya.",
         "keyMoment": "The first goal, 23 seconds in. Lewis-Skelly found Calafiori for a finish before City had touched the ball. That one moment set the terms for everything after it: Arsenal could sit deep and defend a lead, and City had to come out, which is exactly the game Arsenal wanted.",
         "lesson": {
           "conceptId": "low-block",
           "term": "Low block",
           "level": 1,
           "explain": "This is the match to learn it from, because the stats look like Arsenal lost. City had 59% of the ball, 12 shots to 9, and 34 touches in the box to 27. Arsenal deliberately gave all of that away: they dropped into two banks of four, defended the space in front of their own goal rather than chasing the ball, and made 16 tackles and 10 interceptions doing it. A low block concedes territory on purpose and bets that the opponent will never get a clean look at goal. City managed one big chance. Arsenal managed four.",
-          "spotIt": "Next match, when Arsenal are ahead and the opponent has the ball, stop watching the ball and look at the shape. Two flat rows of four, squeezed into the width of the penalty area, with nobody chasing out to press — that is the low block doing its job, and it is not the same thing as being under pressure."
+          "spotIt": "Next match, when Arsenal are ahead and the opponent has the ball, stop watching the ball and look at the shape. Two flat rows of four, squeezed into the width of the penalty area, with nobody chasing out to press \u2014 that is the low block doing its job, and it is not the same thing as being under pressure."
         },
         "statTranslations": [
           {
@@ -137,7 +287,7 @@
           },
           {
             "stat": "xG 2.16 vs 1.12",
-            "plain": "Arsenal's chances were worth about 2.2 goals and City's about 1.1 — a real edge, but much closer than 3-0 suggests."
+            "plain": "Arsenal's chances were worth about 2.2 goals and City's about 1.1 \u2014 a real edge, but much closer than 3-0 suggests."
           },
           {
             "stat": "xGOT 2.53 vs 0.34",
@@ -149,10 +299,10 @@
           },
           {
             "stat": "Passes in the opposition half: 110 vs 310",
-            "plain": "City spent almost three times as much of the match camped in Arsenal's territory — and still lost 3-0."
+            "plain": "City spent almost three times as much of the match camped in Arsenal's territory \u2014 and still lost 3-0."
           }
         ],
-        "nerdCorner": "The xG-to-xGOT gap is the whole story and it cuts both ways. Arsenal turned 2.16 xG into 2.53 xGOT — their finishing beat the quality of the chances. City turned 1.12 into 0.34, meaning their shooting was dreadful relative to the openings. That combined swing is worth roughly two and a half goals of finishing, and it is the least repeatable thing in football: expect both numbers to drift back toward their xG over a season. The more durable read is the big-chance count. Conceding 59% possession and 310 opposition-half passes while allowing exactly one clear sight of goal is a defensive structure working precisely as designed, and that part does repeat."
+        "nerdCorner": "The xG-to-xGOT gap is the whole story and it cuts both ways. Arsenal turned 2.16 xG into 2.53 xGOT \u2014 their finishing beat the quality of the chances. City turned 1.12 into 0.34, meaning their shooting was dreadful relative to the openings. That combined swing is worth roughly two and a half goals of finishing, and it is the least repeatable thing in football: expect both numbers to drift back toward their xG over a season. The more durable read is the big-chance count. Conceding 59% possession and 310 opposition-half passes while allowing exactly one clear sight of goal is a defensive structure working precisely as designed, and that part does repeat."
       }
     }
   ]

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-25",
+  "lastUpdated": "2026-08-29",
   "items": [
     {
       "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
@@ -175,6 +175,27 @@
       "sourceUrl": "https://www.skysports.com/football/news/12691/13576722/xxxx-paper-talk",
       "date": "2026-08-24",
       "reliability": "medium"
+    },
+    {
+      "headline": "Arsenal hold talks with Real Madrid for Endrick",
+      "source": "Sky Sports",
+      "sourceUrl": "https://www.skysports.com/football/news/12040/13578352/arsenal-transfer-news-gunners-hold-talks-for-real-madrid-and-brazil-forward-endrick-paper-talk",
+      "date": "2026-08-28",
+      "reliability": "medium"
+    },
+    {
+      "headline": "Atletico Madrid set deadline for Alvarez decision on staying or move to Arsenal",
+      "source": "Sky Sports",
+      "sourceUrl": "https://www.skysports.com/football/news/12691/13578318/julian-alvarez-transfer-news-atletico-madrid-set-deadline-for-striker-to-decide-whether-he-stays-or-joins-arsenal",
+      "date": "2026-08-28",
+      "reliability": "medium"
+    },
+    {
+      "headline": "Arsenal only likely exit for Alvarez as striker skips training",
+      "source": "BBC Sport",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c980e1d2vpgo?at_medium=RSS&at_campaign=rss",
+      "date": "2026-08-27",
+      "reliability": "high"
     }
   ]
 }
