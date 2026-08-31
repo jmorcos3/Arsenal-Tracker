@@ -1,6 +1,6 @@
 {
   "window": "Summer 2026",
-  "lastUpdated": "2026-08-29",
+  "lastUpdated": "2026-08-31",
   "in": [
     {
       "player": "Christos Tzolis",
@@ -50,6 +50,20 @@
       "fee": "at least \u00a350m",
       "date": "2026-08-24",
       "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cgk4k444rmmo?at_medium=RSS&at_campaign=rss"
+    },
+    {
+      "player": "Gabriel Jesus",
+      "club": "Barcelona",
+      "fee": "\u00a38.6m",
+      "date": "2026-08-30",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c9qr79jr1qqo?at_medium=RSS&at_campaign=rss"
+    },
+    {
+      "player": "Fabio Vieira",
+      "club": "Hamburg",
+      "fee": "\u20ac10m (\u00a38.6m)",
+      "date": "2026-08-30",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c5ymvz83dy1o?at_medium=RSS&at_campaign=rss"
     }
   ]
 }

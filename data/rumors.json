@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-29",
+  "lastUpdated": "2026-08-31",
   "items": [
     {
       "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
@@ -196,6 +196,20 @@
       "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c980e1d2vpgo?at_medium=RSS&at_campaign=rss",
       "date": "2026-08-27",
       "reliability": "high"
+    },
+    {
+      "headline": "Arsenal trying to lure Juli\u00e1n \u00c1lvarez after agreeing deals to sell Martinelli and Jesus",
+      "source": "The Guardian",
+      "sourceUrl": "https://www.theguardian.com/football/2026/aug/31/arsenal-julian-alvarez-gabriel-martinelli-jesus-transfers",
+      "date": "2026-08-31",
+      "reliability": "high"
+    },
+    {
+      "headline": "Arsenal exploring move for Lyon winger",
+      "source": "Sky Sports",
+      "sourceUrl": "https://www.skysports.com/football/live-blog/12691/13025486/arsenal-transfer-news-rumours-and-gossip-live-updates-and-latest-on-deals-signings-and-contracts",
+      "date": "2026-08-31",
+      "reliability": "medium"
     }
   ]
 }
