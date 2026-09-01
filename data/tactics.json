@@ -1,11 +1,150 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-08-23",
+  "lastUpdated": "2026-09-01",
   "conceptsTaught": [
     "low-block",
-    "shape-in-out"
+    "shape-in-out",
+    "overload"
   ],
   "matches": [
+    {
+      "fixtureId": 5795426,
+      "date": "2026-08-31",
+      "grounded": {
+        "fixtureId": 5795426,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-aston-villa/3c06vg#5795426",
+        "date": "2026-08-31",
+        "competition": "Premier League",
+        "round": "2",
+        "homeAway": "A",
+        "opponent": "Aston Villa",
+        "opponentId": 10252,
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Unai Emery",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Cristhian Mosquera",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Declan Rice",
+          "Myles Lewis-Skelly",
+          "Bukayo Saka",
+          "Martin \u00d8degaard",
+          "Christos Tzolis",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Zion Suzuki",
+          "Matty Cash",
+          "Victor Nilsson Lindel\u00f6f",
+          "Pau Torres",
+          "Ian Maatsen",
+          "Boubacar Kamara",
+          "Ross Barkley",
+          "John McGinn",
+          "Emiliano Buend\u00eda",
+          "George Hemmings",
+          "Nicolas Jackson"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 61,
+            "xg": 1.04,
+            "shots": 7,
+            "shotsOnTarget": 2,
+            "touchesInBox": 21,
+            "bigChances": 2,
+            "bigChancesMissed": 1,
+            "accuratePasses": 465,
+            "corners": 4,
+            "shotsInBox": 5,
+            "xgOpenPlay": 0.73,
+            "xgSetPlay": 0.31,
+            "xgot": 0.8,
+            "passesOppositionHalf": 238,
+            "tackles": 13,
+            "interceptions": 9,
+            "saves": 0,
+            "fouls": 6
+          },
+          "opponent": {
+            "possession": 39,
+            "xg": 0.33,
+            "shots": 7,
+            "shotsOnTarget": 0,
+            "touchesInBox": 16,
+            "bigChances": 0,
+            "bigChancesMissed": 0,
+            "accuratePasses": 273,
+            "corners": 2,
+            "shotsInBox": 3,
+            "xgOpenPlay": 0.33,
+            "xgSetPlay": 0.0,
+            "xgot": 0.0,
+            "passesOppositionHalf": 147,
+            "tackles": 20,
+            "interceptions": 3,
+            "saves": 1,
+            "fouls": 17
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Bukayo Saka",
+            "minute": 59,
+            "team": "Arsenal",
+            "assist": "Riccardo Calafiori"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal went to Villa Park, kept the ball for most of the afternoon and won 1-0. Neither side created much for long stretches \u2014 both teams had seven shots \u2014 but Arsenal's chances were the better ones, and Bukayo Saka scored on 59 minutes from a Riccardo Calafiori assist. Villa never once forced David Raya into a save.",
+        "opponentPlan": "Unai Emery matched Arsenal's 4-2-3-1, which is a way of saying every Arsenal player had a natural opponent and Villa were content to let Arsenal have the ball rather than chase it. The numbers back that up: Villa made 20 tackles to Arsenal's 13, but only three interceptions and 147 passes in the opposition half against Arsenal's 238. That is the profile of a team defending in its own territory and engaging late, once Arsenal had already carried the ball forward, rather than trying to win it back early. Arsenal answered it by simply refusing to force the issue \u2014 61% possession, patient circulation, and 21 touches in the Villa box, which is how you eventually prise open a side that is well organised but not aggressive.",
+        "keyMoment": "The 59th minute: Calafiori to Saka for the only goal of the game. It matters not just because it was the winner but because of who supplied it \u2014 the left-sided defender arriving as a passer in the final third is exactly the by-product of Arsenal's in-possession shape, and it broke a match in which both teams had otherwise been trading harmless shots. From there Villa had to come out, and the shot-on-target column still finished 2-0 to Arsenal.",
+        "nerdCorner": "The interesting number is xGOT: Arsenal 0.8, Villa 0.0. xG measures the chance at the moment of the shot; xGOT measures it again once the ball is struck, and only counts shots on target. Villa's 0.0 means all seven of their attempts either missed or were blocked before they became a goalkeeper's problem \u2014 0.33 xG of chances converted into precisely nothing that tested Raya. Meanwhile Arsenal's 1.04 xG shrank to 0.8 on target and yielded exactly one goal, which is the honest reading of the afternoon: this was a controlled 1-0, not a smash-and-grab, but it was also a match where Arsenal's control (61% possession, 238 passes in the opposition half) bought only two big chances. Against a manager who is happy to sit and match your shape, volume of possession is the cheap part; the expensive part is manufacturing that one extra man, and Arsenal did it once, in the 59th minute, through a defender.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper Arsenal lined up 4-2-3-1, but a back four rarely stays a back four when this side has the ball. One full-back \u2014 with Calafiori and Ben White either side, it is usually the left one \u2014 steps inside or forward, which leaves three defenders across the back, two holders like Declan Rice and Myles Lewis-Skelly in front of them, and five attackers spread across the width of the pitch. Without the ball those players walk back into two banks of four with the striker and the number ten leading the line, because a flat block is far easier to hold together than a lopsided attacking shape."
+        },
+        "lesson": {
+          "conceptId": "overload",
+          "term": "Overload",
+          "level": 1,
+          "explain": "An overload is simply getting more of your players into one area of the pitch than the opponent has defenders there. When both teams line up 4-2-3-1, every Arsenal player starts with a Villa player near him \u2014 so Arsenal have to manufacture an extra body somewhere, and the usual way is a full-back like Calafiori pushing high on one side so that the winger, the number ten and the full-back are three against two. That is how a defender ends up assisting a goal in the 59th minute rather than defending one. It is also why Arsenal could rack up 238 passes in the opposition half and 21 touches in the Villa box: you keep shifting the ball until one side of the pitch has a spare man, then attack that side.",
+          "spotIt": "When Arsenal build down one flank, count the shirts in that corner of the screen \u2014 the moment Arsenal have three players there against two defenders, that is the overload, and the pass into the box is usually two touches away."
+        },
+        "statTranslations": [
+          {
+            "stat": "Shots on target: Arsenal 2 | Aston Villa 0",
+            "plain": "Villa had seven attempts and not one of them was on target \u2014 Raya made zero saves, so this was a clean sheet earned by the defensive shape rather than by the goalkeeper."
+          },
+          {
+            "stat": "Big chances: Arsenal 2 | Aston Villa 0",
+            "plain": "Equal shot counts (7-7) hide the truth: Arsenal created two genuinely presentable openings and Villa created none."
+          },
+          {
+            "stat": "xG: Arsenal 1.04 | Aston Villa 0.33",
+            "plain": "Based on the quality of the openings, an average team would score about one from Arsenal's chances and about a third of a goal from Villa's \u2014 so 1-0 is roughly the fair result."
+          },
+          {
+            "stat": "Passes in opposition half: Arsenal 238 | Aston Villa 147",
+            "plain": "Arsenal spent far more of the game playing football in Villa's territory, which is where 61% possession actually becomes dangerous rather than decorative."
+          },
+          {
+            "stat": "Tackles: Arsenal 13 | Aston Villa 20, Interceptions: Arsenal 9 | Aston Villa 3",
+            "plain": "Villa were reacting \u2014 lunging in once Arsenal had the ball under control \u2014 while Arsenal were reading passes before they arrived and cutting them out."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795363,
       "date": "2026-08-21",
