@@ -18,6 +18,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 API_BASE = "https://www.fotmob.com/api/data"
+CREST_BASE = "https://images.fotmob.com/image_resources/logo/teamlogo"
 ARSENAL_TEAM_ID = 9825
 FINISHED_PERIOD = "All"
 # Don't reach back into a finished season and spend lessons on stale matches.
@@ -333,12 +334,17 @@ def fetch_upcoming_fixtures(count=5):
         utc_time = (f.get("status") or {}).get("utcTime")
         date, kickoff = _kickoff_local(utc_time)
         home_id = (f.get("home") or {}).get("id")
+        opponent = f.get("opponent") or {}
+        opponent_id = opponent.get("id")
         out.append({
             "fixtureId": f.get("id"),
             "date": date,
             "kickoffUtc": utc_time,
             "kickoffLocal": kickoff,
-            "opponent": (f.get("opponent") or {}).get("name"),
+            "opponent": opponent.get("name"),
+            "opponentId": opponent_id,
+            # FotMob serves club crests off a predictable path keyed by team id.
+            "crestUrl": f"{CREST_BASE}/{opponent_id}.png" if opponent_id else None,
             "competition": (f.get("tournament") or {}).get("name"),
             "homeAway": "H" if home_id == ARSENAL_TEAM_ID else "A",
         })

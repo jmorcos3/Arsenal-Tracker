@@ -150,17 +150,31 @@ function renderGlossary(data, tactics) {
   });
 }
 
+function compSlug(name) {
+  return (name || '').toLowerCase().replace(/[^a-z]+/g, '-');
+}
+
 function renderFixtures(data) {
-  const list = document.getElementById('fixtures-list');
+  const body = document.getElementById('fixtures-body');
   const items = (data && data.items) || [];
-  if (!items.length) { list.innerHTML = '<li class="empty">No upcoming fixtures.</li>'; return; }
-  list.innerHTML = items.map(f => `
-    <li>
-      <span class="fixture-venue ${f.homeAway === 'H' ? 'is-home' : 'is-away'}">${f.homeAway === 'H' ? 'H' : 'A'}</span>
-      <span class="fixture-opponent">${escapeHTML(f.opponent || '?')}</span>
-      <span class="fixture-comp">${escapeHTML(f.competition || '')}</span>
-      <span class="fixture-when">${escapeHTML(f.kickoffLocal || f.date || '')}</span>
-    </li>
+  if (!items.length) {
+    body.innerHTML = '<tr><td colspan="4" class="empty">No upcoming fixtures.</td></tr>';
+    return;
+  }
+  body.innerHTML = items.map(f => `
+    <tr>
+      <td class="fx-crest">${f.crestUrl
+        ? `<img src="${escapeAttr(f.crestUrl)}" alt="${escapeAttr(f.opponent || '')} crest" width="30" height="30" />`
+        : ''}</td>
+      <td class="fx-team">
+        <span class="fx-opponent">${escapeHTML(f.opponent || '?')}</span>
+        <span class="fx-venue ${f.homeAway === 'H' ? 'is-home' : 'is-away'}">${f.homeAway === 'H' ? 'Home' : 'Away'}</span>
+      </td>
+      <td class="fx-comp">
+        <span class="comp-badge comp-${escapeAttr(compSlug(f.competition))}">${escapeHTML(f.competition || '')}</span>
+      </td>
+      <td class="fx-when">${escapeHTML(f.kickoffLocal || f.date || '')}</td>
+    </tr>
   `).join('');
 }
 

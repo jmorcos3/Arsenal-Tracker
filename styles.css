@@ -282,33 +282,61 @@ footer { padding: 20px 0 40px; color: var(--ink-soft); text-align: center; }
 }
 .odds-item .market-link:hover { text-decoration: underline; }
 
-.fixture-list { list-style: none; padding: 0; margin: 0; }
-.fixture-list li {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  column-gap: 12px;
-  align-items: center;
-  padding: 11px 0;
-  border-bottom: 1px solid var(--border);
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
 }
-.fixture-list li:last-child { border-bottom: none; }
-.fixture-venue {
-  grid-column: 1; grid-row: 1 / span 2;
-  font-size: 11px; font-weight: 700;
-  width: 24px; height: 24px; line-height: 24px;
-  text-align: center; border-radius: 50%;
-}
-.fixture-venue.is-home { background: var(--arsenal-red-dark); color: #fff; }
-.fixture-venue.is-away { background: #eceff3; color: var(--ink-soft); }
-.fixture-opponent { grid-column: 2; grid-row: 1; font-weight: 600; }
-.fixture-when {
-  grid-column: 3; grid-row: 1 / span 2;
-  font-size: 13px; color: var(--ink-soft);
-  white-space: nowrap; text-align: right;
-}
-.fixture-comp { grid-column: 2; grid-row: 2; font-size: 12px; color: var(--ink-soft); }
 
-@media (max-width: 520px) {
-  .fixture-list li { grid-template-columns: auto 1fr; }
-  .fixture-when { grid-column: 2; grid-row: 3; text-align: left; }
+.fixture-table { width: 100%; border-collapse: collapse; }
+.fixture-table thead th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 0 10px 8px 0;
+  border-bottom: 2px solid var(--border);
+}
+.fixture-table thead th.fx-when-head { text-align: right; padding-right: 0; }
+.fixture-table td {
+  padding: 12px 10px 12px 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.fixture-table tr:last-child td { border-bottom: none; }
+
+.fx-crest { width: 42px; }
+.fx-crest img { display: block; width: 30px; height: 30px; object-fit: contain; }
+.fx-opponent { display: block; font-weight: 700; font-size: 15px; }
+.fx-venue {
+  display: block; margin-top: 2px;
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.fx-venue.is-home { color: var(--arsenal-red-dark); }
+.fx-venue.is-away { color: var(--ink-soft); }
+.fx-when { text-align: right; padding-right: 0 !important; font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+
+.comp-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  background: #f1f3f5;
+  color: var(--ink-soft);
+}
+.comp-premier-league { background: #eef4ff; color: #1c4f82; }
+.comp-champions-league { background: #f3e8ff; color: #5b21b6; }
+.comp-efl-cup, .comp-carabao-cup { background: #e8f6ee; color: #1c6b3f; }
+.comp-fa-cup { background: #fff3cd; color: #7a5a00; }
+
+@media (max-width: 560px) {
+  .fixture-table thead { display: none; }
+  .fixture-table tr { display: grid; grid-template-columns: 42px 1fr; column-gap: 4px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .fixture-table td { border: none; padding: 2px 0; }
+  .fx-crest { grid-row: 1 / span 3; align-self: start; }
+  .fx-when { text-align: left; }
 }

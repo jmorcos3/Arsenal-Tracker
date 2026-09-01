@@ -1126,28 +1126,61 @@ def render_pl(transfers, notes):
     return _section_header("Around the Premier League") + _section_body(_bullet_list(lines))
 
 
+COMP_COLORS = {
+    "premier league": ("#eef4ff", "#1c4f82"),
+    "champions league": ("#f3e8ff", "#5b21b6"),
+    "efl cup": ("#e8f6ee", "#1c6b3f"),
+    "carabao cup": ("#e8f6ee", "#1c6b3f"),
+    "fa cup": ("#fff3cd", "#7a5a00"),
+}
+
+
+def _comp_badge(name):
+    bg, fg = COMP_COLORS.get((name or "").lower(), (CARD_ALT, INK_SOFT))
+    return (
+        f'<span style="display:inline-block;background:{bg};color:{fg};padding:2px 8px;'
+        f'border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap;">{E(name or "")}</span>'
+    )
+
+
 def render_fixtures(fixtures, notes=None):
-    """Next fixtures from FotMob, with any LLM notes appended below."""
+    """Next fixtures as a table with club crests, dates and competitions.
+
+    Crests are hotlinked, so every row still reads correctly on the alt text
+    alone if a client blocks remote images.
+    """
     body = ""
     if fixtures:
-        rows = "".join(
-            f'<tr>'
-            f'<td valign="top" style="padding:7px 10px 7px 0;font-size:13px;color:{INK_SOFT};'
-            f'white-space:nowrap;">{E(f.get("kickoffLocal") or f.get("date") or "")}</td>'
-            f'<td valign="top" style="padding:7px 8px 7px 0;font-size:12px;font-weight:700;'
-            f'color:{RED_DARK if f.get("homeAway") == "H" else INK_SOFT};">'
-            f'{"H" if f.get("homeAway") == "H" else "A"}</td>'
-            f'<td valign="top" style="padding:7px 10px 7px 0;font-size:14px;font-weight:600;'
-            f'color:{INK};border-bottom:1px solid {BORDER};">{E(f.get("opponent") or "?")}</td>'
-            f'<td valign="top" style="padding:7px 0;font-size:12px;color:{INK_SOFT};'
-            f'border-bottom:1px solid {BORDER};text-align:right;">{E(f.get("competition") or "")}</td>'
-            f'</tr>'
-            for f in fixtures
-        )
+        rows = ""
+        for f in fixtures:
+            home = f.get("homeAway") == "H"
+            crest = (
+                f'<img src="{E(f["crestUrl"])}" width="28" height="28" alt="{E(f.get("opponent") or "")}" '
+                f'style="display:block;width:28px;height:28px;border:0;outline:none;'
+                f'text-decoration:none;" />'
+            ) if f.get("crestUrl") else ""
+            rows += (
+                f'<tr>'
+                f'<td width="40" valign="middle" style="padding:10px 10px 10px 0;'
+                f'border-bottom:1px solid {BORDER};">{crest}</td>'
+                f'<td valign="middle" style="padding:10px 10px 10px 0;border-bottom:1px solid {BORDER};">'
+                f'<div style="font-size:15px;font-weight:700;color:{INK};line-height:1.3;">'
+                f'{E(f.get("opponent") or "?")}</div>'
+                f'<div style="font-size:11px;font-weight:700;color:{RED_DARK if home else INK_SOFT};'
+                f'text-transform:uppercase;letter-spacing:.05em;margin-top:2px;">'
+                f'{"Home" if home else "Away"}</div>'
+                f'</td>'
+                f'<td valign="middle" style="padding:10px 10px 10px 0;border-bottom:1px solid {BORDER};">'
+                f'{_comp_badge(f.get("competition"))}</td>'
+                f'<td valign="middle" align="right" style="padding:10px 0;border-bottom:1px solid {BORDER};'
+                f'font-size:13px;color:{INK_SOFT};white-space:nowrap;">'
+                f'{E(f.get("kickoffLocal") or f.get("date") or "")}</td>'
+                f'</tr>'
+            )
         body += (
             f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
             f'style="border-collapse:collapse;">{rows}</table>'
-            f'<p style="margin:8px 0 0;font-size:11px;color:{INK_SOFT};">Kickoff times in ET.</p>'
+            f'<p style="margin:10px 0 0;font-size:11px;color:{INK_SOFT};">Kickoff times in ET.</p>'
         )
     if notes:
         body += _bullet_list([_note_line(n) for n in notes])
