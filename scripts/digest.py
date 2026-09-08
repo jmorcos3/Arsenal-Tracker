@@ -796,6 +796,30 @@ def _research_entry(current):
     }
 
 
+def ensure_latest_match(matches, entry):
+    """Guarantee the digest leads with the most recent match actually played.
+
+    If the newest fixture has no write-up — generation failed, or it finished
+    between runs — fall back to a result-only entry for *that* match rather than
+    to an older one. Repeating a match across digests is fine; showing last
+    week's game when a newer one exists is not.
+    """
+    if not matches:
+        return entry
+    newest = matches[-1]
+    if entry and entry.get("fixtureId") == newest.get("fixtureId"):
+        return entry
+    print(f"[warn] newest match ({newest.get('opponent')} on {newest.get('date')}) has no "
+          f"write-up; showing it result-only rather than an older match")
+    return {
+        "fixtureId": newest.get("fixtureId"),
+        "date": newest.get("date"),
+        "grounded": newest,
+        "explained": {},
+        "partial": True,
+    }
+
+
 def refresh_tactics(matches):
     """Write up every supplied fixture that isn't already covered.
 
@@ -827,12 +851,19 @@ def refresh_tactics(matches):
             newest = existing
             continue
 
-        try:
-            explained = _normalize_explained(generate_tactics(match, current["conceptsTaught"]))
-        except Exception as e:
-            # One bad fixture shouldn't cost us the rest of the backlog.
-            print(f"[warn] tactics generation failed for {match.get('opponent')}: {e}")
-            continue
+        explained = {}
+        for attempt in (1, 2):
+            try:
+                explained = _normalize_explained(generate_tactics(match, current["conceptsTaught"]))
+            except Exception as e:
+                # One bad fixture shouldn't cost us the rest of the backlog.
+                print(f"[warn] tactics generation failed for {match.get('opponent')} "
+                      f"(attempt {attempt}): {e}")
+                explained = {}
+            if explained.get("whatHappened"):
+                break
+            if attempt == 1:
+                print(f"[info] retrying {match.get('opponent')}")
         if not explained.get("whatHappened"):
             # Nothing usable at all — a lesson alone is not worth an entry.
             print(f"[warn] no usable write-up for {match.get('opponent')}; skipping "
@@ -1215,6 +1246,12 @@ def render_tactics(entry, lesson_number):
     )
 
     body = header_line
+    if entry.get("partial") or not x.get("whatHappened"):
+        body += _tactics_callout(
+            "Breakdown pending",
+            "This is the most recent match played. The full tactical write-up "
+            "wasn't ready in time for this send and will appear in the next one.",
+            GOLD)
     if x.get("whatHappened"):
         body += f'<p style="margin:0 0 4px;font-size:14px;line-height:1.6;">{E(x["whatHappened"])}</p>'
 
@@ -1425,7 +1462,9 @@ def main():
 
         # Tactics runs before the news call so a feed outage can't cost us the
         # match breakdown, which is the harder half to reproduce.
-        tactics_entry = refresh_tactics(fetch_recent_matches()) or latest_tactics_entry()
+        recent_matches = fetch_recent_matches()
+        tactics_entry = ensure_latest_match(
+            recent_matches, refresh_tactics(recent_matches) or latest_tactics_entry())
         fixtures = refresh_fixtures()
         lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
 
