@@ -1,6 +1,6 @@
 {
   "window": "Summer 2026",
-  "lastUpdated": "2026-09-01",
+  "lastUpdated": "2026-09-07",
   "in": [
     {
       "player": "Christos Tzolis",
@@ -47,16 +47,29 @@
     {
       "player": "Gabriel Martinelli",
       "club": "Al-Hilal",
-      "fee": "\u00a355.7m",
-      "date": "2026-08-30",
-      "sourceUrl": "https://www.skysports.com/football/news/12691/13579053/arsenal-agree-55-7m-club-record-gabriel-martinelli-sale-to-al-hilal-with-deal-also-agreed-in-principle-with-barcelona-for-gabriel-jesus"
+      "fee": "at least \u00a350m",
+      "date": "2026-08-24",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cgk4k444rmmo?at_medium=RSS&at_campaign=rss"
     },
     {
       "player": "Gabriel Jesus",
       "club": "Barcelona",
       "fee": "\u00a38.6m",
       "date": "2026-08-30",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c9qr79jr1qqo"
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c9qr79jr1qqo?at_medium=RSS&at_campaign=rss"
+    },
+    {
+      "player": "Fabio Vieira",
+      "club": "Hamburg",
+      "fee": "\u20ac10m (\u00a38.6m)",
+      "date": "2026-08-30",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c5ymvz83dy1o?at_medium=RSS&at_campaign=rss"
+    },
+    {
+      "player": "Ethan Nwaneri",
+      "club": "Borussia Dortmund",
+      "date": "2026-09-01",
+      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c70lq9rpzgjo?at_medium=RSS&at_campaign=rss"
     },
     {
       "player": "F\u00e1bio Vieira",

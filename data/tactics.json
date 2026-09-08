@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-09-01",
+  "lastUpdated": "2026-08-31",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -13,7 +13,7 @@
       "grounded": {
         "fixtureId": 5795426,
         "source": "fotmob",
-        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-aston-villa/3c06vg#5795426",
+        "sourceUrl": "https://www.fotmob.com/matches/x/x/x#5795426",
         "date": "2026-08-31",
         "competition": "Premier League",
         "round": "2",
@@ -55,41 +55,41 @@
         "stats": {
           "arsenal": {
             "possession": 61,
-            "xg": 1.04,
+            "xg": 1.05,
             "shots": 7,
             "shotsOnTarget": 2,
             "touchesInBox": 21,
             "bigChances": 2,
             "bigChancesMissed": 1,
-            "accuratePasses": 465,
+            "accuratePasses": 462,
             "corners": 4,
             "shotsInBox": 5,
-            "xgOpenPlay": 0.73,
+            "xgOpenPlay": 0.74,
             "xgSetPlay": 0.31,
             "xgot": 0.8,
-            "passesOppositionHalf": 238,
+            "passesOppositionHalf": 237,
             "tackles": 13,
-            "interceptions": 9,
+            "interceptions": 8,
             "saves": 0,
             "fouls": 6
           },
           "opponent": {
             "possession": 39,
-            "xg": 0.33,
+            "xg": 0.31,
             "shots": 7,
             "shotsOnTarget": 0,
-            "touchesInBox": 16,
+            "touchesInBox": 17,
             "bigChances": 0,
             "bigChancesMissed": 0,
-            "accuratePasses": 273,
+            "accuratePasses": 272,
             "corners": 2,
             "shotsInBox": 3,
-            "xgOpenPlay": 0.33,
+            "xgOpenPlay": 0.31,
             "xgSetPlay": 0.0,
             "xgot": 0.0,
             "passesOppositionHalf": 147,
             "tackles": 20,
-            "interceptions": 3,
+            "interceptions": 2,
             "saves": 1,
             "fouls": 17
           }
@@ -105,42 +105,42 @@
         "result": "W"
       },
       "explained": {
-        "whatHappened": "Arsenal went to Villa Park, kept the ball for most of the afternoon and won 1-0. Neither side created much for long stretches \u2014 both teams had seven shots \u2014 but Arsenal's chances were the better ones, and Bukayo Saka scored on 59 minutes from a Riccardo Calafiori assist. Villa never once forced David Raya into a save.",
-        "opponentPlan": "Unai Emery matched Arsenal's 4-2-3-1, which is a way of saying every Arsenal player had a natural opponent and Villa were content to let Arsenal have the ball rather than chase it. The numbers back that up: Villa made 20 tackles to Arsenal's 13, but only three interceptions and 147 passes in the opposition half against Arsenal's 238. That is the profile of a team defending in its own territory and engaging late, once Arsenal had already carried the ball forward, rather than trying to win it back early. Arsenal answered it by simply refusing to force the issue \u2014 61% possession, patient circulation, and 21 touches in the Villa box, which is how you eventually prise open a side that is well organised but not aggressive.",
-        "keyMoment": "The 59th minute: Calafiori to Saka for the only goal of the game. It matters not just because it was the winner but because of who supplied it \u2014 the left-sided defender arriving as a passer in the final third is exactly the by-product of Arsenal's in-possession shape, and it broke a match in which both teams had otherwise been trading harmless shots. From there Villa had to come out, and the shot-on-target column still finished 2-0 to Arsenal.",
-        "nerdCorner": "The interesting number is xGOT: Arsenal 0.8, Villa 0.0. xG measures the chance at the moment of the shot; xGOT measures it again once the ball is struck, and only counts shots on target. Villa's 0.0 means all seven of their attempts either missed or were blocked before they became a goalkeeper's problem \u2014 0.33 xG of chances converted into precisely nothing that tested Raya. Meanwhile Arsenal's 1.04 xG shrank to 0.8 on target and yielded exactly one goal, which is the honest reading of the afternoon: this was a controlled 1-0, not a smash-and-grab, but it was also a match where Arsenal's control (61% possession, 238 passes in the opposition half) bought only two big chances. Against a manager who is happy to sit and match your shape, volume of possession is the cheap part; the expensive part is manufacturing that one extra man, and Arsenal did it once, in the 59th minute, through a defender.",
+        "whatHappened": "Arsenal had the ball for most of the afternoon at Villa Park and spent the first hour probing without breaking through. Bukayo Saka finally scored on 59 minutes, set up by Riccardo Calafiori. Villa had as many shots as Arsenal \u2014 seven each \u2014 but not one of them hit the target, and David Raya finished the game without making a single save.",
+        "opponentPlan": "Villa lined up in the same 4-2-3-1 as Arsenal, which means every Arsenal player had a natural opponent in front of them \u2014 a mirror match. Unai Emery's side conceded the ball willingly (39% possession) and defended by making contact: 20 tackles to Arsenal's 13, but only 2 interceptions to Arsenal's 8. That is the profile of a team reacting to the ball rather than reading passes ahead of time. Arsenal's answer was volume and patience in Villa's half \u2014 237 passes there against Villa's 147, and 21 touches in the opposition box \u2014 pushing Villa deeper and deeper until a gap opened on the hour.",
+        "keyMoment": "The 59th minute: Calafiori to Saka, 1-0. In a mirrored 4-2-3-1 the game had been stuck for an hour \u2014 every Arsenal player marked by his opposite number \u2014 and the breakthrough came from the one player whose starting position doesn't match anyone's: the left-back arriving high on the far side of the pitch to feed the right winger. Everything after it was game management, and Villa's response amounted to zero shots on target all match.",
+        "nerdCorner": "The scoreline says 1-0 and the shot count says 7-7, but the honest number is xGOT 0.8 to 0.0. Villa managed seven attempts and did not put one on target \u2014 Raya recorded zero saves. That is not luck; it is what happens when a team has to shoot from wherever the ball squirts loose rather than from positions they built. The interception split (8-2) is the tell underneath it: Arsenal were intercepting passes, which means they were positioned in the passing lanes before the ball moved, while Villa's 20 tackles show a defence arriving after the fact. A tackle-heavy, interception-light profile is usually a team that is reacting rather than anticipating \u2014 it keeps you in a game, but it hands the opponent the tempo. On these numbers, 1-0 flatters Villa more than it flatters Arsenal.",
         "shape": {
           "arsenalInPossession": "3-2-5",
-          "arsenalOutOfPossession": "4-4-2 mid block",
-          "plainEnglish": "On paper Arsenal lined up 4-2-3-1, but a back four rarely stays a back four when this side has the ball. One full-back \u2014 with Calafiori and Ben White either side, it is usually the left one \u2014 steps inside or forward, which leaves three defenders across the back, two holders like Declan Rice and Myles Lewis-Skelly in front of them, and five attackers spread across the width of the pitch. Without the ball those players walk back into two banks of four with the striker and the number ten leading the line, because a flat block is far easier to hold together than a lopsided attacking shape."
+          "arsenalOutOfPossession": "4-2-3-1 / 4-4-2 press",
+          "plainEnglish": "A 4-2-3-1 is just the starting positions; it is not where players stand once the ball is moving. With this personnel Arsenal usually slide one full-back inside or push the other high, so the back four becomes a back three with two midfielders screening in front \u2014 and five attackers spread across the last line. Calafiori is typically the player who causes that shift, stepping infield or advancing from left-back, which is exactly the kind of position from which a left-back ends up creating a goal."
         },
         "lesson": {
           "conceptId": "overload",
           "term": "Overload",
           "level": 1,
-          "explain": "An overload is simply getting more of your players into one area of the pitch than the opponent has defenders there. When both teams line up 4-2-3-1, every Arsenal player starts with a Villa player near him \u2014 so Arsenal have to manufacture an extra body somewhere, and the usual way is a full-back like Calafiori pushing high on one side so that the winger, the number ten and the full-back are three against two. That is how a defender ends up assisting a goal in the 59th minute rather than defending one. It is also why Arsenal could rack up 238 passes in the opposition half and 21 touches in the Villa box: you keep shifting the ball until one side of the pitch has a spare man, then attack that side.",
-          "spotIt": "When Arsenal build down one flank, count the shirts in that corner of the screen \u2014 the moment Arsenal have three players there against two defenders, that is the overload, and the pass into the box is usually two touches away."
+          "explain": "An overload just means getting more players into one area of the pitch than the opponent has defending it. Villa played the same 4-2-3-1 as Arsenal, so on paper every man was matched \u2014 and that is precisely why the game was goalless for an hour. The way you break a mirror match is to add a body from somewhere the opponent isn't counting: Arsenal's 237 passes in Villa's half were the process of shifting Villa across and pulling an extra player into one zone, and the goal on 59 minutes came with Calafiori \u2014 a defender, not a forward \u2014 supplying the pass. That is a numerical advantage created not by having better players in a spot, but by having one more.",
+          "spotIt": "When Arsenal have the ball near a touchline, pause and count Arsenal shirts versus opponent shirts in that corner of the screen \u2014 if Arsenal have one more, watch how quickly the ball gets played into the box from there."
         },
         "statTranslations": [
           {
-            "stat": "Shots on target: Arsenal 2 | Aston Villa 0",
-            "plain": "Villa had seven attempts and not one of them was on target \u2014 Raya made zero saves, so this was a clean sheet earned by the defensive shape rather than by the goalkeeper."
+            "stat": "Total shots 7-7, shots on target 2-0",
+            "plain": "Villa shot as often as Arsenal but never once forced Raya to make a save, so the equal shot count is misleading \u2014 the quality gap was total."
           },
           {
-            "stat": "Big chances: Arsenal 2 | Aston Villa 0",
-            "plain": "Equal shot counts (7-7) hide the truth: Arsenal created two genuinely presentable openings and Villa created none."
+            "stat": "xG 1.05 vs 0.31, big chances 2-0",
+            "plain": "Arsenal created two genuinely good openings and Villa created none; the chances Villa did take were the difficult, hopeful kind."
           },
           {
-            "stat": "xG: Arsenal 1.04 | Aston Villa 0.33",
-            "plain": "Based on the quality of the openings, an average team would score about one from Arsenal's chances and about a third of a goal from Villa's \u2014 so 1-0 is roughly the fair result."
+            "stat": "xGOT 0.8 vs 0.0",
+            "plain": "Once you only count shots that actually hit the goal, Villa's attacking output rounds to literally nothing."
           },
           {
-            "stat": "Passes in opposition half: Arsenal 238 | Aston Villa 147",
-            "plain": "Arsenal spent far more of the game playing football in Villa's territory, which is where 61% possession actually becomes dangerous rather than decorative."
+            "stat": "Interceptions 8-2, tackles 13-20",
+            "plain": "Arsenal defended by reading and stepping in front of passes; Villa defended by chasing and lunging after the pass had already arrived."
           },
           {
-            "stat": "Tackles: Arsenal 13 | Aston Villa 20, Interceptions: Arsenal 9 | Aston Villa 3",
-            "plain": "Villa were reacting \u2014 lunging in once Arsenal had the ball under control \u2014 while Arsenal were reading passes before they arrived and cutting them out."
+            "stat": "Passes in the opposition half 237 vs 147",
+            "plain": "Arsenal spent the game camped in Villa territory, which is why Villa's seven shots never came from good positions."
           }
         ]
       }
@@ -151,7 +151,7 @@
       "grounded": {
         "fixtureId": 5795363,
         "source": "fotmob",
-        "sourceUrl": "https://www.fotmob.com/matches/coventry-city-vs-arsenal/2tttz6#5795363",
+        "sourceUrl": "https://www.fotmob.com/matches/x/x/x#5795363",
         "date": "2026-08-21",
         "competition": "Premier League",
         "round": "1",
@@ -255,42 +255,41 @@
         "result": "W"
       },
       "explained": {
-        "whatHappened": "Arsenal took control at home and never let go. Kai Havertz scored on 15 minutes from a Riccardo Calafiori pass, Bukayo Saka added a second on 23, and Martin \u00d8degaard made it three just after the break on 49 with Ben White setting him up. Coventry managed only four shots all match and Arsenal finished 3-0 winners.",
-        "opponentPlan": "Frank Lampard set Coventry up in a matching 4-3-3, which on paper gives you a man for every Arsenal man, but the possession split of 64% to 36% tells you they spent most of the afternoon defending rather than contesting. Their 9 interceptions against Arsenal's 5 is the signature of a team sitting in their own shape and reading passes rather than chasing the ball \u2014 they were trying to clog the space in front of their back four and force Arsenal wide. Arsenal's answer was volume and width: 8 corners, 335 passes in the opposition half and 36 touches in the Coventry box, working the ball around the block until something opened. Coventry's own attacking output collapsed to 4 shots and 3 touches in the Arsenal box, so whatever counter-attacking plan existed never got going.",
-        "keyMoment": "The eight minutes between Havertz's goal on 15 and Saka's on 23. Coventry's 4-3-3 was built to stay compact and matched up, and a shape like that can survive a long time at 0-0 \u2014 but two goals inside that window forced them to come out of it. \u00d8degaard's third on 49, assisted by Ben White from the right, was the confirmation: a full-back arriving in an advanced position to set up a goal is the kind of chance a team only concedes once its defensive shape has been pulled apart.",
-        "nerdCorner": "Big chances finished level at 1 apiece, which is the single most misleading line in the data set \u2014 and also the most instructive. Arsenal scored three goals from a match in which they created, by that metric, exactly as many gilt-edged openings as the team that lost 3-0. The reconciliation is in the gap between xG 1.88 and xGOT 2.44: Arsenal generated a large volume of decent-but-not-outstanding looks (20 shots, 10 of them inside the box) and then converted at a rate above what those looks were worth. Only 6 of 20 shots hit the target, so this was not a night of relentless accuracy \u2014 it was a night where the six that did land were struck extremely well. The sustainable part of the performance is the territory: 36 box touches, 335 passes in the opposition half, 8 corners. The unsustainable part is the 0.56 of extra value between xG and xGOT. Repeat the first set of numbers weekly and the wins keep coming; bank on the second set and you will be disappointed at some point.",
+        "whatHappened": "Arsenal took control early and never gave it back: Kai Havertz scored on 15 minutes from a Riccardo Calafiori pass, and Bukayo Saka made it two on 23. Four minutes into the second half Martin \u00d8degaard added a third, set up by Ben White. Arsenal had 20 shots to Coventry's 4 and kept a clean sheet, with David Raya making just one save all afternoon.",
+        "opponentPlan": "Coventry set up in a matching 4-3-3, which on paper means every Arsenal player has a direct opponent, but they spent the game defending rather than pressing: 36% possession, only 159 passes in the opposition half to Arsenal's 335, and just 3 touches in the Arsenal box all match. Their 9 interceptions against Arsenal's 5 tells you they were sitting off, reading passing lanes and trying to spring forward rather than hunting the ball. Arsenal's answer was simply to keep the ball moving and stretch that back line \u2014 8 corners, 10 shots from inside the box, and 36 touches in Coventry's penalty area meant Lampard's side were pinned in and never got the platform to counter.",
+        "keyMoment": "The 23rd minute. Havertz's opener on 15 already forced Coventry to chase the game, but Saka's second eight minutes later removed any incentive for them to come out, and the pattern was fixed for the next 70 minutes. \u00d8degaard's goal on 49 \u2014 assisted by Ben White, a full-back \u2014 was the same pattern simply repeating after the break.",
+        "nerdCorner": "Look at the one line that refuses to fit the story: big chances, 1 apiece. Coventry created exactly as many clear openings as Arsenal did, off 4 shots and 3 box touches \u2014 a wildly efficient use of their few moments forward. Arsenal's 1.88 xG was assembled from volume, not a single knockout opportunity: 20 shots, 8 corners, 36 box touches, and a 1 goalkeeper save total for Raya that flatters the defensive work as much as it describes it. The gap between xG 1.88 and xGOT 2.44 says the finishing outperformed the chances by a meaningful margin, which is the sort of thing that regresses. The process here \u2014 pinning a matching 4-3-3 in its own third and refusing to let it out \u2014 is far more repeatable than the conversion rate that turned it into 3-0.",
         "shape": {
           "arsenalInPossession": "3-2-5",
-          "arsenalOutOfPossession": "4-4-2 mid block",
-          "plainEnglish": "On paper both sides lined up 4-3-3, but a formation is only the kick-off photo. With the ball, an Arteta side of this type usually slides one full-back \u2014 with Ben White and Calafiori as the pair, it is typically Calafiori stepping in from the left \u2014 so the back four becomes a back three plus an extra body in midfield, and five attackers stretch across the last line. Without the ball those players fold back the other way: the wide forwards drop into a bank of four and Arsenal defend as a 4-4-2 instead."
+          "arsenalOutOfPossession": "4-3-3 high press",
+          "plainEnglish": "On paper both teams lined up 4-3-3, but a team's shape on the teamsheet is only the shape they defend in. With the ball, an Arteta side like this usually slides one full-back inside next to the holding midfielder and pushes the other high, so the back four becomes a back three, two players screen in front of it, and five attackers spread across the last line. The movement of the full-backs \u2014 Calafiori and White here \u2014 is what turns one shape into the other, which is why a defender ends up credited with an assist."
         },
         "lesson": {
           "conceptId": "shape-in-out",
           "term": "In-possession vs out-of-possession shape",
           "level": 1,
-          "explain": "Both teams were recorded as 4-3-3, and yet the match was nothing like a mirror image \u2014 because the number you see on the team sheet only describes the moment before kick-off. A side like this one typically becomes something closer to a 3-2-5 with the ball, with a full-back tucking inside so there are more passers in midfield and five bodies stretched across the opponent's last line, and then folds back into a 4-4-2 bank when the ball is lost. That is why Arsenal could produce 36 touches in the Coventry box while Coventry managed 3: the shapes were identical on paper and completely different in practice. Ben White assisting \u00d8degaard's goal on 49 is exactly what that looks like \u2014 a defender by formation, an attacker by shape.",
-          "spotIt": "At the next goal kick, find Arsenal's two full-backs and watch where they are ten seconds later \u2014 if one has stepped inside next to Declan Rice instead of staying wide, you have just watched a back four turn into a back three."
+          "explain": "Both teams were recorded as 4-3-3, yet the game looked nothing like a mirror match \u2014 because 4-3-3 only describes how you defend. With the ball, this Arsenal side rearranges: a full-back tucks into midfield, the other pushes high, and the back four effectively becomes a back three feeding five attackers along the last line. That is why Calafiori and Ben White \u2014 both defenders on the teamsheet \u2014 are the two names credited with assists here, for Havertz on 15 and \u00d8degaard on 49. A defender producing the final pass is not a fluke; it is the shape doing what it is designed to do."
         },
         "statTranslations": [
           {
             "stat": "Possession 64% vs 36%",
-            "plain": "Arsenal had the ball roughly two-thirds of the match, so almost everything that happened was Arsenal attacking a set defence rather than an open, end-to-end game."
+            "plain": "Arsenal had the ball roughly two minutes in every three, so the shape you were watching for most of the afternoon was the in-possession one, not the 4-3-3."
           },
           {
-            "stat": "Touches in opposition box: 36 vs 3",
-            "plain": "This is the cleanest measure of territory in the whole list \u2014 Arsenal got into the dangerous area twelve times more often than Coventry did."
+            "stat": "Passes in opposition half 335 vs 159",
+            "plain": "Arsenal did more than twice as much of their passing inside Coventry's half, meaning the game was played almost entirely in one direction."
           },
           {
-            "stat": "Shots inside box: 10 vs 1",
-            "plain": "Arsenal weren't just shooting a lot, they were shooting from good places; Coventry got one shot from inside the box all match."
+            "stat": "Touches in opposition box 36 vs 3",
+            "plain": "Arsenal got into the danger area a dozen times for every one time Coventry did \u2014 the clearest single measure of territorial control."
           },
           {
             "stat": "xG 1.88 vs 0.2, xGOT 2.44 vs 0.04",
-            "plain": "Arsenal's chances were worth about 1.88 goals on average, but the shots that actually hit the target were worth 2.44 \u2014 meaning the finishing and shot placement beat the raw chance quality."
+            "plain": "Arsenal's shots were worth roughly 1.88 goals by quality alone, but 2.44 once you account for where they were placed \u2014 the finishing was better than the chances."
           },
           {
-            "stat": "Interceptions: Arsenal 5, Coventry 9",
-            "plain": "Coventry made nearly twice as many interceptions, which sounds good but usually just means one team is doing all the passing and the other is doing all the reading."
+            "stat": "Shots 20 vs 4, shots inside box 10 vs 1",
+            "plain": "Arsenal shot five times as often, and half their attempts came from inside the box, which is where shots actually get converted."
           }
         ]
       }
