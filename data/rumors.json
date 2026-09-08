@@ -1,257 +1,182 @@
 {
   "lastUpdated": "2026-09-08",
+  "source": "fotmob",
   "items": [
     {
-      "headline": "Arsenal set to make \u00a370m bid for Newcastle's Bruno Guimaraes",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cpq8lpj530po?at_medium=RSS&at_campaign=rss",
-      "date": "2026-07-23",
-      "reliability": "high"
+      "player": "Evanilson",
+      "club": "Bournemouth",
+      "direction": "in",
+      "fee": "\u20ac65M",
+      "date": "2026-09-08",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Arsenal exploring deal for Real Madrid's Vinicius Jr",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12040/13566893/vinicius-jr-transfer-news-arsenal-exploring-deal-for-real-madrid-and-brazil-forward",
-      "date": "2026-07-25",
-      "reliability": "medium"
+      "player": "Raphinha",
+      "club": "Barcelona",
+      "direction": "in",
+      "fee": "\u20ac80M",
+      "date": "2026-09-05",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Guimar\u00e3es not on Newcastle's pre-season flight; deal momentum continues",
-      "source": "The Guardian",
-      "sourceUrl": "https://www.theguardian.com/football/2026/jul/31/newcastle-bruno-guimaraes-pre-season-camp",
-      "date": "2026-07-31",
-      "reliability": "medium"
+      "player": "Endrick",
+      "club": "Real Madrid",
+      "direction": "in",
+      "fee": "\u20ac40M",
+      "date": "2026-08-29",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Real Madrid open to possibility of Vinicius Jr leaving club",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12691/13568924/vinicius-junior-transfer-news-real-madrid-open-to-possibility-of-arsenal-target-leaving-paper-talk",
-      "date": "2026-07-31",
-      "reliability": "medium"
+      "player": "Marcus Rashford",
+      "club": "Manchester United",
+      "direction": "in",
+      "fee": "\u20ac40M",
+      "date": "2026-08-29",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Arsenal in talks to sign Newcastle's Guimaraes",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/ckg9k2yvywxo?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-04",
-      "reliability": "high"
+      "player": "Juli\u00e1n \u00c1lvarez",
+      "club": "Atl\u00e9tico Madrid",
+      "direction": "in",
+      "fee": "\u20ac135M",
+      "date": "2026-08-28",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Could Vinicius Jr really be heading to Arsenal?",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/videos/cewr4xjzp7wo?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-03",
-      "reliability": "high"
+      "player": "Igor Paix\u00e3o",
+      "club": "Marseille",
+      "direction": "in",
+      "fee": "\u20ac36M",
+      "date": "2026-08-26",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Arsenal target Vin\u00edcius says Mourinho 'wants me to be happy' at Real Madrid",
-      "source": "The Guardian",
-      "sourceUrl": "https://www.theguardian.com/football/2026/aug/04/arsenal-target-vinicius-junior-jose-mourinho-real-madrid",
-      "date": "2026-08-04",
-      "reliability": "medium"
+      "player": "Victor Osimhen",
+      "club": "Galatasaray",
+      "direction": "in",
+      "fee": "\u20ac77M",
+      "date": "2026-08-22",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Where would Guimaraes fit in at Arsenal?",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12040/13569644/bruno-guimaraes-to-arsenal-where-would-newcastle-captain-fit-in-and-what-would-it-mean-for-martin-zubimendi-martin-odegaard-myles-lewis-skelly",
-      "date": "2026-08-04",
-      "reliability": "medium"
+      "player": "Kenan Yildiz",
+      "club": "Juventus",
+      "direction": "in",
+      "fee": "\u20ac100M",
+      "date": "2026-08-21",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Arsenal back for \u00a360m bid for Aston Villa defender Ezri Konsa",
-      "source": "The Guardian",
-      "date": "2026-08-06",
-      "reliability": "medium",
-      "sourceUrl": "https://www.theguardian.com/football/2026/aug/06/football-transfer-rumours-arsenal-ezri-konsa-raul-asencio-liverpool"
-    },
-    {
-      "headline": "Arsenal step up push for defensive cover with Timber and Saliba sidelined",
-      "source": "The Guardian",
-      "sourceUrl": "https://www.theguardian.com/football/2026/aug/10/arsenal-defensive-backup-jurrien-timber-william-saliba-sidelined-transfer-window",
-      "date": "2026-08-10",
-      "reliability": "high"
-    },
-    {
-      "headline": "Has Arsenal's indifferent pre-season revealed a surprise weakness?",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12040/13571668/arsenal-have-looked-defensively-weak-in-pre-season-can-they-cope-without-william-saliba-as-premier-league-campaign-nears",
-      "date": "2026-08-10",
-      "reliability": "medium"
-    },
-    {
-      "headline": "Arsenal invite offers for Gabriel Martinelli and Ethan Nwaneri; talks with Galatasaray",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cwy42yqwk30o?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-13",
-      "reliability": "high"
-    },
-    {
-      "headline": "Fresh talks over Arsenal move for Aston Villa's Ezri Konsa",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cx2v175j40zo?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-13",
-      "reliability": "high"
-    },
-    {
-      "headline": "Arsenal express interest in signing Jarell Quansah from Bayer Leverkusen",
-      "source": "The Guardian",
-      "sourceUrl": "https://www.theguardian.com/football/2026/aug/14/arsenal-bayer-leverkusen-jarell-quansah-transfer-talks",
-      "date": "2026-08-14",
-      "reliability": "high"
-    },
-    {
-      "headline": "Arteta '100 per cent' confident Lewis-Skelly stays at Arsenal",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12040/13575044/myles-lewis-skelly-transfer-news-mikel-arteta-100-per-cent-confident-arsenal-will-keep-teenage-midfielder-this-summer",
-      "date": "2026-08-20",
-      "reliability": "high"
-    },
-    {
-      "headline": "Guimaraes doubtful to face Coventry in PL opener",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/live-blog/12040/13025486/arsenal-transfer-news-rumours-and-gossip-live-updates-and-latest-on-deals-signings-loans-and-contracts",
+      "player": "Mart\u00edn Zubimendi",
+      "club": "Real Madrid",
+      "direction": "out",
+      "fee": "\u20ac85M",
       "date": "2026-08-17",
-      "reliability": "medium"
+      "position": "CM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Arsenal preference is for Nwaneri to leave on loan",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c4gd1r1nel2o",
-      "date": "2026-08-19",
-      "reliability": "high"
+      "player": "Jack Hinshelwood",
+      "club": "Brighton",
+      "direction": "in",
+      "fee": "\u20ac60M",
+      "date": "2026-08-15",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Arsenal prefer loan for Ethan Nwaneri to avoid permanent sale",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c4gd1r1nel2o?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-19",
-      "reliability": "high"
+      "player": "Jarell Quansah",
+      "club": "Bayer Leverkusen",
+      "direction": "in",
+      "fee": "free transfer",
+      "date": "2026-08-14",
+      "position": "CB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Arteta 100% confident Lewis-Skelly will remain at Arsenal",
-      "source": "The Guardian",
-      "sourceUrl": "https://www.theguardian.com/football/2026/aug/20/arteta-desire-ambition-title-defence-myles-lewis-skelly-will-stay-arsenal",
-      "date": "2026-08-20",
-      "reliability": "high"
+      "player": "Jules Kounde",
+      "club": "Barcelona",
+      "direction": "in",
+      "fee": "\u20ac70M",
+      "date": "2026-08-13",
+      "position": "RB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Atletico Madrid willing to sell Julian Alvarez to Arsenal",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12691/13575656/arsenal-transfer-news-atletico-madrid-finally-shift-julian-alvarez-position-and-now-willing-to-sell-striker-to-the-gunners-paper-talk",
-      "date": "2026-08-21",
-      "reliability": "medium"
+      "player": "Mart\u00edn Zubimendi",
+      "club": "Chelsea",
+      "direction": "out",
+      "fee": "\u20ac90M",
+      "date": "2026-08-13",
+      "position": "CM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Gary Neville urges Arsenal to sign Julian Alvarez before transfer deadline",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12691/13575645/arsenal-transfer-news-julian-alvarez-would-add-magic-to-gunners-frontline-says-gary-neville-as-he-urges-them-to-sign-atletico-madrid-striker",
-      "date": "2026-08-21",
-      "reliability": "medium"
+      "player": "Joaquin Seys",
+      "club": "Club Brugge",
+      "direction": "in",
+      "fee": "\u20ac35M",
+      "date": "2026-08-10",
+      "position": "LB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Ian Wright questions Arsenal's handling of Gabriel Martinelli's potential exit",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cj636ewwz46o?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-22",
-      "reliability": "high"
+      "player": "Kaua Elias",
+      "club": "Shakhtar Donetsk",
+      "direction": "in",
+      "fee": "\u20ac13M",
+      "date": "2026-08-07",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "headline": "Alvarez's Arsenal dilemma amid summer's most bitter transfer tussle",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c750nd7yq7yo?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-24",
-      "reliability": "high"
-    },
-    {
-      "headline": "Could Alvarez still end up at Arsenal?",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/watch/video/13577035/transfer-latest-how-julian-alvarez-still-end-up-at-arsenal",
-      "date": "2026-08-25",
-      "reliability": "medium"
-    },
-    {
-      "headline": "Arsenal ready to make \u00a3130m Alvarez push",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12691/13576722/xxxx-paper-talk",
-      "date": "2026-08-24",
-      "reliability": "medium"
-    },
-    {
-      "headline": "Arsenal hold talks with Real Madrid for Endrick",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12040/13578352/arsenal-transfer-news-gunners-hold-talks-for-real-madrid-and-brazil-forward-endrick-paper-talk",
-      "date": "2026-08-28",
-      "reliability": "medium"
-    },
-    {
-      "headline": "Atletico Madrid set deadline for Alvarez decision on staying or move to Arsenal",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/news/12691/13578318/julian-alvarez-transfer-news-atletico-madrid-set-deadline-for-striker-to-decide-whether-he-stays-or-joins-arsenal",
-      "date": "2026-08-28",
-      "reliability": "medium"
-    },
-    {
-      "headline": "Arsenal only likely exit for Alvarez as striker skips training",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c980e1d2vpgo?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-27",
-      "reliability": "high"
-    },
-    {
-      "headline": "Arsenal trying to lure Juli\u00e1n \u00c1lvarez after agreeing deals to sell Martinelli and Jesus",
-      "source": "The Guardian",
-      "sourceUrl": "https://www.theguardian.com/football/2026/aug/31/arsenal-julian-alvarez-gabriel-martinelli-jesus-transfers",
-      "date": "2026-08-31",
-      "reliability": "high"
-    },
-    {
-      "headline": "Arsenal exploring move for Lyon winger",
-      "source": "Sky Sports",
-      "sourceUrl": "https://www.skysports.com/football/live-blog/12691/13025486/arsenal-transfer-news-rumours-and-gossip-live-updates-and-latest-on-deals-signings-and-contracts",
-      "date": "2026-08-31",
-      "reliability": "medium"
-    },
-    {
-      "headline": "Arsenal 'begging' Premier League to expand matchday squads from 20 to 23\u201325 players",
-      "source": "The Guardian",
-      "sourceUrl": "https://www.theguardian.com/football/2026/aug/30/mikel-arteta-premier-league-matchday-squad-player-welfare-arsenal",
-      "date": "2026-08-30",
-      "reliability": "high"
-    },
-    {
-      "headline": "Al-Hilal open talks to sign Arsenal winger Martinelli",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cgk4k444rmmo?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-23",
-      "reliability": "high"
-    },
-    {
-      "headline": "Martinelli deserves better from Arsenal - Wright questions club's handling",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cj636ewwz46o?at_medium=RSS&at_campaign=rss",
-      "date": "2026-08-22",
-      "reliability": "high"
-    },
-    {
-      "headline": "Arsenal trying to lure Juli\u00e1n \u00c1lvarez after Martinelli and Jesus departures",
-      "source": "The Guardian",
-      "sourceUrl": "https://www.theguardian.com/football/2026/aug/31/arsenal-julian-alvarez-gabriel-martinelli-jesus-transfers",
-      "date": "2026-08-31",
-      "reliability": "high"
-    },
-    {
-      "headline": "Will Arsenal sign Julian Alvarez?",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/videos/c39m1ded214o",
-      "date": "2026-08-31",
-      "reliability": "high"
-    },
-    {
-      "headline": "Arteta joins elite 250 club - but where does he rank?",
-      "source": "BBC Sport",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cy4z8qjx931o",
-      "date": "2026-08-31",
-      "reliability": "high"
+      "player": "Nico Williams",
+      "club": "Athletic Bilbao",
+      "direction": "in",
+      "fee": "\u20ac55M",
+      "date": "2026-07-29",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     }
   ]
 }

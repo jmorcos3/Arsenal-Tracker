@@ -19,7 +19,8 @@ from urllib.error import URLError
 import feedparser
 from anthropic import Anthropic
 
-from fotmob import fetch_recent_matches, fetch_upcoming_fixtures, summarize_for_prompt
+from fotmob import (fetch_recent_matches, fetch_standing, fetch_transfers,
+                    fetch_upcoming_fixtures, summarize_for_prompt)
 from kalshi import fetch_trophy_prices, double_item
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -192,6 +193,67 @@ def refresh_fixtures(count=5):
         "items": fixtures,
     }, indent=2) + "\n")
     return fixtures
+
+
+def refresh_standing():
+    """Store Arsenal's league position and form, keeping the last on failure."""
+    standing = fetch_standing()
+    if not standing:
+        print("[warn] no standing returned; keeping previous")
+        return load_json("standing.json") or None
+    (DATA_DIR / "standing.json").write_text(json.dumps({
+        "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        **standing,
+    }, indent=2) + "\n")
+    return standing
+
+
+RECENT_TRANSFER_DAYS = 45
+MAX_RUMORS_SHOWN = 8
+
+
+def recent_transfers(days=RECENT_TRANSFER_DAYS):
+    """Stored transfers from the last `days`, so the email shows movement
+    rather than the whole window every time."""
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
+    stored = load_json("transfers.json") or {}
+    keep = lambda rows: [r for r in rows or [] if (r.get("date") or "") >= cutoff]
+    return {"in": keep(stored.get("in")), "out": keep(stored.get("out"))}
+
+
+def recent_rumors(limit=MAX_RUMORS_SHOWN):
+    return ((load_json("rumors.json") or {}).get("items") or [])[:limit]
+
+
+def refresh_transfers():
+    """Rewrite transfers and rumours from FotMob's structured data.
+
+    These were previously inferred by a model reading RSS headlines, which is
+    the same arrangement that produced wrong match statistics in August. Fee,
+    direction, date and loan status are real fields here. Rival-club moves stay
+    on the news path — this endpoint only covers Arsenal.
+    """
+    data = fetch_transfers()
+    if not data:
+        print("[warn] no FotMob transfers; keeping previous files")
+        return
+
+    incoming = [t for t in data["transfers"] if t["direction"] == "in"]
+    outgoing = [t for t in data["transfers"] if t["direction"] == "out"]
+    (DATA_DIR / "transfers.json").write_text(json.dumps({
+        "window": "2026-27",
+        "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "source": "fotmob",
+        "in": incoming,
+        "out": outgoing,
+    }, indent=2) + "\n")
+    (DATA_DIR / "rumors.json").write_text(json.dumps({
+        "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "source": "fotmob",
+        "items": data["rumours"],
+    }, indent=2) + "\n")
+    print(f"[ok] transfers grounded: {len(incoming)} in, {len(outgoing)} out, "
+          f"{len(data['rumours'])} rumours")
 
 
 # ---------- LLM: structured digest ----------
@@ -923,10 +985,8 @@ def apply_additions(additions):
     transfers = load_json("transfers.json") or {"window": "Summer 2026", "in": [], "out": []}
     transfers.setdefault("in", [])
     transfers.setdefault("out", [])
-    _merge(transfers["in"], additions.get("transfers_in"), lambda t: _norm(t.get("player")))
-    _merge(transfers["out"], additions.get("transfers_out"), lambda t: _norm(t.get("player")))
-    transfers["lastUpdated"] = today
-    (DATA_DIR / "transfers.json").write_text(json.dumps(transfers, indent=2) + "\n")
+    # Arsenal's own transfers come from FotMob in refresh_transfers(); the news
+    # model no longer gets to add rows here.
 
     pl = load_json("pl-transfers.json") or {"window": "Summer 2026", "items": []}
     pl.setdefault("items", [])
@@ -935,12 +995,7 @@ def apply_additions(additions):
     pl["lastUpdated"] = today
     (DATA_DIR / "pl-transfers.json").write_text(json.dumps(pl, indent=2) + "\n")
 
-    rumors = load_json("rumors.json") or {"items": []}
-    rumors.setdefault("items", [])
-    _merge(rumors["items"], additions.get("rumors"),
-           lambda r: _norm(r.get("headline"))[:80])
-    rumors["lastUpdated"] = today
-    (DATA_DIR / "rumors.json").write_text(json.dumps(rumors, indent=2) + "\n")
+    # Rumours likewise come from FotMob, not from headline inference.
 
     print("[ok] additions applied")
 
@@ -1017,6 +1072,45 @@ def render_header(today_str):
     )
 
 
+FORM_COLORS = {"W": ("#1c6b3f", "#e8f6ee"), "D": ("#7a5a00", "#fff3cd"), "L": ("#8a1420", "#fbe3e6")}
+
+
+def render_standing(st):
+    """Season context: without this the digest never says where Arsenal sit."""
+    if not st or st.get("position") is None:
+        return ""
+    pips = "".join(
+        '<span style="display:inline-block;width:18px;height:18px;line-height:18px;'
+        'text-align:center;border-radius:4px;font-size:11px;font-weight:700;'
+        f'background:{FORM_COLORS.get(r, ("#4a5560", "#eceff3"))[1]};'
+        f'color:{FORM_COLORS.get(r, ("#4a5560", "#eceff3"))[0]};margin-left:3px;">{E(r)}</span>'
+        for r in st.get("form") or [])
+    record = f'{st.get("wins", 0)}W–{st.get("draws", 0)}D–{st.get("losses", 0)}L'
+    gd = st.get("goalDifference")
+    gd_txt = f'{gd:+d}' if isinstance(gd, int) else "—"
+    return (
+        f'<tr><td style="padding:14px 28px;background:{CARD_ALT};border-bottom:1px solid {BORDER};">'
+        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">'
+        f'<tr>'
+        f'<td style="font-size:13px;color:{INK};">'
+        f'<strong style="font-size:16px;color:{RED_DARK};">{_ordinal(st["position"])}</strong>'
+        f'<span style="color:{INK_SOFT};"> in the {E(st.get("competition") or "league")}</span> · '
+        f'<strong>{st.get("points", 0)} pts</strong> · {E(record)} · GD {E(gd_txt)}'
+        f'<span style="color:{INK_SOFT};"> from {st.get("played", 0)} played</span>'
+        f'</td>'
+        f'<td align="right" style="white-space:nowrap;">{pips}</td>'
+        f'</tr></table></td></tr>'
+    )
+
+
+def _ordinal(n):
+    if not isinstance(n, int):
+        return str(n)
+    if 11 <= n % 100 <= 13:
+        return f"{n}th"
+    return f"{n}{ {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th') }"
+
+
 def render_intro(summary):
     if not summary:
         return ""
@@ -1079,19 +1173,18 @@ def render_odds(odds_items, commentary):
 
 def _transfer_line(t, direction):
     name = t.get("player") or ""
-    club = t.get("club") or ""
-    fee = t.get("fee") or ""
-    date = t.get("date") or ""
     arrow = "←" if direction == "in" else "→"
     parts = []
-    if club:
-        parts.append(f'{arrow} {E(club)}')
-    if fee:
-        parts.append(E(fee))
-    if date:
-        parts.append(f'<span style="color:{INK_SOFT};">{E(date)}</span>')
-    meta = " · ".join(parts)
-    body = f'<strong>{E(name)}</strong>' + (f' {meta}' if meta else "")
+    if t.get("club"):
+        parts.append(f'{arrow} {E(t["club"])}')
+    if t.get("onLoan"):
+        parts.append('<span style="color:%s;font-weight:600;">loan</span>' % INK_SOFT)
+    elif t.get("fee"):
+        parts.append(f'<strong>{E(t["fee"])}</strong>')
+    if t.get("date"):
+        parts.append(f'<span style="color:{INK_SOFT};">{E(t["date"])}</span>')
+    pos = f' <span style="color:{INK_SOFT};font-size:11px;">{E(t["position"])}</span>' if t.get("position") else ""
+    body = f'<strong>{E(name)}</strong>{pos}' + (f' {" · ".join(parts)}' if parts else "")
     if t.get("sourceUrl"):
         body += f' <a href="{E(t["sourceUrl"])}" style="color:{RED_DARK};text-decoration:none;font-size:12px;">[source]</a>'
     return body
@@ -1116,14 +1209,25 @@ def render_rumors(items):
         return _section_header("Rumors") + _section_body(_empty())
     lines = []
     for r in items:
-        badge = _reliability_badge(r.get("reliability", "medium"))
-        head = f'<strong>{E(r.get("headline") or "")}</strong>{badge}'
-        meta_bits = []
-        if r.get("source"):
-            meta_bits.append(_source_link(r.get("sourceUrl"), r.get("source")))
-        if r.get("date"):
-            meta_bits.append(E(r["date"]))
-        meta = f'<div style="font-size:12px;color:{INK_SOFT};margin-top:2px;">{" · ".join(meta_bits)}</div>' if meta_bits else ""
+        if r.get("player"):
+            # FotMob row: structured fields rather than a headline sentence.
+            direction = "in from" if r.get("direction") == "in" else "out to"
+            fee = f' · <strong>{E(r["fee"])}</strong>' if r.get("fee") else ""
+            pos = f' <span style="color:{INK_SOFT};font-size:11px;">{E(r["position"])}</span>' if r.get("position") else ""
+            head = (f'<strong>{E(r["player"])}</strong>{pos} '
+                    f'<span style="color:{INK_SOFT};">{direction}</span> {E(r.get("club") or "?")}{fee}')
+            meta_bits = ["FotMob"]
+            if r.get("date"):
+                meta_bits.append(E(r["date"]))
+        else:
+            head = f'<strong>{E(r.get("headline") or "")}</strong>{_reliability_badge(r.get("reliability", "medium"))}'
+            meta_bits = []
+            if r.get("source"):
+                meta_bits.append(_source_link(r.get("sourceUrl"), r.get("source")))
+            if r.get("date"):
+                meta_bits.append(E(r["date"]))
+        meta = (f'<div style="font-size:12px;color:{INK_SOFT};margin-top:2px;">'
+                f'{" · ".join(meta_bits)}</div>') if meta_bits else ""
         lines.append(head + meta)
     return _section_header("Rumors") + _section_body(_bullet_list(lines))
 
@@ -1370,18 +1474,20 @@ def render_footer():
 
 
 def render_email(odds_items, additions, narrative, today_str, preheader,
-                 tactics_entry=None, lesson_number=1, fixtures=None):
+                 tactics_entry=None, lesson_number=1, fixtures=None, standing=None,
+                 transfers=None, rumors=None):
     additions = additions or {}
     narrative = narrative or {}
 
     inner = (
         render_header(today_str)
+        + render_standing(standing)
         + render_intro(narrative.get("summary"))
         + render_tactics(tactics_entry, lesson_number)
         + render_odds(odds_items, narrative.get("odds_commentary"))
-        + render_transfers_in(additions.get("transfers_in") or [])
-        + render_transfers_out(additions.get("transfers_out") or [])
-        + render_rumors(additions.get("rumors") or [])
+        + render_transfers_in((transfers or {}).get("in") or [])
+        + render_transfers_out((transfers or {}).get("out") or [])
+        + render_rumors(rumors or [])
         + render_squad(narrative.get("squad_news") or [])
         + render_pl(additions.get("pl_transfers") or [], narrative.get("around_pl_notes") or [])
         + render_fixtures(fixtures or [], narrative.get("fixtures") or [])
@@ -1466,6 +1572,9 @@ def main():
         tactics_entry = ensure_latest_match(
             recent_matches, refresh_tactics(recent_matches) or latest_tactics_entry())
         fixtures = refresh_fixtures()
+        standing = refresh_standing()
+        refresh_transfers()
+        transfers, rumors = recent_transfers(), recent_rumors()
         lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
 
         items, lookback_hours = gather_news()
@@ -1484,6 +1593,8 @@ def main():
                 tactics_entry=tactics_entry,
                 lesson_number=lesson_number,
                 fixtures=fixtures,
+                standing=standing,
+                transfers=transfers, rumors=rumors,
             )
             send_email(html_body, "quiet news cycle", 0)
             record_send()
@@ -1504,6 +1615,8 @@ def main():
             tactics_entry=tactics_entry,
             lesson_number=lesson_number,
             fixtures=fixtures,
+            standing=standing,
+            transfers=transfers, rumors=rumors,
         )
         send_email(html_body, result.get("subject_highlight", ""), len(items))
         record_send()

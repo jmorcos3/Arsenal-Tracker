@@ -1,82 +1,350 @@
 {
-  "window": "Summer 2026",
+  "window": "2026-27",
   "lastUpdated": "2026-09-08",
+  "source": "fotmob",
   "in": [
     {
-      "player": "Christos Tzolis",
-      "club": "Club Brugge",
-      "fee": "\u00a334m",
-      "date": "2026-07-23"
+      "player": "Igor Tyjon",
+      "club": "Blackburn Rovers",
+      "direction": "in",
+      "fee": null,
+      "date": "2026-09-03",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
       "player": "Axel Donczew",
       "club": "Cardiff City",
-      "date": "2026-07-27",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c4g621z2lvzo?at_medium=RSS&at_campaign=rss"
-    },
-    {
-      "player": "Bruno Guimar\u00e3es",
-      "club": "Newcastle United",
-      "fee": "up to \u00a380m",
-      "date": "2026-07-30",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cgewqpp5e57o?at_medium=RSS&at_campaign=rss"
-    },
-    {
-      "player": "Christian Norgaard",
-      "club": "Arsenal",
-      "fee": "\u00a37m",
-      "date": "2026-08-05",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cm2gvlnjndpo"
+      "direction": "in",
+      "fee": null,
+      "date": "2026-08-30",
+      "position": null,
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
       "player": "Ezri Konsa",
       "club": "Aston Villa",
-      "fee": "\u00a351m",
-      "date": "2026-08-20",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c98vz9jvg0vo?at_medium=RSS&at_campaign=rss"
+      "direction": "in",
+      "fee": "\u20ac60M",
+      "date": "2026-08-21",
+      "position": "CB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Bruno Guimar\u00e3es",
+      "club": "Newcastle United",
+      "direction": "in",
+      "fee": "\u20ac88M",
+      "date": "2026-08-08",
+      "position": "CM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Christos Tzolis",
+      "club": "Club Brugge",
+      "direction": "in",
+      "fee": "\u20ac40M",
+      "date": "2026-07-23",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Illan Meslier",
+      "club": "Free agent",
+      "direction": "in",
+      "fee": "free transfer",
+      "date": "2026-07-10",
+      "position": "GK",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Piero Hincapi\u00e9",
+      "club": "Bayer Leverkusen",
+      "direction": "in",
+      "fee": "\u20ac40M",
+      "date": "2026-06-25",
+      "position": "LB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Bukayo Saka",
+      "club": "Arsenal",
+      "direction": "in",
+      "fee": "contract extension",
+      "date": "2026-02-17",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": true,
+      "source": "fotmob"
+    },
+    {
+      "player": "Evan Mooney",
+      "club": "St. Mirren",
+      "direction": "in",
+      "fee": "undisclosed",
+      "date": "2026-02-03",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "William Saliba",
+      "club": "Arsenal",
+      "direction": "in",
+      "fee": "contract extension",
+      "date": "2025-09-30",
+      "position": "CB",
+      "onLoan": false,
+      "contractExtension": true,
+      "source": "fotmob"
     }
   ],
   "out": [
     {
-      "player": "Christian Norgaard",
-      "club": "Everton",
-      "fee": "\u00a37m",
-      "date": "2026-08-05",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cm2gvlnjndpo"
-    },
-    {
       "player": "Gabriel Martinelli",
-      "club": "Al-Hilal",
-      "fee": "at least \u00a350m",
-      "date": "2026-08-24",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/cgk4k444rmmo?at_medium=RSS&at_campaign=rss"
+      "club": "Al Hilal",
+      "direction": "out",
+      "fee": "\u20ac70M",
+      "date": "2026-09-03",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "player": "Gabriel Jesus",
-      "club": "Barcelona",
-      "fee": "\u00a38.6m",
-      "date": "2026-08-30",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c9qr79jr1qqo?at_medium=RSS&at_campaign=rss"
+      "player": "Reiss Nelson",
+      "club": "Feyenoord",
+      "direction": "out",
+      "fee": "free transfer",
+      "date": "2026-09-03",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
-      "player": "Fabio Vieira",
-      "club": "Hamburg",
-      "fee": "\u20ac10m (\u00a38.6m)",
-      "date": "2026-08-30",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c5ymvz83dy1o?at_medium=RSS&at_campaign=rss"
+      "player": "Tommy Setford",
+      "club": "Stevenage",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2026-09-01",
+      "position": "GK",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
       "player": "Ethan Nwaneri",
       "club": "Borussia Dortmund",
+      "direction": "out",
+      "fee": "on loan",
       "date": "2026-09-01",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c70lq9rpzgjo?at_medium=RSS&at_campaign=rss"
+      "position": "AM",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Gabriel Jesus",
+      "club": "Barcelona",
+      "direction": "out",
+      "fee": "\u20ac10M",
+      "date": "2026-09-01",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
     },
     {
       "player": "F\u00e1bio Vieira",
-      "club": "Hamburg",
-      "fee": "\u20ac10m (\u00a38.6m)",
-      "date": "2026-08-30",
-      "sourceUrl": "https://www.bbc.co.uk/sport/football/articles/c5ymvz83dy1o"
+      "club": "Hamburger SV",
+      "direction": "out",
+      "fee": "\u20ac9.0M",
+      "date": "2026-09-01",
+      "position": "CM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Reiss Nelson",
+      "club": "Free agent",
+      "direction": "out",
+      "fee": "free transfer",
+      "date": "2026-08-28",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Ismeal Kabia",
+      "club": "St. Mirren",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2026-08-16",
+      "position": "RWB",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Christian N\u00f8rgaard",
+      "club": "Everton",
+      "direction": "out",
+      "fee": "\u20ac8.0M",
+      "date": "2026-08-07",
+      "position": "DM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Alexei Rojas",
+      "club": "Penafiel",
+      "direction": "out",
+      "fee": "free transfer",
+      "date": "2026-07-21",
+      "position": "GK",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Leandro Trossard",
+      "club": "Be\u015fikta\u015f",
+      "direction": "out",
+      "fee": "\u20ac20M",
+      "date": "2026-07-14",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Karl Hein",
+      "club": "Werder Bremen",
+      "direction": "out",
+      "fee": "\u20ac3.0M",
+      "date": "2026-05-23",
+      "position": "GK",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Jakub Kiwior",
+      "club": "FC Porto",
+      "direction": "out",
+      "fee": null,
+      "date": "2026-05-05",
+      "position": "CB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Charles Sagoe Jr.",
+      "club": "Kalmar FF",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2026-02-11",
+      "position": "LW",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Oleksandr Zinchenko",
+      "club": "Ajax",
+      "direction": "out",
+      "fee": "\u20ac1.5M",
+      "date": "2026-02-01",
+      "position": "LB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Louie Copley",
+      "club": "Crawley Town",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2026-02-01",
+      "position": "CM",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Maldini Kacurri",
+      "club": "Grimsby Town",
+      "direction": "out",
+      "fee": "undisclosed",
+      "date": "2026-02-01",
+      "position": "CB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Ethan Nwaneri",
+      "club": "Marseille",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2026-01-23",
+      "position": "CM",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Maldini Kacurri",
+      "club": "Morecambe",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2025-09-19",
+      "position": "CB",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Michal Rosiak",
+      "club": "\u015al\u0105sk Wroc\u0142aw",
+      "direction": "out",
+      "fee": "free transfer",
+      "date": "2025-09-09",
+      "position": "RB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Ismeal Kabia",
+      "club": "Shrewsbury Town",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2025-09-09",
+      "position": "RWB",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
     }
   ]
 }
