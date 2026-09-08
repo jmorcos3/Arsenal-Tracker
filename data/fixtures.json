@@ -1,0 +1,61 @@
+{
+  "lastUpdated": "2026-09-01",
+  "timezone": "America/New_York",
+  "items": [
+    {
+      "fixtureId": 5795435,
+      "date": "2026-09-06",
+      "kickoffUtc": "2026-09-06T15:30:00.000Z",
+      "kickoffLocal": "Sun Sep 6, 11:30 AM EDT",
+      "opponent": "Chelsea",
+      "opponentId": 8455,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png",
+      "competition": "Premier League",
+      "homeAway": "H"
+    },
+    {
+      "fixtureId": 6106318,
+      "date": "2026-09-09",
+      "kickoffUtc": "2026-09-09T19:00:00.000Z",
+      "kickoffLocal": "Wed Sep 9, 3:00 PM EDT",
+      "opponent": "Napoli",
+      "opponentId": 9875,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9875.png",
+      "competition": "Champions League",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 5795453,
+      "date": "2026-09-12",
+      "kickoffUtc": "2026-09-12T19:00:00.000Z",
+      "kickoffLocal": "Sat Sep 12, 3:00 PM EDT",
+      "opponent": "Sunderland",
+      "opponentId": 8472,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8472.png",
+      "competition": "Premier League",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 6099332,
+      "date": "2026-09-15",
+      "kickoffUtc": "2026-09-15T19:00:00.000Z",
+      "kickoffLocal": "Tue Sep 15, 3:00 PM EDT",
+      "opponent": "Ipswich",
+      "opponentId": 9902,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9902.png",
+      "competition": "EFL Cup",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 5795457,
+      "date": "2026-09-19",
+      "kickoffUtc": "2026-09-19T14:00:00.000Z",
+      "kickoffLocal": "Sat Sep 19, 10:00 AM EDT",
+      "opponent": "Brighton",
+      "opponentId": 10204,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10204.png",
+      "competition": "Premier League",
+      "homeAway": "A"
+    }
+  ]
+}

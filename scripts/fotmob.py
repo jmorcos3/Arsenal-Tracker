@@ -18,6 +18,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 API_BASE = "https://www.fotmob.com/api/data"
+CREST_BASE = "https://images.fotmob.com/image_resources/logo/teamlogo"
 ARSENAL_TEAM_ID = 9825
 FINISHED_PERIOD = "All"
 # Don't reach back into a finished season and spend lessons on stale matches.
@@ -101,7 +102,7 @@ def fetch_recent_matches(count=3):
     finished.sort(key=lambda f: (f.get("status") or {}).get("utcTime") or "")
     matches = []
     for fixture in finished[-count:]:
-        match = fetch_match(fixture["id"])
+        match = fetch_match(fixture["id"], fixture.get("pageUrl"))
         if match:
             matches.append(match)
     return matches
@@ -113,8 +114,12 @@ def _is_friendly(fixture):
     return "friendl" in name
 
 
-def fetch_match(match_id):
-    """Full detail for one fixture, or None."""
+def fetch_match(match_id, page_url=None):
+    """Full detail for one fixture, or None.
+
+    `page_url` comes from the fixture list; the match-detail payload carries no
+    canonical link of its own.
+    """
     payload = _get("matchDetails", {"matchId": match_id})
     if not payload:
         return None
@@ -132,7 +137,8 @@ def fetch_match(match_id):
     match = {
         "fixtureId": match_id,
         "source": "fotmob",
-        "sourceUrl": f"https://www.fotmob.com/matches/x/x/x#{match_id}",
+        "sourceUrl": (f"https://www.fotmob.com{page_url}" if page_url
+                      else f"https://www.fotmob.com/match/{match_id}"),
         "date": (general.get("matchTimeUTCDate") or "")[:10],
         "competition": general.get("leagueName") or general.get("parentLeagueName"),
         "round": general.get("leagueRoundName"),
@@ -282,3 +288,66 @@ MATCH STATISTICS (full match):
 
 GOALS:
 {goals}"""
+
+DISPLAY_TZ = "America/New_York"
+
+
+def _kickoff_local(utc_text):
+    """(ISO date, human kickoff) in the reader's timezone."""
+    if not utc_text:
+        return None, None
+    try:
+        moment = datetime.fromisoformat(utc_text.replace("Z", "+00:00"))
+    except ValueError:
+        return utc_text[:10], None
+    try:
+        from zoneinfo import ZoneInfo
+        local = moment.astimezone(ZoneInfo(DISPLAY_TZ))
+    except Exception:
+        local = moment  # tzdata unavailable: fall back to UTC rather than fail
+    return local.strftime("%Y-%m-%d"), local.strftime("%a %b %-d, %-I:%M %p %Z")
+
+
+def fetch_upcoming_fixtures(count=5):
+    """The next `count` scheduled Arsenal fixtures, soonest first.
+
+    Home/away comes from the home/away team ids, not the pageUrl slug — the slug
+    ordering does not reliably match (an Arsenal-away fixture can still be
+    slugged "arsenal-vs-...").
+    """
+    team = _get("teams", {"id": ARSENAL_TEAM_ID})
+    if not team:
+        return []
+
+    fixtures = (((team.get("fixtures") or {}).get("allFixtures") or {}).get("fixtures")) or []
+    now = datetime.now(timezone.utc).isoformat()
+    upcoming = [
+        f for f in fixtures
+        if not (f.get("status") or {}).get("finished")
+        and not (f.get("status") or {}).get("cancelled")
+        and ((f.get("status") or {}).get("utcTime") or "") > now
+    ]
+    upcoming.sort(key=lambda f: (f.get("status") or {}).get("utcTime") or "")
+
+    out = []
+    for f in upcoming[:count]:
+        utc_time = (f.get("status") or {}).get("utcTime")
+        date, kickoff = _kickoff_local(utc_time)
+        home_id = (f.get("home") or {}).get("id")
+        opponent = f.get("opponent") or {}
+        opponent_id = opponent.get("id")
+        out.append({
+            "fixtureId": f.get("id"),
+            "date": date,
+            "kickoffUtc": utc_time,
+            "kickoffLocal": kickoff,
+            "opponent": opponent.get("name"),
+            "opponentId": opponent_id,
+            # FotMob serves club crests off a predictable path keyed by team id.
+            "crestUrl": f"{CREST_BASE}/{opponent_id}.png" if opponent_id else None,
+            "competition": (f.get("tournament") or {}).get("name"),
+            "homeAway": "H" if home_id == ARSENAL_TEAM_ID else "A",
+        })
+    if out:
+        print(f"[ok] fotmob upcoming fixtures: {len(out)}")
+    return out

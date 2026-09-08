@@ -1,5 +1,5 @@
 (async function () {
-  const [odds, transfers, plTransfers, rumors, sources, tactics, glossary] = await Promise.all([
+  const [odds, transfers, plTransfers, rumors, sources, tactics, glossary, fixtures] = await Promise.all([
     fetchJSON('data/odds.json'),
     fetchJSON('data/transfers.json'),
     fetchJSON('data/pl-transfers.json'),
@@ -7,16 +7,18 @@
     fetchJSON('data/sources.json'),
     fetchJSON('data/tactics.json'),
     fetchJSON('data/glossary.json'),
+    fetchJSON('data/fixtures.json'),
   ]);
 
   renderTactics(tactics, glossary);
   renderGlossary(glossary, tactics);
+  renderFixtures(fixtures);
   renderOdds(odds);
   renderTransfers(transfers);
   renderPLTransfers(plTransfers);
   renderRumors(rumors);
   renderSources(sources);
-  renderLastUpdated([odds, transfers, plTransfers, rumors, tactics]);
+  renderLastUpdated([odds, transfers, plTransfers, rumors, tactics, fixtures]);
 })();
 
 async function fetchJSON(path) {
@@ -146,6 +148,34 @@ function renderGlossary(data, tactics) {
       });
     });
   });
+}
+
+function compSlug(name) {
+  return (name || '').toLowerCase().replace(/[^a-z]+/g, '-');
+}
+
+function renderFixtures(data) {
+  const body = document.getElementById('fixtures-body');
+  const items = (data && data.items) || [];
+  if (!items.length) {
+    body.innerHTML = '<tr><td colspan="4" class="empty">No upcoming fixtures.</td></tr>';
+    return;
+  }
+  body.innerHTML = items.map(f => `
+    <tr>
+      <td class="fx-crest">${f.crestUrl
+        ? `<img src="${escapeAttr(f.crestUrl)}" alt="${escapeAttr(f.opponent || '')} crest" width="30" height="30" />`
+        : ''}</td>
+      <td class="fx-team">
+        <span class="fx-opponent">${escapeHTML(f.opponent || '?')}</span>
+        <span class="fx-venue ${f.homeAway === 'H' ? 'is-home' : 'is-away'}">${f.homeAway === 'H' ? 'Home' : 'Away'}</span>
+      </td>
+      <td class="fx-comp">
+        <span class="comp-badge comp-${escapeAttr(compSlug(f.competition))}">${escapeHTML(f.competition || '')}</span>
+      </td>
+      <td class="fx-when">${escapeHTML(f.kickoffLocal || f.date || '')}</td>
+    </tr>
+  `).join('');
 }
 
 function renderOdds(data) {

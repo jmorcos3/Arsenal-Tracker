@@ -1,5 +1,6 @@
 """Fetch Arsenal news, refresh live odds, update tracker JSON, email a digest."""
 
+import copy
 import html
 import json
 import os
@@ -18,7 +19,7 @@ from urllib.error import URLError
 import feedparser
 from anthropic import Anthropic
 
-from fotmob import fetch_recent_matches, summarize_for_prompt
+from fotmob import fetch_recent_matches, fetch_upcoming_fixtures, summarize_for_prompt
 from kalshi import fetch_trophy_prices, double_item
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -32,7 +33,12 @@ FEEDS = [
     ("Sky Sports — Transfers", "https://www.skysports.com/rss/12691"),
 ]
 
-LOOKBACK_HOURS = 72
+# News window. Derived from the last successful send so it always matches the
+# actual cadence; the fallback covers the longest normal gap (Thu -> Tue).
+DEFAULT_LOOKBACK_HOURS = 120
+MIN_LOOKBACK_HOURS = 12
+MAX_LOOKBACK_HOURS = 336
+STATE_FILE = "state.json"
 MODEL = "claude-haiku-4-5-20251001"
 # The tactics write-up is the one piece of generated content a beginner can't
 # sanity-check for themselves, so it gets the strongest model.
@@ -57,8 +63,39 @@ FAILURE_SENTINEL = ".failure-notified"
 
 # ---------- news gathering ----------
 
+def news_window():
+    """(cutoff, hours) for this run, measured from the last successful digest.
+
+    Falling back to a fixed window would either miss news over the long
+    weekend gap or repeat it on the short one, depending on the constant.
+    """
+    now = datetime.now(timezone.utc)
+    last = (load_json(STATE_FILE) or {}).get("lastDigestAt")
+    if last:
+        try:
+            previous = datetime.fromisoformat(last)
+            hours = (now - previous).total_seconds() / 3600
+            if hours <= MAX_LOOKBACK_HOURS:
+                # A manual re-run soon after a send gets a short window rather
+                # than the full default, so it doesn't replay days of old news.
+                hours = max(hours, MIN_LOOKBACK_HOURS)
+                return now - timedelta(hours=hours), hours
+            print(f"[info] last send was {hours:.0f}h ago, beyond the cap; using default window")
+        except (TypeError, ValueError):
+            print("[warn] unreadable lastDigestAt; using default window")
+    return now - timedelta(hours=DEFAULT_LOOKBACK_HOURS), DEFAULT_LOOKBACK_HOURS
+
+
+def record_send():
+    path = DATA_DIR / STATE_FILE
+    state = load_json(STATE_FILE) or {}
+    state["lastDigestAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    path.write_text(json.dumps(state, indent=2) + "\n")
+
+
 def gather_news():
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=LOOKBACK_HOURS)
+    cutoff, hours = news_window()
+    print(f"[info] news window: {hours:.0f}h")
     items = []
     for source, url in FEEDS:
         try:
@@ -87,7 +124,7 @@ def gather_news():
         if k and k not in seen:
             seen.add(k)
             unique.append(it)
-    return unique
+    return unique, hours
 
 
 # ---------- odds ----------
@@ -140,6 +177,21 @@ def refresh_odds_file():
         "history": history,
     }, indent=2) + "\n")
     print(f"[ok] odds refreshed from Kalshi ({len(live)} live markets)")
+
+
+def refresh_fixtures(count=5):
+    """Store the next fixtures, keeping the previous list if the fetch fails."""
+    path = DATA_DIR / "fixtures.json"
+    fixtures = fetch_upcoming_fixtures(count)
+    if not fixtures:
+        print("[warn] no upcoming fixtures returned; keeping previous list")
+        return (load_json("fixtures.json") or {}).get("items", [])
+    path.write_text(json.dumps({
+        "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "timezone": "America/New_York",
+        "items": fixtures,
+    }, indent=2) + "\n")
+    return fixtures
 
 
 # ---------- LLM: structured digest ----------
@@ -205,7 +257,7 @@ def load_json(name):
     return json.loads(p.read_text()) if p.exists() else {}
 
 
-def generate_digest(items, odds_snapshot):
+def generate_digest(items, odds_snapshot, lookback_hours=DEFAULT_LOOKBACK_HOURS):
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
     articles_block = "\n\n".join(
@@ -230,7 +282,7 @@ def generate_digest(items, odds_snapshot):
     prompt = f"""You are producing structured content for an Arsenal FC news digest.
 
 TODAY: {today}
-LOOKBACK: last {LOOKBACK_HOURS} hours
+LOOKBACK: last {lookback_hours:.0f} hours
 
 CURRENT LIVE ODDS (Arsenal to win each trophy):
 {odds_lines}
@@ -515,6 +567,52 @@ HARD RULES — a wrong claim here is worse than no claim, because the reader can
     return None
 
 
+
+def _strictify(node):
+    """Recursively set additionalProperties:false, as strict tool use requires."""
+    if isinstance(node, dict):
+        if node.get("type") == "object" and "properties" in node:
+            node["additionalProperties"] = False
+        for value in node.values():
+            _strictify(value)
+    elif isinstance(node, list):
+        for value in node:
+            _strictify(value)
+    return node
+
+
+def _build_grounded_tool():
+    """Schema for the FotMob path, where the match facts are already verified.
+
+    The research schema lets the model decline via `matchFound` and requires
+    nothing else — correct when it has to find the match itself, but wrong here.
+    Under strict validation that made a bare {"matchFound": true} a *valid*
+    response, which is exactly what silently dropped Coventry. On this path the
+    model is handed the data, so every content field is mandatory.
+    """
+    tool = copy.deepcopy(TACTICS_TOOL)
+    schema = tool["input_schema"]
+    for research_only in ("matchFound", "match", "confidence", "sources"):
+        schema["properties"].pop(research_only, None)
+    schema["required"] = list(schema["properties"].keys())
+
+    lesson = schema["properties"].get("lesson", {})
+    if "properties" in lesson:
+        lesson["required"] = list(lesson["properties"].keys())
+    shape = schema["properties"].get("shape", {})
+    if "properties" in shape:
+        shape["required"] = list(shape["properties"].keys())
+
+    tool["description"] = (
+        "Emit a beginner-friendly tactical breakdown of the Arsenal match whose "
+        "verified data is given in the prompt. Every field is required."
+    )
+    return dict(_strictify(tool), strict=True)
+
+
+GROUNDED_TACTICS_TOOL = _build_grounded_tool()
+
+
 def generate_tactics(match, concepts_taught):
     """Explain a match. Every fact must come from `match`; the model adds only interpretation."""
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
@@ -552,17 +650,29 @@ HARD RULES — a wrong claim here is worse than no claim, because the reader can
 
 Call the `publish_tactics` tool."""
 
-    resp = client.messages.create(
-        model=TACTICS_MODEL,
-        max_tokens=3000,
-        tools=[TACTICS_TOOL],
-        tool_choice={"type": "tool", "name": "publish_tactics"},
-        messages=[{"role": "user", "content": prompt}],
-    )
-    for block in resp.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "publish_tactics":
-            return block.input
-    raise RuntimeError("LLM did not return a publish_tactics tool call")
+    def call(tool):
+        resp = client.messages.create(
+            model=TACTICS_MODEL,
+            max_tokens=3000,
+            tools=[tool],
+            tool_choice={"type": "tool", "name": "publish_tactics"},
+            messages=[{"role": "user", "content": prompt}],
+        )
+        for block in resp.content:
+            if getattr(block, "type", None) == "tool_use" and block.name == "publish_tactics":
+                return block.input
+        raise RuntimeError("LLM did not return a publish_tactics tool call")
+
+    # Strict tool use validates the input against the schema server-side, which
+    # is what stops `lesson` coming back as a bare string. If the schema is
+    # rejected for any reason, fall back rather than lose the write-up entirely.
+    try:
+        return call(GROUNDED_TACTICS_TOOL)
+    except Exception as e:
+        if "strict" not in str(e).lower() and "schema" not in str(e).lower():
+            raise
+        print(f"[warn] strict tool use rejected ({e}); retrying without it")
+        return call(TACTICS_TOOL)
 
 
 def latest_tactics_entry(max_age_days=10):
@@ -575,7 +685,9 @@ def latest_tactics_entry(max_age_days=10):
     matches = (load_json("tactics.json") or {}).get("matches") or []
     if not matches:
         return None
-    entry = matches[0]
+    # Pick by date rather than list position, so "most recent" can never depend
+    # on the file happening to be sorted correctly.
+    entry = max(matches, key=lambda m: (m.get("date") or ""))
     try:
         played = datetime.strptime(entry["date"], "%Y-%m-%d").replace(tzinfo=timezone.utc)
     except (KeyError, TypeError, ValueError):
@@ -684,6 +796,30 @@ def _research_entry(current):
     }
 
 
+def ensure_latest_match(matches, entry):
+    """Guarantee the digest leads with the most recent match actually played.
+
+    If the newest fixture has no write-up — generation failed, or it finished
+    between runs — fall back to a result-only entry for *that* match rather than
+    to an older one. Repeating a match across digests is fine; showing last
+    week's game when a newer one exists is not.
+    """
+    if not matches:
+        return entry
+    newest = matches[-1]
+    if entry and entry.get("fixtureId") == newest.get("fixtureId"):
+        return entry
+    print(f"[warn] newest match ({newest.get('opponent')} on {newest.get('date')}) has no "
+          f"write-up; showing it result-only rather than an older match")
+    return {
+        "fixtureId": newest.get("fixtureId"),
+        "date": newest.get("date"),
+        "grounded": newest,
+        "explained": {},
+        "partial": True,
+    }
+
+
 def refresh_tactics(matches):
     """Write up every supplied fixture that isn't already covered.
 
@@ -715,15 +851,29 @@ def refresh_tactics(matches):
             newest = existing
             continue
 
-        try:
-            explained = _normalize_explained(generate_tactics(match, current["conceptsTaught"]))
-        except Exception as e:
-            # One bad fixture shouldn't cost us the rest of the backlog.
-            print(f"[warn] tactics generation failed for {match.get('opponent')}: {e}")
+        explained = {}
+        for attempt in (1, 2):
+            try:
+                explained = _normalize_explained(generate_tactics(match, current["conceptsTaught"]))
+            except Exception as e:
+                # One bad fixture shouldn't cost us the rest of the backlog.
+                print(f"[warn] tactics generation failed for {match.get('opponent')} "
+                      f"(attempt {attempt}): {e}")
+                explained = {}
+            if explained.get("whatHappened"):
+                break
+            if attempt == 1:
+                print(f"[info] retrying {match.get('opponent')}")
+        if not explained.get("whatHappened"):
+            # Nothing usable at all — a lesson alone is not worth an entry.
+            print(f"[warn] no usable write-up for {match.get('opponent')}; skipping "
+                  f"(model returned keys: {sorted(explained.keys()) or 'none'})")
             continue
         if not explained.get("lesson"):
-            print(f"[warn] no usable lesson for {match.get('opponent')}; skipping")
-            continue
+            # Keep the breakdown; only the teaching slot is lost. Discarding the
+            # whole match here is what silently dropped Coventry from the Aug 22
+            # digest.
+            print(f"[warn] no usable lesson for {match.get('opponent')}; storing write-up without one")
 
         entry = {
             "fixtureId": match["fixtureId"],
@@ -862,7 +1012,7 @@ def render_header(today_str):
         f'<h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:-0.01em;">'
         f'Arsenal Digest</h1>'
         f'<p style="margin:6px 0 0;color:rgba(255,255,255,0.9);font-size:13px;">'
-        f'{E(today_str)} · {LOOKBACK_HOURS // 24}-day recap</p>'
+        f'{E(today_str)} · since the last digest</p>'
         f'</td></tr>'
     )
 
@@ -1007,10 +1157,65 @@ def render_pl(transfers, notes):
     return _section_header("Around the Premier League") + _section_body(_bullet_list(lines))
 
 
-def render_fixtures(fixtures):
-    if not fixtures:
-        return _section_header("Upcoming") + _section_body(_empty())
-    return _section_header("Upcoming") + _section_body(_bullet_list([_note_line(n) for n in fixtures]))
+COMP_COLORS = {
+    "premier league": ("#eef4ff", "#1c4f82"),
+    "champions league": ("#f3e8ff", "#5b21b6"),
+    "efl cup": ("#e8f6ee", "#1c6b3f"),
+    "carabao cup": ("#e8f6ee", "#1c6b3f"),
+    "fa cup": ("#fff3cd", "#7a5a00"),
+}
+
+
+def _comp_badge(name):
+    bg, fg = COMP_COLORS.get((name or "").lower(), (CARD_ALT, INK_SOFT))
+    return (
+        f'<span style="display:inline-block;background:{bg};color:{fg};padding:2px 8px;'
+        f'border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap;">{E(name or "")}</span>'
+    )
+
+
+def render_fixtures(fixtures, notes=None):
+    """Next fixtures as a table with club crests, dates and competitions.
+
+    Crests are hotlinked, so every row still reads correctly on the alt text
+    alone if a client blocks remote images.
+    """
+    body = ""
+    if fixtures:
+        rows = ""
+        for f in fixtures:
+            home = f.get("homeAway") == "H"
+            crest = (
+                f'<img src="{E(f["crestUrl"])}" width="28" height="28" alt="{E(f.get("opponent") or "")}" '
+                f'style="display:block;width:28px;height:28px;border:0;outline:none;'
+                f'text-decoration:none;" />'
+            ) if f.get("crestUrl") else ""
+            rows += (
+                f'<tr>'
+                f'<td width="40" valign="middle" style="padding:10px 10px 10px 0;'
+                f'border-bottom:1px solid {BORDER};">{crest}</td>'
+                f'<td valign="middle" style="padding:10px 10px 10px 0;border-bottom:1px solid {BORDER};">'
+                f'<div style="font-size:15px;font-weight:700;color:{INK};line-height:1.3;">'
+                f'{E(f.get("opponent") or "?")}</div>'
+                f'<div style="font-size:11px;font-weight:700;color:{RED_DARK if home else INK_SOFT};'
+                f'text-transform:uppercase;letter-spacing:.05em;margin-top:2px;">'
+                f'{"Home" if home else "Away"}</div>'
+                f'</td>'
+                f'<td valign="middle" style="padding:10px 10px 10px 0;border-bottom:1px solid {BORDER};">'
+                f'{_comp_badge(f.get("competition"))}</td>'
+                f'<td valign="middle" align="right" style="padding:10px 0;border-bottom:1px solid {BORDER};'
+                f'font-size:13px;color:{INK_SOFT};white-space:nowrap;">'
+                f'{E(f.get("kickoffLocal") or f.get("date") or "")}</td>'
+                f'</tr>'
+            )
+        body += (
+            f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+            f'style="border-collapse:collapse;">{rows}</table>'
+            f'<p style="margin:10px 0 0;font-size:11px;color:{INK_SOFT};">Kickoff times in ET.</p>'
+        )
+    if notes:
+        body += _bullet_list([_note_line(n) for n in notes])
+    return _section_header("Next 5 Fixtures") + _section_body(body or _empty())
 
 
 def _tactics_callout(label, body, accent):
@@ -1041,6 +1246,12 @@ def render_tactics(entry, lesson_number):
     )
 
     body = header_line
+    if entry.get("partial") or not x.get("whatHappened"):
+        body += _tactics_callout(
+            "Breakdown pending",
+            "This is the most recent match played. The full tactical write-up "
+            "wasn't ready in time for this send and will appear in the next one.",
+            GOLD)
     if x.get("whatHappened"):
         body += f'<p style="margin:0 0 4px;font-size:14px;line-height:1.6;">{E(x["whatHappened"])}</p>'
 
@@ -1159,7 +1370,7 @@ def render_footer():
 
 
 def render_email(odds_items, additions, narrative, today_str, preheader,
-                 tactics_entry=None, lesson_number=1):
+                 tactics_entry=None, lesson_number=1, fixtures=None):
     additions = additions or {}
     narrative = narrative or {}
 
@@ -1173,7 +1384,7 @@ def render_email(odds_items, additions, narrative, today_str, preheader,
         + render_rumors(additions.get("rumors") or [])
         + render_squad(narrative.get("squad_news") or [])
         + render_pl(additions.get("pl_transfers") or [], narrative.get("around_pl_notes") or [])
-        + render_fixtures(narrative.get("fixtures") or [])
+        + render_fixtures(fixtures or [], narrative.get("fixtures") or [])
         + render_footer()
     )
 
@@ -1251,10 +1462,13 @@ def main():
 
         # Tactics runs before the news call so a feed outage can't cost us the
         # match breakdown, which is the harder half to reproduce.
-        tactics_entry = refresh_tactics(fetch_recent_matches()) or latest_tactics_entry()
+        recent_matches = fetch_recent_matches()
+        tactics_entry = ensure_latest_match(
+            recent_matches, refresh_tactics(recent_matches) or latest_tactics_entry())
+        fixtures = refresh_fixtures()
         lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
 
-        items = gather_news()
+        items, lookback_hours = gather_news()
         print(f"[info] gathered {len(items)} unique articles")
 
         odds_items = load_json("odds.json").get("items", [])
@@ -1269,11 +1483,13 @@ def main():
                 preheader="Quiet news cycle",
                 tactics_entry=tactics_entry,
                 lesson_number=lesson_number,
+                fixtures=fixtures,
             )
             send_email(html_body, "quiet news cycle", 0)
+            record_send()
             return
 
-        result = generate_digest(items, odds_items)
+        result = generate_digest(items, odds_items, lookback_hours)
         apply_additions(result.get("additions") or {})
 
         # Reload odds in case anything was updated during the run (harmless if unchanged)
@@ -1287,8 +1503,10 @@ def main():
             preheader=result.get("subject_highlight", "Arsenal digest"),
             tactics_entry=tactics_entry,
             lesson_number=lesson_number,
+            fixtures=fixtures,
         )
         send_email(html_body, result.get("subject_highlight", ""), len(items))
+        record_send()
     except Exception:
         tb = traceback.format_exc()
         print(tb, file=sys.stderr)
