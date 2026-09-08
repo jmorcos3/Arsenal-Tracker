@@ -351,3 +351,115 @@ def fetch_upcoming_fixtures(count=5):
     if out:
         print(f"[ok] fotmob upcoming fixtures: {len(out)}")
     return out
+
+
+# ---------- league standing ----------
+
+def fetch_standing():
+    """Arsenal's row in their primary league table, plus recent league form.
+
+    Form comes from the table block rather than the fixture list, so it counts
+    league games only — the fixture-list form includes pre-season friendlies.
+    """
+    team = _get("teams", {"id": ARSENAL_TEAM_ID})
+    if not team:
+        return None
+    tables = team.get("table") or []
+    if not tables:
+        print("[warn] no league table returned")
+        return None
+
+    block = tables[0]
+    data = block.get("data") or {}
+    rows = (data.get("table") or {}).get("all") or []
+    row = next((r for r in rows if r.get("id") == ARSENAL_TEAM_ID), None)
+    if not row:
+        print("[warn] Arsenal not found in league table")
+        return None
+
+    scored, conceded = None, None
+    parts = (row.get("scoresStr") or "").split("-")
+    if len(parts) == 2:
+        try:
+            scored, conceded = int(parts[0]), int(parts[1])
+        except ValueError:
+            pass
+
+    form = [
+        f.get("resultString")
+        for f in ((block.get("teamForm") or {}).get(str(ARSENAL_TEAM_ID)) or [])
+        if f.get("resultString")
+    ]
+
+    standing = {
+        "competition": data.get("leagueName"),
+        "position": row.get("idx"),
+        "played": row.get("played"),
+        "wins": row.get("wins"),
+        "draws": row.get("draws"),
+        "losses": row.get("losses"),
+        "goalsFor": scored,
+        "goalsAgainst": conceded,
+        "goalDifference": row.get("goalConDiff"),
+        "points": row.get("pts"),
+        "form": form[-5:],
+    }
+    print(f"[ok] fotmob standing: {standing['position']}th, {standing['points']} pts")
+    return standing
+
+
+# ---------- transfers ----------
+
+def _fee_text(fee):
+    """FotMob pairs a label with a raw value; values are EUR-denominated."""
+    if not isinstance(fee, dict):
+        return None
+    value = fee.get("value")
+    if isinstance(value, (int, float)) and value > 0:
+        millions = value / 1_000_000
+        return f"€{millions:.0f}M" if millions >= 10 else f"€{millions:.1f}M"
+    label = (fee.get("feeText") or "").strip()
+    # "fee" with no value carries no information; anything else does.
+    return label if label and label.lower() != "fee" else None
+
+
+def _transfer_row(entry):
+    to_arsenal = entry.get("toClubId") == ARSENAL_TEAM_ID
+    return {
+        "player": entry.get("name"),
+        "club": entry.get("fromClubFullName") if to_arsenal else entry.get("toClubFullName"),
+        "direction": "in" if to_arsenal else "out",
+        "fee": _fee_text(entry.get("fee")),
+        "date": (entry.get("transferDate") or "")[:10],
+        "position": (entry.get("position") or {}).get("label"),
+        "onLoan": bool(entry.get("onLoan")),
+        "contractExtension": bool(entry.get("contractExtension")),
+        "source": "fotmob",
+    }
+
+
+def fetch_transfers():
+    """Arsenal's completed transfers and live rumours as structured data.
+
+    Replaces inferring these from RSS headlines: direction, fee, date and loan
+    status are real fields here, not something a model read out of a sentence.
+    """
+    team = _get("teams", {"id": ARSENAL_TEAM_ID})
+    if not team:
+        return None
+    block = team.get("transfers") or {}
+
+    def rows(key):
+        out = []
+        for entry in block.get(key) or []:
+            if ARSENAL_TEAM_ID not in (entry.get("toClubId"), entry.get("fromClubId")):
+                continue  # neither side is Arsenal
+            row = _transfer_row(entry)
+            if row["player"]:
+                out.append(row)
+        out.sort(key=lambda r: r.get("date") or "", reverse=True)
+        return out
+
+    done, rumours = rows("allTransfers"), rows("allRumours")
+    print(f"[ok] fotmob transfers: {len(done)} completed, {len(rumours)} rumoured")
+    return {"transfers": done, "rumours": rumours}

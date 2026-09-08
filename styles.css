@@ -340,3 +340,26 @@ footer { padding: 20px 0 40px; color: var(--ink-soft); text-align: center; }
   .fx-crest { grid-row: 1 / span 3; align-self: start; }
   .fx-when { text-align: left; }
 }
+
+.standing {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 8px 16px; margin: 14px 0 0; padding: 10px 14px;
+  background: rgba(255,255,255,.14); border-radius: 8px; font-size: 14px;
+}
+.standing-main { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.standing-pos { font-size: 18px; font-weight: 700; }
+.standing-league, .standing-played, .standing-sep { opacity: .82; }
+.standing-played { font-size: 13px; }
+.standing-form { display: flex; gap: 4px; }
+.pip {
+  width: 20px; height: 20px; line-height: 20px; text-align: center;
+  border-radius: 4px; font-size: 11px; font-weight: 700; color: #fff;
+  background: rgba(255,255,255,.28);
+}
+.pip-W { background: #1c6b3f; }
+.pip-D { background: #7a5a00; }
+.pip-L { background: #8a1420; }
+.transfer-list .pos, .rumor-list .pos {
+  display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 4px;
+  background: #eceff3; color: var(--ink-soft); font-size: 11px; font-weight: 700;
+}

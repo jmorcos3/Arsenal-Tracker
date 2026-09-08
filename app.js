@@ -1,5 +1,5 @@
 (async function () {
-  const [odds, transfers, plTransfers, rumors, sources, tactics, glossary, fixtures] = await Promise.all([
+  const [odds, transfers, plTransfers, rumors, sources, tactics, glossary, fixtures, standing] = await Promise.all([
     fetchJSON('data/odds.json'),
     fetchJSON('data/transfers.json'),
     fetchJSON('data/pl-transfers.json'),
@@ -8,8 +8,10 @@
     fetchJSON('data/tactics.json'),
     fetchJSON('data/glossary.json'),
     fetchJSON('data/fixtures.json'),
+    fetchJSON('data/standing.json'),
   ]);
 
+  renderStanding(standing);
   renderTactics(tactics, glossary);
   renderGlossary(glossary, tactics);
   renderFixtures(fixtures);
@@ -30,6 +32,31 @@ async function fetchJSON(path) {
     console.error('Failed to load', path, e);
     return null;
   }
+}
+
+function renderStanding(s) {
+  const el = document.getElementById('standing');
+  if (!s || s.position == null) { el.hidden = true; return; }
+  const ord = n => (n % 100 >= 11 && n % 100 <= 13) ? `${n}th`
+    : `${n}${({1:'st',2:'nd',3:'rd'})[n % 10] || 'th'}`;
+  const pips = (s.form || []).map(r =>
+    `<span class="pip pip-${escapeAttr(r)}">${escapeHTML(r)}</span>`).join('');
+  const gd = typeof s.goalDifference === 'number'
+    ? (s.goalDifference > 0 ? `+${s.goalDifference}` : String(s.goalDifference)) : '—';
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="standing-main">
+      <span class="standing-pos">${escapeHTML(ord(s.position))}</span>
+      <span class="standing-league">in the ${escapeHTML(s.competition || 'league')}</span>
+      <span class="standing-sep">·</span>
+      <strong>${escapeHTML(String(s.points ?? 0))} pts</strong>
+      <span class="standing-sep">·</span>
+      <span>${escapeHTML(`${s.wins ?? 0}W–${s.draws ?? 0}D–${s.losses ?? 0}L`)}</span>
+      <span class="standing-sep">·</span>
+      <span>GD ${escapeHTML(gd)}</span>
+      <span class="standing-played">from ${escapeHTML(String(s.played ?? 0))} played</span>
+    </div>
+    <div class="standing-form">${pips}</div>`;
 }
 
 function renderTactics(data, glossary) {
@@ -220,14 +247,15 @@ function renderTransfers(data) {
 
 function fillTransferList(el, arr) {
   if (!arr.length) { el.innerHTML = '<li class="empty">None yet.</li>'; return; }
-  el.innerHTML = arr.map(t => `
+  el.innerHTML = arr.map(t => {
+    const bits = [t.club, t.onLoan ? 'loan' : t.fee, t.date].filter(Boolean);
+    return `
     <li>
-      <span class="player">${escapeHTML(t.player)}</span>
-      <span class="meta">
-        ${escapeHTML(t.club || '')}${t.fee ? ' · ' + escapeHTML(t.fee) : ''}${t.date ? ' · ' + escapeHTML(t.date) : ''}
-      </span>
-    </li>
-  `).join('');
+      <span class="player">${escapeHTML(t.player)}</span>${t.position
+        ? `<span class="pos">${escapeHTML(t.position)}</span>` : ''}
+      <span class="meta">${escapeHTML(bits.join(' · '))}</span>
+    </li>`;
+  }).join('');
 }
 
 function renderPLTransfers(data) {
@@ -248,18 +276,26 @@ function renderRumors(data) {
   const list = document.getElementById('rumors-list');
   const items = (data && data.items) || [];
   if (!items.length) { list.innerHTML = '<li class="empty">No active rumors tracked.</li>'; return; }
-  list.innerHTML = items.map(r => `
-    <li>
-      <span class="headline">${escapeHTML(r.headline)}</span>
-      <span class="reliability ${escapeAttr(r.reliability || 'medium')}">${escapeHTML(r.reliability || 'medium')}</span>
-      <span class="meta">
-        Source: ${r.sourceUrl
+  list.innerHTML = items.map(r => {
+    if (r.player) {
+      const dir = r.direction === 'in' ? 'in from' : 'out to';
+      return `
+        <li>
+          <span class="headline">${escapeHTML(r.player)}</span>${r.position
+            ? `<span class="pos">${escapeHTML(r.position)}</span>` : ''}
+          <span class="meta">${escapeHTML(dir)} ${escapeHTML(r.club || '?')}${
+            r.fee ? ' · ' + escapeHTML(r.fee) : ''} · FotMob${r.date ? ' · ' + escapeHTML(r.date) : ''}</span>
+        </li>`;
+    }
+    return `
+      <li>
+        <span class="headline">${escapeHTML(r.headline || '')}</span>
+        <span class="reliability ${escapeAttr(r.reliability || 'medium')}">${escapeHTML(r.reliability || 'medium')}</span>
+        <span class="meta">Source: ${r.sourceUrl
           ? `<a href="${escapeAttr(r.sourceUrl)}" target="_blank" rel="noopener">${escapeHTML(r.source || r.sourceUrl)}</a>`
-          : escapeHTML(r.source || 'unknown')}
-        ${r.date ? ' · ' + escapeHTML(r.date) : ''}
-      </span>
-    </li>
-  `).join('');
+          : escapeHTML(r.source || 'unknown')}${r.date ? ' · ' + escapeHTML(r.date) : ''}</span>
+      </li>`;
+  }).join('');
 }
 
 function renderSources(data) {
