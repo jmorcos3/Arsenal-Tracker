@@ -1,12 +1,163 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-08-31",
+  "lastUpdated": "2026-09-08",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
-    "overload"
+    "overload",
+    "transition"
   ],
   "matches": [
+    {
+      "fixtureId": 5795435,
+      "date": "2026-09-06",
+      "grounded": {
+        "fixtureId": 5795435,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/chelsea-vs-arsenal/2rhhrp#5795435",
+        "date": "2026-09-06",
+        "competition": "Premier League",
+        "round": "3",
+        "homeAway": "H",
+        "opponent": "Chelsea",
+        "opponentId": 8455,
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "3-4-2-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Xabi Alonso",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Declan Rice",
+          "Myles Lewis-Skelly",
+          "Bukayo Saka",
+          "Martin \u00d8degaard",
+          "Christos Tzolis",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Emiliano Mart\u00ednez",
+          "Josh Acheampong",
+          "Maxence Lacroix",
+          "Wesley Fofana",
+          "Pedro Neto",
+          "Rom\u00e9o Lavia",
+          "Reece James",
+          "Jorrel Hato",
+          "Cole Palmer",
+          "Morgan Rogers",
+          "Jo\u00e3o Pedro"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 54,
+            "xg": 2.05,
+            "shots": 16,
+            "shotsOnTarget": 9,
+            "touchesInBox": 44,
+            "bigChances": 4,
+            "bigChancesMissed": 3,
+            "accuratePasses": 390,
+            "corners": 5,
+            "shotsInBox": 13,
+            "xgOpenPlay": 1.44,
+            "xgSetPlay": 0.61,
+            "xgot": 2.0,
+            "passesOppositionHalf": 267,
+            "tackles": 10,
+            "interceptions": 9,
+            "saves": 4,
+            "fouls": 13
+          },
+          "opponent": {
+            "possession": 46,
+            "xg": 0.39,
+            "shots": 13,
+            "shotsOnTarget": 5,
+            "touchesInBox": 26,
+            "bigChances": 0,
+            "bigChancesMissed": 0,
+            "accuratePasses": 314,
+            "corners": 3,
+            "shotsInBox": 5,
+            "xgOpenPlay": 0.32,
+            "xgSetPlay": 0.07,
+            "xgot": 0.35,
+            "passesOppositionHalf": 191,
+            "tackles": 12,
+            "interceptions": 7,
+            "saves": 8,
+            "fouls": 16
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Morgan Rogers",
+            "minute": 2,
+            "team": "Chelsea",
+            "assist": "Jorrel Hato"
+          },
+          {
+            "player": "Kai Havertz",
+            "minute": 25,
+            "team": "Arsenal",
+            "assist": "Declan Rice"
+          },
+          {
+            "player": "Martin \u00d8degaard",
+            "minute": 50,
+            "team": "Arsenal",
+            "assist": "Christos Tzolis"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Chelsea scored almost immediately \u2014 Morgan Rogers finished a Jorrel Hato pass in the 2nd minute \u2014 and Arsenal spent the rest of the match chasing the game they were already better in. Kai Havertz levelled it on 25 minutes from a Declan Rice pass, and five minutes into the second half Martin \u00d8degaard put Arsenal ahead after Christos Tzolis set him up. Arsenal had 16 shots to Chelsea's 13, but 13 of Arsenal's came from inside the box, and Chelsea's goalkeeper had to make 8 saves to keep the score that close.",
+        "opponentPlan": "Xabi Alonso's 3-4-2-1 is built to be hard to play through \u2014 three centre-backs, a flat four in midfield, and two forwards tucked just behind the striker \u2014 and it gives you an extra man at the back to defend against Arsenal's five-across-the-front. Chelsea got their reward inside two minutes through Rogers, then had a lead to protect, and the numbers show what that turned into: Arsenal 54% possession, 267 passes in the opposition half to Chelsea's 191, and 44 touches in the Chelsea box against 26. Arsenal's answer was not to force it through the middle of those three centre-backs but to keep arriving in the box from wide and from the second line \u2014 13 of their 16 shots came from inside the area, and Chelsea created zero big chances all match against Arsenal's four.",
+        "keyMoment": "\u00d8degaard's goal on 50 minutes, assisted by Tzolis. Arsenal had already equalised through Havertz on 25 and had spent the rest of the first half with the ball; scoring so soon after the restart meant Chelsea, who had been defending a lead in a five-at-the-back shape, now had to come out and chase. From there Arsenal never conceded another big chance \u2014 Chelsea finished the match with zero \u2014 while Chelsea's keeper ended up making 8 saves.",
+        "nerdCorner": "The scoreline hides how lopsided the chance quality was: Arsenal's xG on target was 2.0 against a total xG of 2.05, meaning almost everything they generated actually forced a save rather than being blocked or dragged wide \u2014 that is unusually clean finishing volume, and it's why the Chelsea keeper's save count reached 8. Chelsea's profile is the mirror image: 13 shots but only 5 inside the box, 0.39 xG and zero big chances, which is the signature of a team that has a lead, sits in a back five, and takes what it can get from range. Note too that Chelsea won the tackle count 12-10 while Arsenal won interceptions 9-7 \u2014 tackles are what you make when the ball is already being carried at you, interceptions are what you make when you've read the pass, and that small split is consistent with Chelsea defending their own third while Arsenal squeezed the game higher up (267 passes in the opposition half to 191).",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper Arsenal lined up 4-2-3-1, but a back four with Riccardo Calafiori at left-back rarely stays a flat four when Arsenal have the ball. Calafiori typically steps forward or inside while Ben White tucks in alongside Ezri Konsa and Gabriel, which leaves three defenders at the back, two holders in Declan Rice and Myles Lewis-Skelly in front of them, and five attackers across the last line \u2014 Saka, \u00d8degaard, Havertz, Tzolis and whoever pushes up from full-back. When Arsenal lose the ball those five drop back into two banks of four with two players nearest the ball, which is what people mean by a 4-4-2 mid block."
+        },
+        "lesson": {
+          "conceptId": "transition",
+          "term": "Transition",
+          "level": 1,
+          "explain": "A transition is the five or ten seconds right after the ball changes hands, before either team is organised again \u2014 and it is when most goals are scored, because defenders are out of position. Chelsea's goal on 2 minutes is the purest example: that early in a match nobody has settled, Hato found Rogers, and it was 1-0 before Arsenal's shape existed. The rest of the match shows the flip side \u2014 once both teams were set, Chelsea managed 13 shots but only 5 from inside the box and zero big chances, because chances against an organised defence come from further out and at worse angles. Arsenal's two goals, from Rice to Havertz and Tzolis to \u00d8degaard, came from a team that had the ball 54% of the time and kept walking into the box: 44 touches in there, 13 shots from inside it.",
+          "spotIt": "The instant Arsenal lose the ball, count to five and watch how many red shirts are sprinting back rather than towards the ball \u2014 that count tells you whether Arsenal are trying to win the transition or survive it."
+        },
+        "statTranslations": [
+          {
+            "stat": "Big chances: Arsenal 4 | Chelsea 0",
+            "plain": "Chelsea never once got into a genuinely good scoring position after the second minute \u2014 their goal came from the one moment nobody was organised."
+          },
+          {
+            "stat": "Shots inside box: Arsenal 13 | Chelsea 5",
+            "plain": "Both teams shot a similar number of times overall, but Arsenal were shooting from good places and Chelsea mostly weren't."
+          },
+          {
+            "stat": "xG: Arsenal 2.05 | Chelsea 0.39",
+            "plain": "The quality of chances says this should have been roughly a two-goal Arsenal win, which is exactly what happened \u2014 the 2-1 is not a fluke."
+          },
+          {
+            "stat": "Goalkeeper saves: Arsenal 4 | Chelsea 8",
+            "plain": "Chelsea's keeper had twice as much work to do, which is usually the clearest sign of who spent the match under pressure."
+          },
+          {
+            "stat": "Touches in opposition box: Arsenal 44 | Chelsea 26",
+            "plain": "Arsenal got into the dangerous area far more often, not just once or twice in a lucky spell."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795426,
       "date": "2026-08-31",

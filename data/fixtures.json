@@ -1,18 +1,7 @@
 {
-  "lastUpdated": "2026-09-01",
+  "lastUpdated": "2026-09-08",
   "timezone": "America/New_York",
   "items": [
-    {
-      "fixtureId": 5795435,
-      "date": "2026-09-06",
-      "kickoffUtc": "2026-09-06T15:30:00.000Z",
-      "kickoffLocal": "Sun Sep 6, 11:30 AM EDT",
-      "opponent": "Chelsea",
-      "opponentId": 8455,
-      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png",
-      "competition": "Premier League",
-      "homeAway": "H"
-    },
     {
       "fixtureId": 6106318,
       "date": "2026-09-09",
@@ -56,6 +45,17 @@
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10204.png",
       "competition": "Premier League",
       "homeAway": "A"
+    },
+    {
+      "fixtureId": 5795465,
+      "date": "2026-10-10",
+      "kickoffUtc": "2026-10-10T11:30:00.000Z",
+      "kickoffLocal": "Sat Oct 10, 7:30 AM EDT",
+      "opponent": "Leeds",
+      "opponentId": 8463,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8463.png",
+      "competition": "Premier League",
+      "homeAway": "H"
     }
   ]
 }
