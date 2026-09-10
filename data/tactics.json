@@ -1,13 +1,152 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-09-08",
+  "lastUpdated": "2026-09-10",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
     "overload",
-    "transition"
+    "transition",
+    "half-space"
   ],
   "matches": [
+    {
+      "fixtureId": 6106318,
+      "date": "2026-09-09",
+      "grounded": {
+        "fixtureId": 6106318,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-napoli/37jhat#6106318",
+        "date": "2026-09-09",
+        "competition": "Champions League",
+        "round": "1",
+        "homeAway": "A",
+        "opponent": "Napoli",
+        "opponentId": 9875,
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Massimiliano Allegri",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Ezri Konsa",
+          "Gabriel",
+          "Piero Hincapi\u00e9",
+          "Declan Rice",
+          "Mikel Merino",
+          "Bukayo Saka",
+          "Martin \u00d8degaard",
+          "Eberechi Eze",
+          "Viktor Gy\u00f6keres"
+        ],
+        "opponentXI": [
+          "Alex Meret",
+          "Giovanni Di Lorenzo",
+          "Amir Rrahmani",
+          "Rafa Mar\u00edn",
+          "Math\u00edas Olivera",
+          "Billy Gilmour",
+          "Stanislav Lobotka",
+          "Matteo Politano",
+          "Kevin De Bruyne",
+          "Alisson Santos",
+          "Rasmus H\u00f8jlund"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 58,
+            "xg": 4.05,
+            "shots": 26,
+            "shotsOnTarget": 8,
+            "touchesInBox": 51,
+            "bigChances": 5,
+            "bigChancesMissed": 5,
+            "accuratePasses": 559,
+            "corners": 6,
+            "shotsInBox": 15,
+            "xgOpenPlay": 3.81,
+            "xgSetPlay": 0.23,
+            "xgot": 1.69,
+            "passesOppositionHalf": 433,
+            "tackles": 9,
+            "interceptions": 6,
+            "saves": 3,
+            "fouls": 11
+          },
+          "opponent": {
+            "possession": 42,
+            "xg": 0.22,
+            "shots": 5,
+            "shotsOnTarget": 3,
+            "touchesInBox": 8,
+            "bigChances": 0,
+            "bigChancesMissed": 0,
+            "accuratePasses": 383,
+            "corners": 0,
+            "shotsInBox": 2,
+            "xgOpenPlay": 0.22,
+            "xgSetPlay": 0.0,
+            "xgot": 0.1,
+            "passesOppositionHalf": 126,
+            "tackles": 14,
+            "interceptions": 4,
+            "saves": 6,
+            "fouls": 12
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Martin \u00d8degaard",
+            "minute": 75,
+            "team": "Arsenal",
+            "assist": "Christos Tzolis"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal went to Napoli, took control of the ball and spent most of the night camped in Napoli's half, but couldn't find a way through for over an hour. Napoli barely attacked at all \u2014 five shots all match, no corners \u2014 and relied on their goalkeeper, who made six saves. Martin \u00d8degaard finally settled it on 75 minutes, finishing an assist from Christos Tzolis, and it ended 1-0 to Arsenal.",
+        "opponentPlan": "Napoli matched Arsenal's 4-2-3-1 on paper but played it very differently: Allegri's side conceded the ball (42% possession) and defended deep and compact, accepting territory in exchange for keeping bodies between Arsenal and their goal. The numbers show it clearly \u2014 Napoli made 14 tackles to Arsenal's 9 and had only 126 passes in the opposition half, so they were defending and clearing rather than building. Arsenal's answer was volume and width: 433 passes in Napoli's half, 51 touches in the box and 26 shots, working the ball side to side until a gap appeared, while Napoli's total lack of a counter-attacking threat (0 big chances) meant Arsenal could keep committing bodies forward without much risk.",
+        "keyMoment": "The 75th minute, \u00d8degaard's goal from a Christos Tzolis assist. Until then the pattern was total Arsenal control with no reward \u2014 26 shots and 6 saves from the Napoli goalkeeper tell you how long the door stayed shut. The goal didn't change the shape of the game so much as finally cash in the shape of the game that had existed since kick-off, and it came from a captain arriving in the box rather than from the wide players who had been doing most of the crossing.",
+        "nerdCorner": "The gap between xG 4.05 and xGOT 1.69 is the real story, and it's a different story from the one the scoreline tells. xG asks \"how good was the opening?\"; xGOT asks \"how good was the shot once it left the boot?\" \u2014 it only counts efforts that reached the goal. So Arsenal generated four goals' worth of openings and delivered under two goals' worth of on-target attempts, with 26 shots but only 8 on target. That is a finishing/shot-selection shortfall, not a chance-creation shortfall, and it's the more encouraging of the two problems to have: chance creation is a repeatable team process, whereas conversion at this volume regresses toward the mean fairly quickly. The flip side of the trade-off: sustaining 433 passes in the opposition half against a side that offers nothing on the break (0 big chances, 5 shots) is comparatively cheap. The interesting question is whether the same shape holds up against an opponent who actually punishes a high, committed back line.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper Arsenal lined up 4-2-3-1, but a back four with the ball usually becomes a back three: one full-back (typically Ben White on the right) tucks in alongside the centre-backs while Piero Hincapi\u00e9 pushes high up the left touchline. That leaves two holding midfielders \u2014 Declan Rice and Mikel Merino \u2014 screening in front, and five players spread across the last line to stretch the opponent's defence as wide as possible. When Arsenal lose the ball, Hincapi\u00e9 drops back in and the wide attackers fall into a flat line, so the shape reverts to two banks of four with Viktor Gy\u00f6keres and Martin \u00d8degaard nearest the ball."
+        },
+        "lesson": {
+          "conceptId": "half-space",
+          "term": "Half-space",
+          "level": 1,
+          "explain": "Picture the pitch cut into five vertical lanes: two touchlines, the central lane, and the two lanes in between \u2014 those in-between lanes are the half-spaces. They matter because a defender standing there doesn't know whether he belongs to the centre-back or the full-back, so a runner arriving in that lane is often nobody's problem until it's too late. That is exactly the territory a No. 10 like \u00d8degaard lives in, and it's why 51 touches in Napoli's box came from a team facing a deep, compact defence: when the middle is packed and the touchlines are covered, the half-space is the only lane left to attack. His 75th-minute finish is the archetype \u2014 the ball goes wide to Tzolis, the defence shifts toward the touchline, and the goal comes from someone arriving between the lines rather than from a straight run through the centre.",
+          "spotIt": "Watch \u00d8degaard when Saka has the ball on the right touchline \u2014 he'll drift into the gap between Napoli's right-back and their nearest centre-back, and that patch of grass is the half-space."
+        },
+        "statTranslations": [
+          {
+            "stat": "xG 4.05 vs 0.22",
+            "plain": "From the quality of chances created, a typical night with this pattern of play ends with Arsenal scoring around four and Napoli scoring nothing \u2014 so 1-0 flatters Napoli enormously."
+          },
+          {
+            "stat": "xGOT 1.69 vs xG 4.05",
+            "plain": "The chances were worth roughly four goals, but the shots that actually reached the goalkeeper were only worth about 1.7 \u2014 meaning a lot of good openings were skewed wide or blocked rather than being saved."
+          },
+          {
+            "stat": "Big chances 5 vs 0",
+            "plain": "Arsenal created five clear openings and Napoli created literally none \u2014 this was not a game that could plausibly have gone the other way."
+          },
+          {
+            "stat": "Shots inside box 15 vs 2, touches in opposition box 51 vs 8",
+            "plain": "Arsenal weren't just having more of the ball, they were having it in the most dangerous 18 yards of the pitch, which is the difference between sterile possession and genuine pressure."
+          },
+          {
+            "stat": "Napoli goalkeeper saves 6, corners 6 vs 0",
+            "plain": "Napoli's night was pure containment \u2014 their keeper was their most active attacking-phase contributor and they never once forced Arsenal to defend a set piece."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795435,
       "date": "2026-09-06",

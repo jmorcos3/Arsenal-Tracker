@@ -1,6 +1,6 @@
 {
   "window": "2026-27",
-  "lastUpdated": "2026-09-08",
+  "lastUpdated": "2026-09-10",
   "source": "fotmob",
   "in": [
     {
@@ -320,28 +320,6 @@
       "fee": "on loan",
       "date": "2025-09-19",
       "position": "CB",
-      "onLoan": true,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Michal Rosiak",
-      "club": "\u015al\u0105sk Wroc\u0142aw",
-      "direction": "out",
-      "fee": "free transfer",
-      "date": "2025-09-09",
-      "position": "RB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Ismeal Kabia",
-      "club": "Shrewsbury Town",
-      "direction": "out",
-      "fee": "on loan",
-      "date": "2025-09-09",
-      "position": "RWB",
       "onLoan": true,
       "contractExtension": false,
       "source": "fotmob"
