@@ -1,7 +1,51 @@
 {
-  "lastUpdated": "2026-09-10",
+  "lastUpdated": "2026-09-15",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Noni Madueke",
+      "club": "Juventus",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2026-09-15",
+      "position": "RW",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Noni Madueke",
+      "club": "Atl\u00e9tico Madrid",
+      "direction": "out",
+      "fee": "on loan",
+      "date": "2026-09-15",
+      "position": "RW",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Nico Paz",
+      "club": "Como",
+      "direction": "in",
+      "fee": "\u20ac70M",
+      "date": "2026-09-13",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Mart\u00edn Zubimendi",
+      "club": "Chelsea",
+      "direction": "out",
+      "fee": "\u20ac75M",
+      "date": "2026-09-11",
+      "position": "CM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Evanilson",
       "club": "Bournemouth",
@@ -135,17 +179,6 @@
       "source": "fotmob"
     },
     {
-      "player": "Mart\u00edn Zubimendi",
-      "club": "Chelsea",
-      "direction": "out",
-      "fee": "\u20ac90M",
-      "date": "2026-08-13",
-      "position": "CM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
       "player": "Joaquin Seys",
       "club": "Club Brugge",
       "direction": "in",
@@ -163,17 +196,6 @@
       "fee": "\u20ac13M",
       "date": "2026-08-07",
       "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Nico Williams",
-      "club": "Athletic Bilbao",
-      "direction": "in",
-      "fee": "\u20ac55M",
-      "date": "2026-07-29",
-      "position": "LW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"

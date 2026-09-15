@@ -1,14 +1,159 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-09-10",
+  "lastUpdated": "2026-09-15",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
     "overload",
     "transition",
-    "half-space"
+    "half-space",
+    "formation"
   ],
   "matches": [
+    {
+      "fixtureId": 5795453,
+      "date": "2026-09-12",
+      "grounded": {
+        "fixtureId": 5795453,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/sunderland-vs-arsenal/2ro5o6#5795453",
+        "date": "2026-09-12",
+        "competition": "Premier League",
+        "round": "4",
+        "homeAway": "A",
+        "opponent": "Sunderland",
+        "opponentId": 8472,
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "R\u00e9gis Le Bris",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Declan Rice",
+          "Myles Lewis-Skelly",
+          "Bukayo Saka",
+          "Martin \u00d8degaard",
+          "Christos Tzolis",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Robin Roefs",
+          "Nordi Mukiele",
+          "Kevin Danso",
+          "Daniel Ballard",
+          "Reinildo",
+          "Granit Xhaka",
+          "Noah Sadiki",
+          "Thomas Meunier",
+          "Enzo Le F\u00e9e",
+          "Nilson Angulo",
+          "Brian Brobbey"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 57,
+            "xg": 1.88,
+            "shots": 11,
+            "shotsOnTarget": 5,
+            "touchesInBox": 19,
+            "bigChances": 3,
+            "bigChancesMissed": 2,
+            "accuratePasses": 320,
+            "corners": 2,
+            "shotsInBox": 8,
+            "xgOpenPlay": 1.01,
+            "xgSetPlay": 0.08,
+            "xgot": 1.91,
+            "passesOppositionHalf": 169,
+            "tackles": 13,
+            "interceptions": 8,
+            "saves": 2,
+            "fouls": 11
+          },
+          "opponent": {
+            "possession": 43,
+            "xg": 1.8,
+            "shots": 12,
+            "shotsOnTarget": 3,
+            "touchesInBox": 26,
+            "bigChances": 3,
+            "bigChancesMissed": 3,
+            "accuratePasses": 217,
+            "corners": 4,
+            "shotsInBox": 7,
+            "xgOpenPlay": 0.46,
+            "xgSetPlay": 0.55,
+            "xgot": 1.66,
+            "passesOppositionHalf": 108,
+            "tackles": 12,
+            "interceptions": 5,
+            "saves": 3,
+            "fouls": 18
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Bruno Guimar\u00e3es",
+            "minute": 58,
+            "team": "Arsenal",
+            "assist": "Declan Rice"
+          },
+          {
+            "player": "Bukayo Saka",
+            "minute": 90,
+            "team": "Arsenal",
+            "assist": null
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal went to Sunderland and won 2-0, but the game was far tighter than the scoreline suggests. Sunderland had more shots (12 to 11) and more touches in the Arsenal box (26 to 19), so Arsenal were genuinely having to defend. The breakthrough came on 58 minutes through Bruno Guimar\u00e3es, set up by Declan Rice, and Bukayo Saka added a second right at the end on 90 minutes to make the result look comfortable.",
+        "opponentPlan": "R\u00e9gis Le Bris set Sunderland up in the same 4-2-3-1 as Arsenal, which is a mirror match: every Arsenal player has a natural opposite number, so nobody is automatically free and the game becomes about who moves first. Sunderland were happy to let Arsenal have the ball \u2014 57% possession to 43% \u2014 and instead looked to attack in fast bursts, which is why they managed 12 shots and 26 touches in Arsenal's box despite seeing less of the ball. Arsenal's answer was to dominate the areas in front of that: 169 passes in the opposition half against Sunderland's 108, plus 8 interceptions to 5, which is a side trying to keep the game pinned at the far end and cut passes out early rather than defend a series of raids. It half-worked: Arsenal controlled the territory but never fully smothered Sunderland's counters.",
+        "keyMoment": "The 58th minute. In a game that had been dead level on chances, Declan Rice fed Bruno Guimar\u00e3es for the opener \u2014 the first goal in a match where both sides had created three big chances each. Once Arsenal led, the pattern was set: Sunderland had to come further forward, which explains how they finished with more shots and more box touches than Arsenal, and it also opened the door for Saka's second on 90 minutes to close it out.",
+        "nerdCorner": "The scoreline is the least honest number on the page. Arsenal 1.88 xG to Sunderland 1.80, xGOT 1.91 to 1.66, three big chances each \u2014 by every underlying measure this was a coin-flip, and a 2-0 away win banks three points that the performance only half-earned. The detail worth chewing on is the split between territory and penetration: Arsenal won the passes-in-the-opposition-half count 169-108 yet lost touches-in-the-box 19-26. That combination \u2014 lots of possession high up, fewer entries into the danger area than the opponent \u2014 is the classic signature of a side that controls where the game is played without controlling what happens when it gets there, and Sunderland's four corners to Arsenal's two points the same way. Also note Sunderland's xGOT (1.66) sitting below their xG (1.80): their shooting was, on balance, slightly worse than the positions they got into deserved, which is not something you can rely on happening every week.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-2-3-1 into a 4-4-2 block",
+          "plainEnglish": "The 4-2-3-1 written on the teamsheet is only the starting arrangement \u2014 it changes the moment Arsenal have the ball. With this personnel Arsenal usually push both wide forwards high and wide, one full-back tucks inside next to the two midfielders, and the back line becomes a three, which is why you end up with five attackers across the front and a solid five behind them. Myles Lewis-Skelly's movement inside from left-back is typically the one that causes it: he steps into midfield rather than overlapping, which frees Declan Rice to move higher and leaves Gabriel, Ezri Konsa and Ben White covering the back. Without the ball everyone slides back out into recognisable banks of four."
+        },
+        "lesson": {
+          "conceptId": "formation",
+          "term": "Formation",
+          "level": 1,
+          "explain": "A formation is just the starting positions written back-to-front, defenders first: 4-2-3-1 means four defenders, two holding midfielders, three attacking midfielders, one striker. Arsenal and Sunderland both lined up 4-2-3-1 here, which tells you something useful straight away \u2014 every player had a direct opposite number, so neither side got a free man just from the shape. That's part of why the chance count came out level at three big chances each and the shot counts were 11 to 12. The important thing to understand is that a formation is a starting point, not a cage: the numbers on the teamsheet describe where players stand before kick-off, and the moment the ball moves, so do they.",
+          "spotIt": "At kick-off, count the back line, then the players just in front of them, then work forward \u2014 that's the formation, and then watch how quickly it stops looking like that once Arsenal have the ball for ten seconds."
+        },
+        "statTranslations": [
+          {
+            "stat": "Possession 57% vs 43%, passes in opposition half 169 vs 108",
+            "plain": "Arsenal held the ball and held it in the right half of the pitch \u2014 Sunderland were playing a lot of the game in their own territory."
+          },
+          {
+            "stat": "Touches in opposition box: Arsenal 19, Sunderland 26",
+            "plain": "Sunderland actually got into Arsenal's penalty area more often, so the 2-0 hides how much defending Arsenal had to do."
+          },
+          {
+            "stat": "Total shots 11 vs 12, big chances 3 vs 3",
+            "plain": "On raw chance creation this was an even match \u2014 Arsenal won it on finishing and timing, not on volume."
+          },
+          {
+            "stat": "Shots on target: Arsenal 5, Sunderland 3",
+            "plain": "Arsenal made their attempts count more often, forcing the keeper into work while Sunderland's efforts more often missed the target entirely."
+          },
+          {
+            "stat": "Interceptions: Arsenal 8, Sunderland 5",
+            "plain": "Arsenal were reading passes and stepping in front of them rather than waiting to make last-ditch tackles."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 6106318,
       "date": "2026-09-09",
