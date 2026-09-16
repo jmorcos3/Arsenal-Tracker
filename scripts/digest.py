@@ -1011,8 +1011,49 @@ GOLD = "#DB9E00"
 INK = "#101418"
 INK_SOFT = "#4a5560"
 BORDER = "#e3e6ea"
-BG = "#f6f7f9"
-CARD_ALT = "#fafbfc"
+# The page itself is white edge-to-edge: on a phone the grey gutter of a
+# "card" layout is wasted width, and in Gmail's dark mode a grey canvas is the
+# first thing that gets inverted.
+BG = "#ffffff"
+CARD_ALT = "#f6f7f9"
+
+# One stylesheet, hoisted into <head>. Gmail (web and app), Apple Mail and
+# eM Client all read embedded <style> and media queries; the inline styles
+# below every element are the fallback for anything that strips it. The
+# @media block uses !important because inline styles otherwise win.
+EMAIL_STYLE = """<style type="text/css">
+:root { color-scheme: light; supported-color-schemes: light; }
+body { margin:0 !important; padding:0 !important; width:100% !important;
+       background:#ffffff; }
+body, table, td, div, p, a, h1, h2, li {
+  -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+table { border-collapse:collapse; }
+img { border:0; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
+/* iOS turns dates, times and scorelines into blue tappable links. */
+a[x-apple-data-detectors] {
+  color:inherit !important; text-decoration:none !important; font-size:inherit !important;
+  font-family:inherit !important; font-weight:inherit !important; line-height:inherit !important; }
+.tile { display:inline-block; width:24%; vertical-align:top; }
+.chip { display:inline-block; width:32%; vertical-align:top; }
+
+@media only screen and (max-width:620px) {
+  .wrap  { padding:0 !important; }
+  .px    { padding-left:18px !important; padding-right:18px !important; }
+  .lead  { font-size:18px !important; line-height:1.55 !important; }
+  .body-text { font-size:17px !important; line-height:1.62 !important; }
+  .h1    { font-size:26px !important; }
+  .h2    { font-size:17px !important; }
+  .meta  { font-size:14px !important; }
+  .micro { font-size:12px !important; }
+  /* Four odds cards across is unreadable at 375px; two up, two down. */
+  .tile  { width:48% !important; }
+  .chip  { width:48% !important; }
+  .stat-num { font-size:26px !important; }
+  .fx-name  { font-size:17px !important; }
+  .fx-time  { font-size:14px !important; }
+  .lesson-term { font-size:19px !important; }
+}
+</style>"""
 
 REL_STYLES = {
     "high":   ("#d4edda", "#155724", "High"),
@@ -1025,7 +1066,7 @@ def _reliability_badge(reliability):
     bg, fg, label = REL_STYLES.get(reliability, REL_STYLES["medium"])
     return (
         f'<span style="display:inline-block;background:{bg};color:{fg};'
-        f'padding:2px 8px;border-radius:999px;font-size:10px;font-weight:700;'
+        f'padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;'
         f'text-transform:uppercase;letter-spacing:.05em;margin-left:6px;'
         f'vertical-align:middle;">{E(label)}</span>'
     )
@@ -1039,8 +1080,8 @@ def _source_link(url, text):
 
 def _section_header(title):
     return (
-        f'<tr><td style="padding:18px 28px 4px;">'
-        f'<h2 style="margin:0;color:{RED_DARK};font-size:16px;'
+        f'<tr><td class="px" style="padding:22px 28px 4px;">'
+        f'<h2 class="h2" style="margin:0;color:{RED_DARK};font-size:16px;line-height:1.3;'
         f'border-left:4px solid {GOLD};padding:2px 0 2px 10px;'
         f'text-transform:uppercase;letter-spacing:.03em;">{E(title)}</h2>'
         f'</td></tr>'
@@ -1048,7 +1089,8 @@ def _section_header(title):
 
 
 def _section_body(inner_html):
-    return f'<tr><td style="padding:6px 28px 14px;font-size:14px;line-height:1.55;color:{INK};">{inner_html}</td></tr>'
+    return (f'<tr><td class="px body-text" style="padding:8px 28px 16px;font-size:15px;'
+            f'line-height:1.6;color:{INK};">{inner_html}</td></tr>')
 
 
 def _empty():
@@ -1056,17 +1098,21 @@ def _empty():
 
 
 def _bullet_list(items_html):
-    lis = "".join(f'<li style="margin:4px 0;">{h}</li>' for h in items_html)
-    return f'<ul style="margin:4px 0 0;padding:0 0 0 20px;">{lis}</ul>'
+    lis = "".join(f'<li style="margin:7px 0;">{h}</li>' for h in items_html)
+    return f'<ul style="margin:4px 0 0;padding:0 0 0 22px;">{lis}</ul>'
 
 
 def render_header(today_str):
     return (
-        f'<tr><td style="background:linear-gradient(135deg,{RED},{RED_DARK});'
-        f'padding:24px 28px;border-bottom:4px solid {GOLD};">'
-        f'<h1 style="margin:0;color:#ffffff;font-size:24px;font-weight:700;letter-spacing:-0.01em;">'
-        f'Arsenal Digest</h1>'
-        f'<p style="margin:6px 0 0;color:rgba(255,255,255,0.9);font-size:13px;">'
+        # background-color first: eM Client and any Outlook-derived renderer
+        # drop the gradient, and without a solid fallback the white masthead
+        # type lands on a white block.
+        f'<tr><td class="px" style="background-color:{RED_DARK};'
+        f'background:linear-gradient(135deg,{RED},{RED_DARK});'
+        f'padding:26px 28px;border-bottom:4px solid {GOLD};">'
+        f'<h1 class="h1" style="margin:0;color:#ffffff;font-size:25px;font-weight:700;'
+        f'line-height:1.2;letter-spacing:-0.01em;">Arsenal Digest</h1>'
+        f'<p class="meta" style="margin:7px 0 0;color:#ffe3e4;font-size:14px;line-height:1.4;">'
         f'{E(today_str)} · since the last digest</p>'
         f'</td></tr>'
     )
@@ -1080,26 +1126,28 @@ def render_standing(st):
     if not st or st.get("position") is None:
         return ""
     pips = "".join(
-        '<span style="display:inline-block;width:18px;height:18px;line-height:18px;'
-        'text-align:center;border-radius:4px;font-size:11px;font-weight:700;'
+        '<span style="display:inline-block;width:22px;height:22px;line-height:22px;'
+        'text-align:center;border-radius:4px;font-size:12px;font-weight:700;'
         f'background:{FORM_COLORS.get(r, ("#4a5560", "#eceff3"))[1]};'
-        f'color:{FORM_COLORS.get(r, ("#4a5560", "#eceff3"))[0]};margin-left:3px;">{E(r)}</span>'
+        f'color:{FORM_COLORS.get(r, ("#4a5560", "#eceff3"))[0]};margin-right:4px;">{E(r)}</span>'
         for r in st.get("form") or [])
     record = f'{st.get("wins", 0)}W–{st.get("draws", 0)}D–{st.get("losses", 0)}L'
     gd = st.get("goalDifference")
     gd_txt = f'{gd:+d}' if isinstance(gd, int) else "—"
+    # Deliberately two stacked lines rather than two columns: side by side,
+    # the form pips squeeze the league line to two words a row on a phone.
+    form_row = (f'<div class="micro" style="margin-top:8px;font-size:11px;color:{INK_SOFT};'
+                f'text-transform:uppercase;letter-spacing:.05em;font-weight:700;">'
+                f'Last 5</div><div style="margin-top:4px;">{pips}</div>') if pips else ""
     return (
-        f'<tr><td style="padding:14px 28px;background:{CARD_ALT};border-bottom:1px solid {BORDER};">'
-        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">'
-        f'<tr>'
-        f'<td style="font-size:13px;color:{INK};">'
-        f'<strong style="font-size:16px;color:{RED_DARK};">{_ordinal(st["position"])}</strong>'
+        f'<tr><td class="px" style="padding:16px 28px;background:{CARD_ALT};'
+        f'border-bottom:1px solid {BORDER};">'
+        f'<div class="meta" style="font-size:14px;line-height:1.5;color:{INK};">'
+        f'<strong style="font-size:17px;color:{RED_DARK};">{_ordinal(st["position"])}</strong>'
         f'<span style="color:{INK_SOFT};"> in the {E(st.get("competition") or "league")}</span> · '
         f'<strong>{st.get("points", 0)} pts</strong> · {E(record)} · GD {E(gd_txt)}'
         f'<span style="color:{INK_SOFT};"> from {st.get("played", 0)} played</span>'
-        f'</td>'
-        f'<td align="right" style="white-space:nowrap;">{pips}</td>'
-        f'</tr></table></td></tr>'
+        f'</div>{form_row}</td></tr>'
     )
 
 
@@ -1115,9 +1163,19 @@ def render_intro(summary):
     if not summary:
         return ""
     return (
-        f'<tr><td style="padding:18px 28px 4px;font-size:15px;line-height:1.5;color:{INK};">'
-        f'{E(summary)}</td></tr>'
+        f'<tr><td class="px lead" style="padding:22px 28px 4px;font-size:16px;'
+        f'line-height:1.55;color:{INK};">{E(summary)}</td></tr>'
     )
+
+
+# Short forms for the odds tiles only. A wrapped two-line label pushes that
+# tile's percentage down and breaks the alignment of the row.
+TILE_LABELS = {
+    "Premier League": "Prem",
+    "Champions League": "UCL",
+    "FA Cup": "FA Cup",
+    "Carabao Cup": "Carabao",
+}
 
 
 def render_odds(odds_items, commentary):
@@ -1133,20 +1191,27 @@ def render_odds(odds_items, commentary):
         if item and item.get("bidCents") is not None and item.get("askCents") is not None:
             spread = f'{item["bidCents"]}–{item["askCents"]}\u00a2 bid/ask'
         return (
-            f'<td width="25%" valign="top" style="background:{CARD_ALT};border:1px solid {BORDER};'
-            f'border-radius:6px;padding:12px 6px;text-align:center;">'
-            f'<div style="font-size:10px;color:{INK_SOFT};text-transform:uppercase;letter-spacing:.05em;font-weight:600;">{E(comp)}</div>'
-            f'<div style="font-size:22px;font-weight:700;color:{RED_DARK};margin:6px 0 2px;">{E(prob)}</div>'
-            f'<div style="font-size:11px;color:{INK_SOFT};">{E(odds)}</div>'
-            f'<div style="font-size:10px;color:{INK_SOFT};margin-top:2px;">{E(spread)}</div>'
-            f'</td>'
+            f'<div class="tile" style="display:inline-block;width:24%;vertical-align:top;">'
+            f'<div style="background:{CARD_ALT};border:1px solid {BORDER};border-radius:8px;'
+            f'margin:3px;padding:14px 6px;text-align:center;line-height:1.4;">'
+            f'<div class="micro" style="font-size:11px;color:{INK_SOFT};text-transform:uppercase;'
+            f'letter-spacing:.05em;font-weight:700;line-height:1.3;">'
+            f'{E(TILE_LABELS.get(comp, comp))}</div>'
+            f'<div class="stat-num" style="font-size:24px;font-weight:700;color:{RED_DARK};'
+            f'margin:7px 0 3px;line-height:1.1;">{E(prob)}</div>'
+            f'<div class="micro" style="font-size:12px;line-height:1.4;color:{INK_SOFT};">{E(odds)}</div>'
+            f'<div class="micro" style="font-size:11px;line-height:1.4;color:{INK_SOFT};'
+            f'margin-top:3px;">{E(spread)}</div>'
+            f'</div></div>'
         )
 
+    # inline-block tiles, not table cells: a media query can re-width these to
+    # 48% on a phone, where four columns across 375px is unreadable.
+    # font-size:0 on the row kills the whitespace gap between inline-blocks.
     grid = (
-        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
-        f'style="border-collapse:separate;border-spacing:6px;">'
-        f'<tr>{cell("Premier League")}{cell("Champions League")}{cell("FA Cup")}{cell("Carabao Cup")}</tr>'
-        f'</table>'
+        f'<div style="font-size:0;line-height:0;text-align:center;">'
+        f'{cell("Premier League")}{cell("Champions League")}{cell("FA Cup")}{cell("Carabao Cup")}'
+        f'</div>'
     )
 
     double = by_name.get("Double (PL + UCL)")
@@ -1154,16 +1219,19 @@ def render_odds(odds_items, commentary):
     if double and double.get("odds") is not None:
         prob = f'{double["impliedProbability"] * 100:.1f}%' if double.get("impliedProbability") is not None else ""
         double_row = (
-            f'<div style="margin-top:10px;padding:8px 12px;background:{CARD_ALT};'
-            f'border:1px solid {BORDER};border-radius:6px;text-align:center;font-size:13px;color:{INK_SOFT};">'
-            f'Double (PL + UCL): <strong style="color:{RED_DARK};font-size:16px;">{E(prob)}</strong>'
+            f'<div class="meta" style="margin-top:9px;padding:11px 12px;background:{CARD_ALT};'
+            f'border:1px solid {BORDER};border-radius:8px;text-align:center;font-size:14px;'
+            f'line-height:1.5;color:{INK_SOFT};">'
+            f'Double (PL + UCL): <strong style="color:{RED_DARK};font-size:17px;">{E(prob)}</strong>'
             f' · {double["odds"]:.2f} decimal'
             f'</div>'
         )
 
-    commentary_html = f'<p style="margin:8px 0 0;color:{INK_SOFT};font-size:13px;font-style:italic;">{E(commentary)}</p>' if commentary else ""
+    commentary_html = (f'<p class="meta" style="margin:10px 0 0;color:{INK_SOFT};font-size:14px;'
+                       f'line-height:1.55;font-style:italic;">{E(commentary)}</p>') if commentary else ""
     attribution = (
-        f'<p style="margin:8px 0 0;color:{INK_SOFT};font-size:11px;text-align:center;">'
+        f'<p class="micro" style="margin:10px 0 0;color:{INK_SOFT};font-size:12px;'
+        f'line-height:1.5;text-align:center;">'
         f'Live prices from <a href="https://kalshi.com" style="color:{RED_DARK};text-decoration:none;">Kalshi</a>'
         f' — contracts settle at $1, so the price is the market\u2019s implied probability.</p>'
     )
@@ -1183,10 +1251,10 @@ def _transfer_line(t, direction):
         parts.append(f'<strong>{E(t["fee"])}</strong>')
     if t.get("date"):
         parts.append(f'<span style="color:{INK_SOFT};">{E(t["date"])}</span>')
-    pos = f' <span style="color:{INK_SOFT};font-size:11px;">{E(t["position"])}</span>' if t.get("position") else ""
+    pos = f' <span style="color:{INK_SOFT};font-size:13px;">{E(t["position"])}</span>' if t.get("position") else ""
     body = f'<strong>{E(name)}</strong>{pos}' + (f' {" · ".join(parts)}' if parts else "")
     if t.get("sourceUrl"):
-        body += f' <a href="{E(t["sourceUrl"])}" style="color:{RED_DARK};text-decoration:none;font-size:12px;">[source]</a>'
+        body += f' <a href="{E(t["sourceUrl"])}" style="color:{RED_DARK};text-decoration:none;font-size:13px;white-space:nowrap;">[source]</a>'
     return body
 
 
@@ -1213,7 +1281,7 @@ def render_rumors(items):
             # FotMob row: structured fields rather than a headline sentence.
             direction = "in from" if r.get("direction") == "in" else "out to"
             fee = f' · <strong>{E(r["fee"])}</strong>' if r.get("fee") else ""
-            pos = f' <span style="color:{INK_SOFT};font-size:11px;">{E(r["position"])}</span>' if r.get("position") else ""
+            pos = f' <span style="color:{INK_SOFT};font-size:13px;">{E(r["position"])}</span>' if r.get("position") else ""
             head = (f'<strong>{E(r["player"])}</strong>{pos} '
                     f'<span style="color:{INK_SOFT};">{direction}</span> {E(r.get("club") or "?")}{fee}')
             meta_bits = ["FotMob"]
@@ -1226,8 +1294,8 @@ def render_rumors(items):
                 meta_bits.append(_source_link(r.get("sourceUrl"), r.get("source")))
             if r.get("date"):
                 meta_bits.append(E(r["date"]))
-        meta = (f'<div style="font-size:12px;color:{INK_SOFT};margin-top:2px;">'
-                f'{" · ".join(meta_bits)}</div>') if meta_bits else ""
+        meta = (f'<div class="meta" style="font-size:13px;line-height:1.5;color:{INK_SOFT};'
+                f'margin-top:3px;">{" · ".join(meta_bits)}</div>') if meta_bits else ""
         lines.append(head + meta)
     return _section_header("Rumors") + _section_body(_bullet_list(lines))
 
@@ -1235,7 +1303,7 @@ def render_rumors(items):
 def _note_line(note):
     text = E(note.get("text") or "")
     if note.get("url"):
-        text += f' <a href="{E(note["url"])}" style="color:{RED_DARK};text-decoration:none;font-size:12px;">[source]</a>'
+        text += f' <a href="{E(note["url"])}" style="color:{RED_DARK};text-decoration:none;font-size:13px;white-space:nowrap;">[source]</a>'
     return text
 
 
@@ -1252,7 +1320,7 @@ def render_pl(transfers, notes):
         move = f'{E(t.get("from") or "?")} → {E(t.get("to") or "?")}'
         fee = f' · {E(t.get("fee"))}' if t.get("fee") else ""
         date = f' <span style="color:{INK_SOFT};">{E(t.get("date"))}</span>' if t.get("date") else ""
-        src = f' <a href="{E(t["sourceUrl"])}" style="color:{RED_DARK};text-decoration:none;font-size:12px;">[source]</a>' if t.get("sourceUrl") else ""
+        src = f' <a href="{E(t["sourceUrl"])}" style="color:{RED_DARK};text-decoration:none;font-size:13px;white-space:nowrap;">[source]</a>' if t.get("sourceUrl") else ""
         lines.append(f'<strong>{E(name)}</strong> {move}{fee}{date}{src}')
     for n in notes or []:
         lines.append(_note_line(n))
@@ -1274,7 +1342,7 @@ def _comp_badge(name):
     bg, fg = COMP_COLORS.get((name or "").lower(), (CARD_ALT, INK_SOFT))
     return (
         f'<span style="display:inline-block;background:{bg};color:{fg};padding:2px 8px;'
-        f'border-radius:999px;font-size:10px;font-weight:700;white-space:nowrap;">{E(name or "")}</span>'
+        f'border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;">{E(name or "")}</span>'
     )
 
 
@@ -1294,28 +1362,32 @@ def render_fixtures(fixtures, notes=None):
                 f'style="display:block;width:28px;height:28px;border:0;outline:none;'
                 f'text-decoration:none;" />'
             ) if f.get("crestUrl") else ""
+            # Three columns, not four: the competition badge sits under the
+            # opponent name so a 375px screen never has to split the kickoff
+            # time onto two lines.
             rows += (
                 f'<tr>'
-                f'<td width="40" valign="middle" style="padding:10px 10px 10px 0;'
+                f'<td width="36" valign="top" style="padding:12px 10px 12px 0;'
                 f'border-bottom:1px solid {BORDER};">{crest}</td>'
-                f'<td valign="middle" style="padding:10px 10px 10px 0;border-bottom:1px solid {BORDER};">'
-                f'<div style="font-size:15px;font-weight:700;color:{INK};line-height:1.3;">'
+                f'<td valign="top" style="padding:12px 8px 12px 0;border-bottom:1px solid {BORDER};">'
+                f'<div class="fx-name" style="font-size:16px;font-weight:700;color:{INK};line-height:1.3;">'
                 f'{E(f.get("opponent") or "?")}</div>'
-                f'<div style="font-size:11px;font-weight:700;color:{RED_DARK if home else INK_SOFT};'
-                f'text-transform:uppercase;letter-spacing:.05em;margin-top:2px;">'
+                f'<div class="micro" style="font-size:11px;font-weight:700;'
+                f'color:{RED_DARK if home else INK_SOFT};'
+                f'text-transform:uppercase;letter-spacing:.05em;margin:3px 0 5px;">'
                 f'{"Home" if home else "Away"}</div>'
+                f'<div>{_comp_badge(f.get("competition"))}</div>'
                 f'</td>'
-                f'<td valign="middle" style="padding:10px 10px 10px 0;border-bottom:1px solid {BORDER};">'
-                f'{_comp_badge(f.get("competition"))}</td>'
-                f'<td valign="middle" align="right" style="padding:10px 0;border-bottom:1px solid {BORDER};'
-                f'font-size:13px;color:{INK_SOFT};white-space:nowrap;">'
-                f'{E(f.get("kickoffLocal") or f.get("date") or "")}</td>'
+                f'<td valign="top" align="right" style="padding:12px 0;border-bottom:1px solid {BORDER};">'
+                f'<div class="fx-time" style="font-size:13px;line-height:1.4;color:{INK_SOFT};">'
+                f'{E(f.get("kickoffLocal") or f.get("date") or "")}</div></td>'
                 f'</tr>'
             )
         body += (
             f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
             f'style="border-collapse:collapse;">{rows}</table>'
-            f'<p style="margin:10px 0 0;font-size:11px;color:{INK_SOFT};">Kickoff times in ET.</p>'
+            f'<p class="micro" style="margin:12px 0 0;font-size:12px;color:{INK_SOFT};">'
+            f'Kickoff times in ET.</p>'
         )
     if notes:
         body += _bullet_list([_note_line(n) for n in notes])
@@ -1324,11 +1396,11 @@ def render_fixtures(fixtures, notes=None):
 
 def _tactics_callout(label, body, accent):
     return (
-        f'<div style="margin:10px 0;padding:10px 14px;background:{CARD_ALT};'
+        f'<div style="margin:12px 0;padding:12px 15px;background:{CARD_ALT};'
         f'border-left:3px solid {accent};border-radius:0 6px 6px 0;">'
-        f'<div style="font-size:10px;font-weight:700;color:{INK_SOFT};text-transform:uppercase;'
-        f'letter-spacing:.06em;margin-bottom:3px;">{E(label)}</div>'
-        f'<div style="font-size:14px;line-height:1.55;color:{INK};">{body}</div>'
+        f'<div class="micro" style="font-size:11px;font-weight:700;color:{INK_SOFT};'
+        f'text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">{E(label)}</div>'
+        f'<div class="body-text" style="font-size:15px;line-height:1.6;color:{INK};">{body}</div>'
         f'</div>'
     )
 
@@ -1343,9 +1415,10 @@ def render_tactics(entry, lesson_number):
     score = f'{g.get("goalsFor")}–{g.get("goalsAgainst")}'
     venue = "vs" if g.get("homeAway") == "H" else "away at"
     header_line = (
-        f'<div style="font-size:15px;font-weight:700;color:{INK};margin-bottom:2px;">'
+        f'<div class="lead" style="font-size:17px;font-weight:700;color:{INK};'
+        f'line-height:1.3;margin-bottom:3px;">'
         f'Arsenal {E(score)} {E(venue)} {E(g.get("opponent") or "?")}</div>'
-        f'<div style="font-size:12px;color:{INK_SOFT};margin-bottom:10px;">'
+        f'<div class="meta" style="font-size:13px;color:{INK_SOFT};margin-bottom:12px;">'
         f'{E(g.get("competition") or "")} · {E(g.get("date") or "")}</div>'
     )
 
@@ -1357,7 +1430,8 @@ def render_tactics(entry, lesson_number):
             "wasn't ready in time for this send and will appear in the next one.",
             GOLD)
     if x.get("whatHappened"):
-        body += f'<p style="margin:0 0 4px;font-size:14px;line-height:1.6;">{E(x["whatHappened"])}</p>'
+        body += (f'<p class="body-text" style="margin:0 0 6px;font-size:15px;line-height:1.62;">'
+                 f'{E(x["whatHappened"])}</p>')
 
     # Shape — the concept the whole feature is built around.
     shape = x.get("shape") or {}
@@ -1372,22 +1446,24 @@ def render_tactics(entry, lesson_number):
         chips.append(("Without the ball", shape["arsenalOutOfPossession"]))
     if chips:
         cells = "".join(
-            f'<td width="33%" valign="top" style="background:{CARD_ALT};border:1px solid {BORDER};'
-            f'border-radius:6px;padding:10px 6px;text-align:center;">'
-            f'<div style="font-size:9px;color:{INK_SOFT};text-transform:uppercase;'
-            f'letter-spacing:.05em;font-weight:700;">{E(label)}</div>'
-            f'<div style="font-size:19px;font-weight:700;color:{RED_DARK};margin-top:4px;">{E(value)}</div>'
-            f'</td>'
+            f'<div class="chip" style="display:inline-block;width:32%;vertical-align:top;">'
+            f'<div style="background:{CARD_ALT};border:1px solid {BORDER};border-radius:8px;'
+            f'margin:3px;padding:12px 6px;text-align:center;line-height:1.4;">'
+            f'<div class="micro" style="font-size:11px;color:{INK_SOFT};text-transform:uppercase;'
+            f'letter-spacing:.05em;font-weight:700;line-height:1.3;">{E(label)}</div>'
+            f'<div class="stat-num" style="font-size:21px;font-weight:700;color:{RED_DARK};'
+            f'margin-top:5px;line-height:1.1;">{E(value)}</div>'
+            f'</div></div>'
             for label, value in chips
         )
         body += (
-            f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
-            f'style="border-collapse:separate;border-spacing:5px;margin:10px 0 2px;">'
-            f'<tr>{cells}</tr></table>'
+            f'<div style="font-size:0;line-height:0;text-align:center;margin:12px 0 2px;">'
+            f'{cells}</div>'
         )
         if opp_listed:
             body += (
-                f'<div style="font-size:12px;color:{INK_SOFT};text-align:center;margin-bottom:4px;">'
+                f'<div class="meta" style="font-size:13px;color:{INK_SOFT};text-align:center;'
+                f'line-height:1.5;margin-bottom:6px;">'
                 f'{E(g.get("opponent") or "Opponent")} lined up {E(opp_listed)}</div>'
             )
     if shape.get("plainEnglish"):
@@ -1403,16 +1479,17 @@ def render_tactics(entry, lesson_number):
     if lesson.get("term"):
         level = lesson.get("level") or 1
         body += (
-            f'<div style="margin:14px 0 6px;padding:14px 16px;background:#fffdf5;'
+            f'<div style="margin:16px 0 6px;padding:16px;background:#fffdf5;'
             f'border:2px solid {GOLD};border-radius:8px;">'
-            f'<div style="font-size:10px;font-weight:700;color:{GOLD};text-transform:uppercase;'
-            f'letter-spacing:.08em;">Lesson {lesson_number} · Level {level} of 3</div>'
-            f'<div style="font-size:17px;font-weight:700;color:{INK};margin:4px 0 6px;">'
-            f'{E(lesson["term"])}</div>'
-            f'<p style="margin:0 0 8px;font-size:14px;line-height:1.6;color:{INK};">'
+            f'<div class="micro" style="font-size:11px;font-weight:700;color:{GOLD};'
+            f'text-transform:uppercase;letter-spacing:.08em;">'
+            f'Lesson {lesson_number} · Level {level} of 3</div>'
+            f'<div class="lesson-term" style="font-size:18px;font-weight:700;color:{INK};'
+            f'line-height:1.3;margin:5px 0 7px;">{E(lesson["term"])}</div>'
+            f'<p class="body-text" style="margin:0 0 10px;font-size:15px;line-height:1.62;color:{INK};">'
             f'{E(lesson.get("explain") or "")}</p>'
-            f'<div style="padding:8px 12px;background:#fff;border-radius:5px;'
-            f'border:1px solid {BORDER};font-size:13px;line-height:1.5;">'
+            f'<div class="meta" style="padding:11px 13px;background:#ffffff;border-radius:6px;'
+            f'border:1px solid {BORDER};font-size:14px;line-height:1.55;">'
             f'<strong style="color:{RED_DARK};">Watch for it:</strong> {E(lesson.get("spotIt") or "")}'
             f'</div></div>'
         )
@@ -1421,26 +1498,30 @@ def render_tactics(entry, lesson_number):
     if translations:
         rows = "".join(
             f'<tr>'
-            f'<td valign="top" style="padding:6px 10px 6px 0;font-size:13px;font-weight:700;'
-            f'color:{RED_DARK};white-space:nowrap;">{E(t.get("stat") or "")}</td>'
-            f'<td valign="top" style="padding:6px 0;font-size:13px;line-height:1.5;color:{INK};'
-            f'border-bottom:1px solid {BORDER};">{E(t.get("plain") or "")}</td>'
+            f'<td valign="top" width="34%" style="padding:9px 10px 9px 0;font-weight:700;'
+            f'border-bottom:1px solid {BORDER};">'
+            f'<span class="meta" style="font-size:14px;line-height:1.4;color:{RED_DARK};">'
+            f'{E(t.get("stat") or "")}</span></td>'
+            f'<td valign="top" style="padding:9px 0;border-bottom:1px solid {BORDER};">'
+            f'<span class="meta" style="font-size:14px;line-height:1.5;color:{INK};">'
+            f'{E(t.get("plain") or "")}</span></td>'
             f'</tr>'
             for t in translations
         )
         body += (
-            f'<div style="font-size:10px;font-weight:700;color:{INK_SOFT};text-transform:uppercase;'
-            f'letter-spacing:.06em;margin:14px 0 2px;">By the numbers</div>'
+            f'<div class="micro" style="font-size:11px;font-weight:700;color:{INK_SOFT};'
+            f'text-transform:uppercase;letter-spacing:.06em;margin:16px 0 2px;">By the numbers</div>'
             f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
             f'style="border-collapse:collapse;">{rows}</table>'
         )
 
     if x.get("nerdCorner"):
         body += (
-            f'<div style="margin:14px 0 0;padding:12px 14px;background:{INK};border-radius:8px;">'
-            f'<div style="font-size:10px;font-weight:700;color:{GOLD};text-transform:uppercase;'
-            f'letter-spacing:.08em;margin-bottom:4px;">Nerd corner</div>'
-            f'<div style="font-size:13px;line-height:1.6;color:#e8ecf0;">{E(x["nerdCorner"])}</div>'
+            f'<div style="margin:16px 0 0;padding:14px 15px;background:{INK};border-radius:8px;">'
+            f'<div class="micro" style="font-size:11px;font-weight:700;color:{GOLD};'
+            f'text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;">Nerd corner</div>'
+            f'<div class="meta" style="font-size:14px;line-height:1.6;color:#e8ecf0;">'
+            f'{E(x["nerdCorner"])}</div>'
             f'</div>'
         )
 
@@ -1455,8 +1536,8 @@ def render_tactics(entry, lesson_number):
         confidence = entry.get("confidence")
         note = f' · sourcing confidence: {E(confidence)}' if confidence else ""
         body += (
-            f'<p style="margin:12px 0 0;font-size:11px;color:{INK_SOFT};line-height:1.5;">'
-            f'Sources: {links}{note}</p>'
+            f'<p class="micro" style="margin:14px 0 0;font-size:12px;color:{INK_SOFT};'
+            f'line-height:1.6;">Sources: {links}{note}</p>'
         )
 
     return _section_header("Tactics Lab") + _section_body(body)
@@ -1465,8 +1546,10 @@ def render_tactics(entry, lesson_number):
 def render_footer():
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     return (
-        f'<tr><td style="padding:16px 28px 22px;border-top:1px solid {BORDER};background:{CARD_ALT};">'
-        f'<p style="margin:0;font-size:12px;color:{INK_SOFT};text-align:center;line-height:1.5;">'
+        f'<tr><td class="px" style="padding:20px 28px 26px;border-top:1px solid {BORDER};'
+        f'background:{CARD_ALT};">'
+        f'<p class="meta" style="margin:0;font-size:13px;color:{INK_SOFT};text-align:center;'
+        f'line-height:1.6;">'
         f'Arsenal Tracker · Generated {E(ts)} · '
         f'<a href="{E(SITE_URL)}" style="color:{RED_DARK};text-decoration:none;">View full tracker</a>'
         f'</p></td></tr>'
@@ -1494,20 +1577,38 @@ def render_email(odds_items, additions, narrative, today_str, preheader,
         + render_footer()
     )
 
+    # A full document, not a bare fragment. The viewport meta is what stops
+    # iPhone Mail and the Gmail app zooming the whole thing out to fit 600px,
+    # and the colour-scheme metas keep the background white instead of letting
+    # Gmail's dark mode invert it.
     return (
-        f'<!--preheader--><div style="display:none;font-size:1px;color:{BG};'
-        f'line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">{E(preheader)}</div>'
+        '<!DOCTYPE html>'
+        '<html lang="en" xmlns="http://www.w3.org/1999/xhtml">'
+        '<head>'
+        '<meta charset="utf-8" />'
+        '<meta name="viewport" content="width=device-width,initial-scale=1" />'
+        '<meta http-equiv="X-UA-Compatible" content="IE=edge" />'
+        '<meta name="color-scheme" content="light only" />'
+        '<meta name="supported-color-schemes" content="light only" />'
+        '<title>Arsenal Digest</title>'
+        f'{EMAIL_STYLE}'
+        '</head>'
+        f'<body style="margin:0;padding:0;background:{BG};">'
+        f'<div style="display:none;font-size:1px;color:{BG};line-height:1px;'
+        f'max-height:0;max-width:0;opacity:0;overflow:hidden;">{E(preheader)}</div>'
         f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
-        f'style="background:{BG};padding:24px 0;margin:0;">'
-        f'<tr><td align="center">'
-        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" '
-        f'style="max-width:600px;background:#ffffff;border-radius:10px;overflow:hidden;'
-        f'box-shadow:0 1px 3px rgba(0,0,0,.06);'
+        f'style="background:{BG};margin:0;padding:0;width:100%;">'
+        # width="100%" + max-width, never width="600": a fixed 600 forces a
+        # phone into horizontal scroll.
+        f'<tr><td class="wrap" align="center" style="padding:16px 0;">'
+        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+        f'style="width:100%;max-width:600px;background:#ffffff;'
         f'font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\',Roboto,Helvetica,Arial,sans-serif;'
         f'color:{INK};">'
         f'{inner}'
         f'</table>'
         f'</td></tr></table>'
+        '</body></html>'
     )
 
 
@@ -1526,7 +1627,10 @@ def send_email(html_body, subject_highlight, item_count):
     msg["Subject"] = subj
     msg["From"] = sender
     msg["To"] = recipient
-    msg.attach(MIMEText("This email requires an HTML-capable client.", "plain"))
+    plain = (f"{subj}\n\n"
+             f"This digest is formatted as HTML. Open it in an HTML-capable client, "
+             f"or read the full tracker at {SITE_URL}\n")
+    msg.attach(MIMEText(plain, "plain"))
     msg.attach(MIMEText(html_body, "html"))
 
     ctx = ssl.create_default_context()
