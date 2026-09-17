@@ -1,7 +1,40 @@
 {
-  "lastUpdated": "2026-09-15",
+  "lastUpdated": "2026-09-17",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Luca Weinhandl",
+      "club": "Sturm Graz",
+      "direction": "in",
+      "fee": "\u20ac5.0M",
+      "date": "2026-09-17",
+      "position": "DM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Iv\u00e1n Fresneda",
+      "club": "Sporting CP",
+      "direction": "in",
+      "fee": "\u20ac80M",
+      "date": "2026-09-17",
+      "position": "RB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Rio Ngumoha",
+      "club": "Liverpool",
+      "direction": "in",
+      "fee": "\u20ac30M",
+      "date": "2026-09-16",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Noni Madueke",
       "club": "Juventus",

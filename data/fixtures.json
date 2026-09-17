@@ -1,18 +1,7 @@
 {
-  "lastUpdated": "2026-09-15",
+  "lastUpdated": "2026-09-17",
   "timezone": "America/New_York",
   "items": [
-    {
-      "fixtureId": 6099332,
-      "date": "2026-09-15",
-      "kickoffUtc": "2026-09-15T19:00:00.000Z",
-      "kickoffLocal": "Tue Sep 15, 3:00 PM EDT",
-      "opponent": "Ipswich",
-      "opponentId": 9902,
-      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9902.png",
-      "competition": "EFL Cup",
-      "homeAway": "A"
-    },
     {
       "fixtureId": 5795457,
       "date": "2026-09-19",
@@ -55,6 +44,17 @@
       "opponentId": 10203,
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10203.png",
       "competition": "Premier League",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 6106238,
+      "date": "2026-10-21",
+      "kickoffUtc": "2026-10-21T19:00:00.000Z",
+      "kickoffLocal": "Wed Oct 21, 3:00 PM EDT",
+      "opponent": "Bayern M\u00fcnchen",
+      "opponentId": 9823,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9823.png",
+      "competition": "Champions League",
       "homeAway": "A"
     }
   ]

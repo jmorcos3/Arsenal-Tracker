@@ -1,15 +1,184 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-09-15",
+  "lastUpdated": "2026-09-17",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
     "overload",
     "transition",
     "half-space",
-    "formation"
+    "formation",
+    "progressive"
   ],
   "matches": [
+    {
+      "fixtureId": 6099332,
+      "date": "2026-09-15",
+      "grounded": {
+        "fixtureId": 6099332,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-ipswich-town/37uw12#6099332",
+        "date": "2026-09-15",
+        "competition": "EFL Cup",
+        "round": "3",
+        "homeAway": "A",
+        "opponent": "Ipswich Town",
+        "opponentId": 9902,
+        "goalsFor": 4,
+        "goalsAgainst": 2,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Gary O'Neil",
+        "arsenalXI": [
+          "Kepa Arrizabalaga",
+          "Mart\u00edn Zubimendi",
+          "Marli Salmon",
+          "Gabriel",
+          "Myles Lewis-Skelly",
+          "Bruno Guimar\u00e3es",
+          "Mikel Merino",
+          "Noni Madueke",
+          "Max Dowman",
+          "Eberechi Eze",
+          "Viktor Gy\u00f6keres"
+        ],
+        "opponentXI": [
+          "Christian Walton",
+          "Darnell Furlong",
+          "C\u00e9dric Kipr\u00e9",
+          "Jacob Greaves",
+          "Abdoul Ouattara",
+          "Florentino",
+          "Anis Mehmeti",
+          "Kasey McAteer",
+          "Marcelino N\u00fa\u00f1ez",
+          "Jaden Philogene-Bidace",
+          "Zian Flemming"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 59,
+            "xg": 0.95,
+            "shots": 12,
+            "shotsOnTarget": 6,
+            "touchesInBox": 29,
+            "bigChances": 4,
+            "bigChancesMissed": 1,
+            "accuratePasses": 521,
+            "corners": 2,
+            "shotsInBox": 9,
+            "xgOpenPlay": 0.95,
+            "xgSetPlay": 0.0,
+            "xgot": 2.86,
+            "passesOppositionHalf": 286,
+            "tackles": 17,
+            "interceptions": 9,
+            "saves": 1,
+            "fouls": 13
+          },
+          "opponent": {
+            "possession": 41,
+            "xg": 0.72,
+            "shots": 8,
+            "shotsOnTarget": 3,
+            "touchesInBox": 19,
+            "bigChances": 1,
+            "bigChancesMissed": 0,
+            "accuratePasses": 341,
+            "corners": 3,
+            "shotsInBox": 6,
+            "xgOpenPlay": 0.69,
+            "xgSetPlay": 0.04,
+            "xgot": 1.62,
+            "passesOppositionHalf": 158,
+            "tackles": 26,
+            "interceptions": 14,
+            "saves": 2,
+            "fouls": 11
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Max Dowman",
+            "minute": 7,
+            "team": "Arsenal",
+            "assist": "Eberechi Eze"
+          },
+          {
+            "player": "Noni Madueke",
+            "minute": 16,
+            "team": "Arsenal",
+            "assist": null
+          },
+          {
+            "player": "Max Dowman",
+            "minute": 47,
+            "team": "Arsenal",
+            "assist": "Mart\u00edn Zubimendi"
+          },
+          {
+            "player": "Mikel Merino",
+            "minute": 58,
+            "team": "Arsenal",
+            "assist": null
+          },
+          {
+            "player": "Anis Mehmeti",
+            "minute": 62,
+            "team": "Ipswich Town",
+            "assist": "Jack Clarke"
+          },
+          {
+            "player": "Chuba Akpom",
+            "minute": 90,
+            "team": "Ipswich Town",
+            "assist": "Leif Davis"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal went away to Ipswich in the EFL Cup and settled it early: Max Dowman scored in the 7th minute, Noni Madueke added a second on 16, and by the time Dowman got his second just after half-time (47) and Mikel Merino made it four on 58, the tie was effectively over. Ipswich then got two back \u2014 Anis Mehmeti on 62 and Chuba Akpom in the 90th minute \u2014 which made the final score 4-2 look far tighter than the game felt. Arsenal had more of the ball (59%), more shots (12 to 8), and four big chances to Ipswich's one.",
+        "opponentPlan": "Ipswich set up in a mirror 4-2-3-1 under Gary O'Neil, which usually means they wanted man-for-man reference points all over the pitch rather than ceding territory. The tackle and interception counts tell you how that went: Ipswich made 26 tackles and 14 interceptions to Arsenal's 17 and 9, the profile of a side constantly reacting to the ball rather than dictating where it goes. Arsenal answered by simply playing through and around them \u2014 286 passes in the opposition half against Ipswich's 158, and 29 touches in the Ipswich box against 19. Once Arsenal led 2-0 inside 16 minutes, Ipswich had to come out and chase, which is exactly the situation their two late goals came from.",
+        "keyMoment": "The 47th minute. Arsenal came out after the break and Mart\u00edn Zubimendi \u2014 one of the deepest players on the pitch \u2014 set up Dowman for 3-0 within two minutes of the restart. That's the moment the tie stopped being competitive: Ipswich had a whole half-time to reset and were behind by three before they'd touched the ball properly. Merino's fourth on 58 followed, and Ipswich's goals on 62 and 90 came only after the game state had already been decided.",
+        "nerdCorner": "The gap between xG (0.95) and xGOT (2.86) is the whole story of this match and it's the thing to be careful about. xG asks 'how good was the chance?' \u2014 and by that measure Arsenal's four goals came from a set of chances worth under one goal. xGOT asks 'how good was the shot?' and Arsenal's 2.86 says the finishing was elite. That's a 1.91 overperformance, and finishing at that level is the least repeatable thing in football. The sustainable, repeatable evidence is elsewhere: 4 big chances to 1, 286 passes in the opposition half to 158, 29 box touches to 19. Those are process numbers and they'd survive a rematch. The 4-2 might not. Equally worth noting the flip side \u2014 Ipswich's own xGOT (1.62) sat well above their xG (0.72), and Kepa made just one save all match. Ipswich scored twice from a game in which they created one big chance. A digest that only reads the scoreline concludes 'Arsenal leaky at the back'; a digest that reads xGOT concludes 'two very good finishes against a defence that conceded almost nothing of substance.' Both goals also arrived at 4-0 and in the 90th minute, when game state had removed any reason for Arsenal to hold shape.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-2-3-1 pressing shape",
+          "plainEnglish": "On paper Arsenal lined up 4-2-3-1, but a team's shape with the ball is almost never the shape on the teamsheet. With a young full-back like Myles Lewis-Skelly, Arsenal typically push him forward or tuck him inside so the back four becomes a back three, the two holders (Zubimendi and Bruno Guimar\u00e3es here) sit in front of it, and five attackers spread across the final third. Without the ball those players sprint back into recognisable banks again, which is why the same eleven can look like two completely different teams depending on who has possession."
+        },
+        "lesson": {
+          "conceptId": "progressive",
+          "term": "Progressive pass / carry",
+          "level": 2,
+          "explain": "A progressive pass or carry is any time you move the ball meaningfully closer to the opponent's goal \u2014 not a sideways reset, but a genuine gain of ground. The single clearest evidence of it in this match is the passing map: Arsenal played 286 passes in the opposition half to Ipswich's 158, and turned that into 29 touches in the Ipswich box against 19. That gap doesn't come from possession alone \u2014 59% isn't overwhelming \u2014 it comes from what Arsenal did with the ball once they had it. Zubimendi's assist for the 47th-minute goal is the idea in one action: a deep midfielder whose job is not just to keep the ball but to move it forward into a scoring position.",
+          "spotIt": "Next match, pick one Arsenal midfielder and count how many of his passes go forward past an opponent versus sideways to a teammate on the same line \u2014 the ratio tells you whether Arsenal are actually progressing or just circulating."
+        },
+        "statTranslations": [
+          {
+            "stat": "Passes in opposition half: Arsenal 286 | Ipswich 158",
+            "plain": "Arsenal spent the game camped in Ipswich's half, so almost all of their passing happened in dangerous territory rather than safely in front of their own defence."
+          },
+          {
+            "stat": "Big chances: Arsenal 4 | Ipswich 1",
+            "plain": "Arsenal created four clear openings to Ipswich's one \u2014 the scoreline of 4-2 flatters Ipswich considerably."
+          },
+          {
+            "stat": "xG 0.95 vs 0.72, but xGOT 2.86 vs 1.62",
+            "plain": "xG says both teams' chances were fairly ordinary; xGOT measures the quality of the shot once it left the foot, and Arsenal's leap from 0.95 to 2.86 means the finishing was outstanding, not that the chances were."
+          },
+          {
+            "stat": "Tackles: Arsenal 17 | Ipswich 26, Interceptions: Arsenal 9 | Ipswich 14",
+            "plain": "Ipswich were doing far more defensive work, which is what happens when the other team has the ball and is moving it forward \u2014 those are numbers of a side chasing, not controlling."
+          },
+          {
+            "stat": "Shots inside box: Arsenal 9 of 12 | Ipswich 6 of 8",
+            "plain": "Three quarters of Arsenal's shots came from inside the penalty area, meaning they were working the ball into good positions rather than shooting from distance out of frustration."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795453,
       "date": "2026-09-12",
