@@ -34,8 +34,12 @@ jobs:
           DIGEST_FROM: jmorcos3@gmail.com
         run: python scripts/digest.py
 
+      # Runs even when the digest step failed. Odds, tactics, fixtures, standing
+      # and transfers are all written to data/ before the email is attempted, so
+      # a bad SMTP credential shouldn't also freeze the website. Nothing is
+      # staged if the run died before writing anything.
       - name: Commit updated tracker data
-        if: success()
+        if: '!cancelled()'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
