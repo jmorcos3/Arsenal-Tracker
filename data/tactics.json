@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-09-17",
+  "lastUpdated": "2026-09-29",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -8,9 +8,160 @@
     "transition",
     "half-space",
     "formation",
-    "progressive"
+    "progressive",
+    "rest-defence"
   ],
   "matches": [
+    {
+      "fixtureId": 5795457,
+      "date": "2026-09-19",
+      "grounded": {
+        "fixtureId": 5795457,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-brighton-hove-albion/3bfk5g#5795457",
+        "date": "2026-09-19",
+        "competition": "Premier League",
+        "round": "5",
+        "homeAway": "A",
+        "opponent": "Brighton & Hove Albion",
+        "opponentId": 10204,
+        "goalsFor": 0,
+        "goalsAgainst": 3,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Fabian H\u00fcrzeler",
+        "arsenalXI": [
+          "David Raya",
+          "Jurri\u00ebn Timber",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Declan Rice",
+          "Bruno Guimar\u00e3es",
+          "Bukayo Saka",
+          "Martin \u00d8degaard",
+          "Christos Tzolis",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Bart Verbruggen",
+          "Ferdi Kad\u0131o\u011flu",
+          "Luka Vu\u0161kovi\u0107",
+          "Pascal Struijk",
+          "Olivier Boscagli",
+          "Chema Andr\u00e9s",
+          "Yasin Ayari",
+          "Diego G\u00f3mez",
+          "Pascal Gro\u00df",
+          "Maxim De Cuyper",
+          "Charalampos Kostoulas"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 60,
+            "xg": 1.63,
+            "shots": 11,
+            "shotsOnTarget": 2,
+            "touchesInBox": 36,
+            "bigChances": 2,
+            "bigChancesMissed": 2,
+            "accuratePasses": 433,
+            "corners": 6,
+            "shotsInBox": 10,
+            "xgOpenPlay": 1.08,
+            "xgSetPlay": 0.55,
+            "xgot": 1.08,
+            "passesOppositionHalf": 196,
+            "tackles": 13,
+            "interceptions": 6,
+            "saves": 2,
+            "fouls": 11
+          },
+          "opponent": {
+            "possession": 40,
+            "xg": 1.31,
+            "shots": 17,
+            "shotsOnTarget": 5,
+            "touchesInBox": 30,
+            "bigChances": 3,
+            "bigChancesMissed": 2,
+            "accuratePasses": 260,
+            "corners": 5,
+            "shotsInBox": 10,
+            "xgOpenPlay": 0.75,
+            "xgSetPlay": 0.56,
+            "xgot": 2.04,
+            "passesOppositionHalf": 135,
+            "tackles": 19,
+            "interceptions": 11,
+            "saves": 2,
+            "fouls": 13
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Pascal Gro\u00df",
+            "minute": 31,
+            "team": "Brighton & Hove Albion",
+            "assist": "Charalampos Kostoulas"
+          },
+          {
+            "player": "Charalampos Kostoulas",
+            "minute": 45,
+            "team": "Brighton & Hove Albion",
+            "assist": "Diego G\u00f3mez"
+          },
+          {
+            "player": "Chema Andr\u00e9s",
+            "minute": 57,
+            "team": "Brighton & Hove Albion",
+            "assist": "Pascal Gro\u00df"
+          }
+        ],
+        "result": "L"
+      },
+      "explained": {
+        "whatHappened": "Arsenal had the ball for most of this game \u2014 60% of it \u2014 and spent long spells camped in Brighton's half, but they lost 3-0. Brighton scored through Pascal Gro\u00df on 31 minutes, added a second right on 45 minutes through Charalampos Kostoulas, and killed it off when Chema Andr\u00e9s made it three on 57. Brighton had fewer of the ball but more shots (17 to 11) and more shots on target (5 to 2), and every time they got a clean sight of goal they hit it properly.",
+        "opponentPlan": "Brighton set up in a mirror 4-2-3-1 under Fabian H\u00fcrzeler and were plainly content to let Arsenal have the ball \u2014 40% possession and only 135 passes in the opposition half says they weren't chasing territory. Their work was done further back and higher up in bursts: 19 tackles and 11 interceptions to Arsenal's 13 and 6 means Brighton were the team actively winning the ball off someone, not the team calmly recycling it. Arsenal's answer was volume \u2014 196 passes in Brighton's half, 36 touches in their box, 6 corners \u2014 but Arsenal's 4-2-3-1 pushes so many bodies forward that each Brighton ball-win started a race Arsenal were behind in, and Brighton finished with 17 shots to Arsenal's 11.",
+        "keyMoment": "The 45th minute. Arsenal had been chasing the game since Gro\u00df scored on 31, and going in at half-time one down with all their possession is a manageable problem. Kostoulas making it 2-0 right on 45, assisted by Diego G\u00f3mez, turned it into a different match: Arsenal now had to commit even more bodies forward, which is exactly the situation Brighton had been feeding on, and Chema Andr\u00e9s's third on 57 \u2014 assisted by Gro\u00df, the man who scored the first \u2014 came from the same pattern.",
+        "nerdCorner": "The scoreline hides that this was, by expected goals, a near-even match: 1.63 to 1.31, with Arsenal even edging touches in the opposition box 36-30. The gap opens up entirely at the point of contact. Arsenal's xG of 1.63 became an xGOT of 1.08 \u2014 the shots they took were worth less once struck than they were when the chance appeared. Brighton's 1.31 became 2.04, a full chance better. Add that both teams had exactly 10 shots inside the box, and you have a match where the locations were comparable and the executions were not. The harder question is whether that's noise or structure: Arsenal's 11 shots for 36 box touches suggests a lot of entering the area and not much finishing the move, which is a pattern rather than a coin flip, while Brighton's 5 shots on target from 17 attempts producing three goals is the kind of conversion rate that does not repeat. Both things can be true \u2014 Arsenal were unlucky on the day and still had a real problem converting territory into clean shots.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 / 4-2-3-1 mid block",
+          "plainEnglish": "On paper Arsenal line up 4-2-3-1, but a team with Timber and Calafiori as full-backs and Rice plus Bruno Guimar\u00e3es behind \u00d8degaard usually doesn't stay in neat rows once they have the ball. Typically one full-back tucks inside next to the deeper midfielders while the other pushes high, which leaves three defenders across the back, two in front of them and five players spread along the last line. Without the ball those same players have to sprint back out to the touchlines and reform two banks of four, and that journey \u2014 inside to outside, high to deep \u2014 is where a team is at its most stretched."
+        },
+        "lesson": {
+          "conceptId": "rest-defence",
+          "term": "Rest defence",
+          "level": 2,
+          "explain": "Rest defence is the group of players you deliberately keep back while your own attack is happening \u2014 the insurance policy for the moment you lose the ball. It matters most to exactly this kind of team: Arsenal had 60% of the ball and 196 passes in Brighton's half, meaning for most of 90 minutes their defenders were high up the pitch with a lot of grass behind them. Brighton made 19 tackles and 11 interceptions, so they were repeatedly taking the ball off Arsenal in those moments, and they ended up with 17 shots to Arsenal's 11 despite seeing far less of the ball. When the team with 40% possession out-shoots you by six, the question is rarely about your attack \u2014 it's about who was standing where when your attack broke down.",
+          "spotIt": "Next match, when Arsenal have the ball near the opposition box, ignore the ball for five seconds and count how many Arsenal players are still behind it \u2014 that number is the rest defence, and watch what happens to it the moment possession is lost."
+        },
+        "statTranslations": [
+          {
+            "stat": "Possession 60% vs 40%, shots 11 vs 17",
+            "plain": "Having the ball is not the same as having chances \u2014 Brighton did more damage with less of it."
+          },
+          {
+            "stat": "xGOT: Arsenal 1.08 | Brighton 2.04",
+            "plain": "xGOT measures the quality of shots once they're struck; Brighton's finishing upgraded their chances, Arsenal's downgraded theirs."
+          },
+          {
+            "stat": "xG 1.63 vs 1.31, big chances 2 vs 3",
+            "plain": "The underlying chance quality was close to level \u2014 this was not a 3-0 performance gap, it was a 3-0 finishing gap."
+          },
+          {
+            "stat": "Tackles 13 vs 19, interceptions 6 vs 11",
+            "plain": "Brighton were the team actively stealing the ball, and each steal is the starting whistle for a counter."
+          },
+          {
+            "stat": "Touches in opposition box 36 vs 30, shots on target 2 vs 5",
+            "plain": "Arsenal got into the dangerous area plenty but rarely turned it into a proper test of the goalkeeper."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 6099332,
       "date": "2026-09-15",

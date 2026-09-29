@@ -1,19 +1,20 @@
 {
-  "lastUpdated": "2026-09-17",
+  "lastUpdated": "2026-09-29",
   "competition": "Premier League",
-  "position": 1,
-  "played": 4,
+  "position": 2,
+  "played": 5,
   "wins": 4,
   "draws": 0,
-  "losses": 0,
+  "losses": 1,
   "goalsFor": 8,
-  "goalsAgainst": 1,
-  "goalDifference": 7,
+  "goalsAgainst": 4,
+  "goalDifference": 4,
   "points": 12,
   "form": [
     "W",
     "W",
     "W",
-    "W"
+    "W",
+    "L"
   ]
 }

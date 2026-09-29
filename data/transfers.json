@@ -1,6 +1,6 @@
 {
   "window": "2026-27",
-  "lastUpdated": "2026-09-17",
+  "lastUpdated": "2026-09-29",
   "source": "fotmob",
   "in": [
     {
@@ -20,7 +20,7 @@
       "direction": "in",
       "fee": null,
       "date": "2026-08-30",
-      "position": null,
+      "position": "RM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -176,7 +176,7 @@
       "direction": "out",
       "fee": "\u20ac9.0M",
       "date": "2026-09-01",
-      "position": "CM",
+      "position": "RW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -281,17 +281,6 @@
       "source": "fotmob"
     },
     {
-      "player": "Louie Copley",
-      "club": "Crawley Town",
-      "direction": "out",
-      "fee": "on loan",
-      "date": "2026-02-01",
-      "position": "CM",
-      "onLoan": true,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
       "player": "Maldini Kacurri",
       "club": "Grimsby Town",
       "direction": "out",
@@ -308,18 +297,18 @@
       "direction": "out",
       "fee": "on loan",
       "date": "2026-01-23",
-      "position": "CM",
+      "position": "AM",
       "onLoan": true,
       "contractExtension": false,
       "source": "fotmob"
     },
     {
-      "player": "Maldini Kacurri",
-      "club": "Morecambe",
+      "player": "Louie Copley",
+      "club": "Crawley Town",
       "direction": "out",
       "fee": "on loan",
-      "date": "2025-09-19",
-      "position": "CB",
+      "date": "2026-01-08",
+      "position": "CM",
       "onLoan": true,
       "contractExtension": false,
       "source": "fotmob"

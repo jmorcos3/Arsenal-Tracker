@@ -1,7 +1,139 @@
 {
-  "lastUpdated": "2026-09-17",
+  "lastUpdated": "2026-09-29",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Jacobo Ram\u00f3n",
+      "club": "Como",
+      "direction": "in",
+      "fee": "\u20ac45M",
+      "date": "2026-09-29",
+      "position": "CB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Alberto Costa",
+      "club": "FC Porto",
+      "direction": "in",
+      "fee": "\u20ac18M",
+      "date": "2026-09-29",
+      "position": "RB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Ibrahim Maza",
+      "club": "Bayer Leverkusen",
+      "direction": "in",
+      "fee": "\u20ac45M",
+      "date": "2026-09-29",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Trent Alexander-Arnold",
+      "club": "Real Madrid",
+      "direction": "in",
+      "fee": "\u20ac70M",
+      "date": "2026-09-28",
+      "position": "RB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Erling Haaland",
+      "club": "Manchester City",
+      "direction": "in",
+      "fee": "\u20ac227M",
+      "date": "2026-09-28",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Kevin Schade",
+      "club": "Brentford",
+      "direction": "in",
+      "fee": "\u20ac35M",
+      "date": "2026-09-26",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Martin \u00d8degaard",
+      "club": "Arsenal",
+      "direction": "in",
+      "fee": "contract extension",
+      "date": "2026-09-23",
+      "position": "CM",
+      "onLoan": false,
+      "contractExtension": true,
+      "source": "fotmob"
+    },
+    {
+      "player": "Raphinha",
+      "club": "Barcelona",
+      "direction": "in",
+      "fee": "\u20ac80M",
+      "date": "2026-09-22",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Noni Madueke",
+      "club": "Atl\u00e9tico Madrid",
+      "direction": "out",
+      "fee": "\u20ac50M",
+      "date": "2026-09-22",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Maximilian Beier",
+      "club": "Dortmund",
+      "direction": "in",
+      "fee": "\u20ac41M",
+      "date": "2026-09-21",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Endrick",
+      "club": "Real Madrid",
+      "direction": "in",
+      "fee": "\u20ac40M",
+      "date": "2026-09-20",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Eli Junior Kroupi",
+      "club": "Bournemouth",
+      "direction": "in",
+      "fee": "\u20ac70M",
+      "date": "2026-09-18",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Luca Weinhandl",
       "club": "Sturm Graz",
@@ -47,17 +179,6 @@
       "source": "fotmob"
     },
     {
-      "player": "Noni Madueke",
-      "club": "Atl\u00e9tico Madrid",
-      "direction": "out",
-      "fee": "on loan",
-      "date": "2026-09-15",
-      "position": "RW",
-      "onLoan": true,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
       "player": "Nico Paz",
       "club": "Como",
       "direction": "in",
@@ -74,7 +195,7 @@
       "direction": "out",
       "fee": "\u20ac75M",
       "date": "2026-09-11",
-      "position": "CM",
+      "position": "DM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -86,28 +207,6 @@
       "fee": "\u20ac65M",
       "date": "2026-09-08",
       "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Raphinha",
-      "club": "Barcelona",
-      "direction": "in",
-      "fee": "\u20ac80M",
-      "date": "2026-09-05",
-      "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Endrick",
-      "club": "Real Madrid",
-      "direction": "in",
-      "fee": "\u20ac40M",
-      "date": "2026-08-29",
-      "position": "RW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -162,7 +261,7 @@
       "direction": "in",
       "fee": "\u20ac100M",
       "date": "2026-08-21",
-      "position": "AM",
+      "position": "LW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -173,62 +272,7 @@
       "direction": "out",
       "fee": "\u20ac85M",
       "date": "2026-08-17",
-      "position": "CM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Jack Hinshelwood",
-      "club": "Brighton",
-      "direction": "in",
-      "fee": "\u20ac60M",
-      "date": "2026-08-15",
-      "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Jarell Quansah",
-      "club": "Bayer Leverkusen",
-      "direction": "in",
-      "fee": "free transfer",
-      "date": "2026-08-14",
-      "position": "CB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Jules Kounde",
-      "club": "Barcelona",
-      "direction": "in",
-      "fee": "\u20ac70M",
-      "date": "2026-08-13",
-      "position": "RB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Joaquin Seys",
-      "club": "Club Brugge",
-      "direction": "in",
-      "fee": "\u20ac35M",
-      "date": "2026-08-10",
-      "position": "LB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Kaua Elias",
-      "club": "Shakhtar Donetsk",
-      "direction": "in",
-      "fee": "\u20ac13M",
-      "date": "2026-08-07",
-      "position": "ST",
+      "position": "DM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
