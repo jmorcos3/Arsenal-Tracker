@@ -1,7 +1,29 @@
 {
-  "lastUpdated": "2026-09-29",
+  "lastUpdated": "2026-10-01",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Rayan Cherki",
+      "club": "Manchester City",
+      "direction": "in",
+      "fee": "\u20ac90M",
+      "date": "2026-10-01",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Finn Jeltsch",
+      "club": "VfB Stuttgart",
+      "direction": "in",
+      "fee": "\u20ac35M",
+      "date": "2026-09-29",
+      "position": "CB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Jacobo Ram\u00f3n",
       "club": "Como",
@@ -262,17 +284,6 @@
       "fee": "\u20ac100M",
       "date": "2026-08-21",
       "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Mart\u00edn Zubimendi",
-      "club": "Real Madrid",
-      "direction": "out",
-      "fee": "\u20ac85M",
-      "date": "2026-08-17",
-      "position": "DM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"

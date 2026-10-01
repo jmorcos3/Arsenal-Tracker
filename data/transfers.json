@@ -1,6 +1,6 @@
 {
   "window": "2026-27",
-  "lastUpdated": "2026-09-29",
+  "lastUpdated": "2026-10-01",
   "source": "fotmob",
   "in": [
     {
@@ -100,17 +100,6 @@
       "position": "ST",
       "onLoan": false,
       "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "William Saliba",
-      "club": "Arsenal",
-      "direction": "in",
-      "fee": "contract extension",
-      "date": "2025-09-30",
-      "position": "CB",
-      "onLoan": false,
-      "contractExtension": true,
       "source": "fotmob"
     }
   ],
