@@ -1,7 +1,73 @@
 {
-  "lastUpdated": "2026-10-01",
+  "lastUpdated": "2026-10-06",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Noni Madueke",
+      "club": "Atl\u00e9tico Madrid",
+      "direction": "out",
+      "fee": "\u20ac50M",
+      "date": "2026-10-06",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Noni Madueke",
+      "club": "Juventus",
+      "direction": "out",
+      "fee": "\u20ac50M",
+      "date": "2026-10-06",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Jules Kounde",
+      "club": "Barcelona",
+      "direction": "in",
+      "fee": "\u20ac55M",
+      "date": "2026-10-06",
+      "position": "RB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Joshua King",
+      "club": "Fulham",
+      "direction": "in",
+      "fee": "\u20ac59M",
+      "date": "2026-10-06",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Endrick",
+      "club": "Real Madrid",
+      "direction": "in",
+      "fee": "on loan",
+      "date": "2026-10-06",
+      "position": "RW",
+      "onLoan": true,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Igor Matanovic",
+      "club": "Freiburg",
+      "direction": "in",
+      "fee": "\u20ac58M",
+      "date": "2026-10-04",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Rayan Cherki",
       "club": "Manchester City",
@@ -113,34 +179,12 @@
       "source": "fotmob"
     },
     {
-      "player": "Noni Madueke",
-      "club": "Atl\u00e9tico Madrid",
-      "direction": "out",
-      "fee": "\u20ac50M",
-      "date": "2026-09-22",
-      "position": "RW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
       "player": "Maximilian Beier",
       "club": "Dortmund",
       "direction": "in",
       "fee": "\u20ac41M",
       "date": "2026-09-21",
       "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Endrick",
-      "club": "Real Madrid",
-      "direction": "in",
-      "fee": "\u20ac40M",
-      "date": "2026-09-20",
-      "position": "RW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -186,17 +230,6 @@
       "date": "2026-09-16",
       "position": "LW",
       "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Noni Madueke",
-      "club": "Juventus",
-      "direction": "out",
-      "fee": "on loan",
-      "date": "2026-09-15",
-      "position": "RW",
-      "onLoan": true,
       "contractExtension": false,
       "source": "fotmob"
     },
@@ -261,28 +294,6 @@
       "direction": "in",
       "fee": "\u20ac36M",
       "date": "2026-08-26",
-      "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Victor Osimhen",
-      "club": "Galatasaray",
-      "direction": "in",
-      "fee": "\u20ac77M",
-      "date": "2026-08-22",
-      "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Kenan Yildiz",
-      "club": "Juventus",
-      "direction": "in",
-      "fee": "\u20ac100M",
-      "date": "2026-08-21",
       "position": "LW",
       "onLoan": false,
       "contractExtension": false,
