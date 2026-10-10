@@ -463,3 +463,128 @@ def fetch_transfers():
     done, rumours = rows("allTransfers"), rows("allRumours")
     print(f"[ok] fotmob transfers: {len(done)} completed, {len(rumours)} rumoured")
     return {"transfers": done, "rumours": rumours}
+
+
+PL_LEAGUE_ID = 47
+
+
+def _league_season(season):
+    """Arsenal's league matches for one season, oldest round first.
+
+    The team endpoint ignores a season parameter and always answers for the
+    current one, so season history comes from the league endpoint instead —
+    it carries every match in the division, each tagged with its round.
+    """
+    data = _get("leagues", {"id": PL_LEAGUE_ID, "season": season})
+    if not data:
+        return None
+    matches = ((data.get("fixtures") or {}).get("allMatches")) or []
+    team_id = str(ARSENAL_TEAM_ID)
+    rows = []
+    for match in matches:
+        home, away = match.get("home") or {}, match.get("away") or {}
+        if team_id not in (home.get("id"), away.get("id")):
+            continue
+        is_home = home.get("id") == team_id
+        opponent = away if is_home else home
+        status = match.get("status") or {}
+        try:
+            rnd = int(match.get("round"))
+        except (TypeError, ValueError):
+            continue
+        row = {
+            "round": rnd,
+            "opponent": opponent.get("name"),
+            "opponentShort": opponent.get("shortName") or opponent.get("name"),
+            "opponentId": opponent.get("id"),
+            "venue": "H" if is_home else "A",
+            "kickoff": status.get("utcTime"),
+        }
+        score = status.get("scoreStr") or ""
+        if status.get("finished") and " - " in score:
+            try:
+                hg, ag = (int(part) for part in score.split(" - "))
+            except ValueError:
+                rows.append(row)
+                continue
+            gf, ga = (hg, ag) if is_home else (ag, hg)
+            result = "W" if gf > ga else ("D" if gf == ga else "L")
+            row["result"] = result
+            row["score"] = f"{gf}-{ga}"
+            row["points"] = {"W": 3, "D": 1, "L": 0}[result]
+        rows.append(row)
+    rows.sort(key=lambda r: r["round"])
+    return rows
+
+
+def fetch_season_comparison(current="2026/2027", previous="2025/2026"):
+    """This season's league campaign measured against the last one, fixture by fixture.
+
+    Rows follow *this* season's fixture order. Each is paired with last season's
+    meeting with the same opponent at the same venue; promoted sides have no such
+    meeting, so those rows carry no baseline and are left out of the running
+    swing rather than being matched to some other club's result.
+    """
+    cur = _league_season(current)
+    prev = _league_season(previous)
+    if not cur or not prev:
+        print("[warn] season comparison unavailable")
+        return None
+
+    prior_index = {
+        (r.get("opponentId"), r["venue"]): r
+        for r in prev
+        if r.get("result")
+    }
+
+    rows, agg, matched = [], 0, 0
+    for fixture in cur:
+        prior = prior_index.get((fixture.get("opponentId"), fixture["venue"]))
+        row = {
+            "round": fixture["round"],
+            "opponent": fixture["opponent"],
+            "opponentShort": fixture["opponentShort"],
+            "crestUrl": f"{CREST_BASE}/{fixture['opponentId']}.png" if fixture.get("opponentId") else None,
+            "venue": fixture["venue"],
+            "kickoff": fixture.get("kickoff"),
+            "previous": None,
+            "current": None,
+            "delta": None,
+        }
+        if prior:
+            row["previous"] = {
+                "result": prior["result"], "score": prior.get("score"),
+                "points": prior["points"], "venue": prior["venue"],
+            }
+        if fixture.get("result"):
+            row["current"] = {
+                "result": fixture["result"], "score": fixture.get("score"),
+                "points": fixture["points"],
+            }
+        if prior and fixture.get("result"):
+            row["delta"] = fixture["points"] - prior["points"]
+            agg += row["delta"]
+            matched += 1
+        row["aggregate"] = agg if fixture.get("result") else None
+        rows.append(row)
+
+    prev_total = sum(r.get("points", 0) for r in prev)
+    cur_total = sum(r.get("points", 0) for r in cur if r.get("result"))
+    played = sum(1 for r in cur if r.get("result"))
+    no_baseline = sum(1 for r in rows if r["previous"] is None)
+
+    print(f"[ok] fotmob season comparison: {played} played, swing {agg:+d} "
+          f"over {matched} comparable, {no_baseline} without a {previous} meeting")
+    return {
+        "currentSeason": current,
+        "previousSeason": previous,
+        "lastUpdated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "rows": rows,
+        "previousTotal": prev_total,
+        "currentTotal": cur_total,
+        "played": played,
+        "swing": agg,
+        "comparable": matched,
+        "withoutBaseline": no_baseline,
+        "projected": prev_total + agg,
+    }

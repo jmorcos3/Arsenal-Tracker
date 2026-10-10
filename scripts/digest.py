@@ -19,8 +19,8 @@ from urllib.error import URLError
 import feedparser
 from anthropic import Anthropic
 
-from fotmob import (fetch_recent_matches, fetch_standing, fetch_transfers,
-                    fetch_upcoming_fixtures, summarize_for_prompt)
+from fotmob import (fetch_recent_matches, fetch_season_comparison, fetch_standing,
+                    fetch_transfers, fetch_upcoming_fixtures, summarize_for_prompt)
 from kalshi import fetch_trophy_prices, double_item
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -206,6 +206,16 @@ def refresh_standing():
         **standing,
     }, indent=2) + "\n")
     return standing
+
+
+def refresh_season_comparison():
+    """Store this season measured against last, keeping the last copy on failure."""
+    compare = fetch_season_comparison()
+    if not compare:
+        print("[warn] no season comparison returned; keeping previous")
+        return load_json("season-compare.json") or None
+    (DATA_DIR / "season-compare.json").write_text(json.dumps(compare, indent=2) + "\n")
+    return compare
 
 
 RECENT_TRANSFER_DAYS = 45
@@ -1322,6 +1332,134 @@ def render_fixtures(fixtures, notes=None):
     return _section_header("Next 5 Fixtures") + _section_body(body or _empty())
 
 
+# Result colours follow the spreadsheet this section was modelled on:
+# green win, red loss, grey draw, with home/away tinted in the venue column.
+RES_BG = {"W": "#6fd36f", "L": "#f4645f", "D": "#c9ced3"}
+RES_INK = {"W": "#0b3d0b", "L": "#4a0004", "D": "#2b3238"}
+VENUE_BG = {"H": "#fdeaec", "A": "#e8f1fb"}
+EMAIL_COMPARE_LOOKAHEAD = 3
+
+
+def _res_pill(result):
+    """A W/D/L cell, or an em dash when there is nothing to show."""
+    if not result:
+        return f'<span style="color:{INK_SOFT};">&mdash;</span>'
+    return (
+        f'<span style="display:inline-block;min-width:24px;padding:2px 7px;border-radius:4px;'
+        f'background:{RES_BG[result]};color:{RES_INK[result]};font-size:12px;font-weight:700;'
+        f'text-align:center;">{result}</span>'
+    )
+
+
+def _delta_cell(delta):
+    if delta is None:
+        return f'<span style="color:{INK_SOFT};">&mdash;</span>'
+    colour = "#1b7a1b" if delta > 0 else ("#b8000d" if delta < 0 else INK_SOFT)
+    return f'<span style="color:{colour};font-weight:700;">{delta:+d}</span>'
+
+
+def render_season_comparison(compare):
+    """This season against last, fixture by fixture.
+
+    The email carries the gameweeks already played plus the next few, so it stays
+    a readable height all season; the site holds the full 38-row grid.
+    """
+    if not compare or not compare.get("rows"):
+        return _section_header("This Season vs Last") + _section_body(_empty())
+
+    rows = compare["rows"]
+    played = [r for r in rows if r.get("current")]
+    upcoming = [r for r in rows if not r.get("current")][:EMAIL_COMPARE_LOOKAHEAD]
+    shown = played + upcoming
+
+    prev_season = compare.get("previousSeason", "last")
+    cur_season = compare.get("currentSeason", "this")
+    swing = compare.get("swing", 0)
+    swing_colour = "#1b7a1b" if swing > 0 else ("#b8000d" if swing < 0 else INK_SOFT)
+
+    head = (
+        f'<tr style="background:{CARD_ALT};">'
+        f'<th align="center" style="padding:6px 4px;font-size:10px;color:{INK_SOFT};'
+        f'text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid {BORDER};">GW</th>'
+        f'<th align="left" style="padding:6px 6px;font-size:10px;color:{INK_SOFT};'
+        f'text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid {BORDER};">Opponent</th>'
+        f'<th align="center" style="padding:6px 4px;font-size:10px;color:{INK_SOFT};'
+        f'text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid {BORDER};">{E(prev_season[:5])}</th>'
+        f'<th align="center" style="padding:6px 4px;font-size:10px;color:{INK_SOFT};'
+        f'text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid {BORDER};">{E(cur_season[:5])}</th>'
+        f'<th align="center" style="padding:6px 4px;font-size:10px;color:{INK_SOFT};'
+        f'text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid {BORDER};">+/-</th>'
+        f'<th align="center" style="padding:6px 4px;font-size:10px;color:{INK_SOFT};'
+        f'text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid {BORDER};">Agg</th>'
+        f'</tr>'
+    )
+
+    body_rows = ""
+    for r in shown:
+        prev, cur = r.get("previous"), r.get("current")
+        venue = r.get("venue") or ""
+        agg = r.get("aggregate")
+        body_rows += (
+            f'<tr>'
+            f'<td align="center" style="padding:6px 4px;font-size:12px;color:{INK_SOFT};'
+            f'border-bottom:1px solid {BORDER};">{r.get("round","")}</td>'
+            f'<td style="padding:6px 6px;border-bottom:1px solid {BORDER};">'
+            f'<span style="font-size:13px;font-weight:700;color:{INK};">{E(r.get("opponentShort") or "?")}</span>'
+            f'<span style="display:inline-block;margin-left:6px;padding:1px 5px;border-radius:3px;'
+            f'background:{VENUE_BG.get(venue,CARD_ALT)};font-size:10px;font-weight:700;color:{INK_SOFT};">'
+            f'{"HOME" if venue=="H" else "AWAY"}</span></td>'
+            f'<td align="center" style="padding:6px 4px;border-bottom:1px solid {BORDER};">'
+            f'{_res_pill(prev.get("result") if prev else None)}</td>'
+            f'<td align="center" style="padding:6px 4px;border-bottom:1px solid {BORDER};">'
+            f'{_res_pill(cur.get("result") if cur else None)}</td>'
+            f'<td align="center" style="padding:6px 4px;font-size:12px;border-bottom:1px solid {BORDER};">'
+            f'{_delta_cell(r.get("delta"))}</td>'
+            f'<td align="center" style="padding:6px 4px;font-size:12px;color:{INK_SOFT};'
+            f'border-bottom:1px solid {BORDER};">{agg if agg is not None else "&mdash;"}</td>'
+            f'</tr>'
+        )
+
+    totals = (
+        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+        f'style="border-collapse:collapse;margin:0 0 10px;"><tr>'
+        f'<td align="center" style="padding:8px 4px;background:{CARD_ALT};border:1px solid {BORDER};">'
+        f'<div style="font-size:18px;font-weight:700;color:{INK};">{compare.get("previousTotal","?")}</div>'
+        f'<div style="font-size:10px;color:{INK_SOFT};text-transform:uppercase;letter-spacing:.05em;">'
+        f'{E(prev_season)} final</div></td>'
+        f'<td align="center" style="padding:8px 4px;background:{CARD_ALT};border:1px solid {BORDER};">'
+        f'<div style="font-size:18px;font-weight:700;color:{INK};">{compare.get("currentTotal","?")}</div>'
+        f'<div style="font-size:10px;color:{INK_SOFT};text-transform:uppercase;letter-spacing:.05em;">'
+        f'{E(cur_season)} so far</div></td>'
+        f'<td align="center" style="padding:8px 4px;background:{CARD_ALT};border:1px solid {BORDER};">'
+        f'<div style="font-size:18px;font-weight:700;color:{swing_colour};">{swing:+d}</div>'
+        f'<div style="font-size:10px;color:{INK_SOFT};text-transform:uppercase;letter-spacing:.05em;">'
+        f'swing</div></td>'
+        f'<td align="center" style="padding:8px 4px;background:{CARD_ALT};border:1px solid {BORDER};">'
+        f'<div style="font-size:18px;font-weight:700;color:{RED_DARK};">{compare.get("projected","?")}</div>'
+        f'<div style="font-size:10px;color:{INK_SOFT};text-transform:uppercase;letter-spacing:.05em;">'
+        f'projected</div></td>'
+        f'</tr></table>'
+    )
+
+    note = (
+        f'<p style="margin:8px 0 0;font-size:11px;color:{INK_SOFT};">'
+        f'Each fixture is matched to last season\'s meeting with the same opponent at the same venue. '
+        f'Projected = {compare.get("previousTotal","?")} + swing. '
+    )
+    if compare.get("withoutBaseline"):
+        note += (
+            f'{compare["withoutBaseline"]} fixtures are against promoted sides with no {E(prev_season)} '
+            f'meeting &mdash; those show &mdash; and sit outside the swing.'
+        )
+    note += '</p>'
+
+    table = (
+        f'<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" '
+        f'style="border-collapse:collapse;">{head}{body_rows}</table>'
+    )
+    return _section_header("This Season vs Last") + _section_body(totals + table + note)
+
+
 def _tactics_callout(label, body, accent):
     return (
         f'<div style="margin:10px 0;padding:10px 14px;background:{CARD_ALT};'
@@ -1475,7 +1613,7 @@ def render_footer():
 
 def render_email(odds_items, additions, narrative, today_str, preheader,
                  tactics_entry=None, lesson_number=1, fixtures=None, standing=None,
-                 transfers=None, rumors=None):
+                 transfers=None, rumors=None, compare=None):
     additions = additions or {}
     narrative = narrative or {}
 
@@ -1484,6 +1622,7 @@ def render_email(odds_items, additions, narrative, today_str, preheader,
         + render_standing(standing)
         + render_intro(narrative.get("summary"))
         + render_tactics(tactics_entry, lesson_number)
+        + render_season_comparison(compare)
         + render_odds(odds_items, narrative.get("odds_commentary"))
         + render_transfers_in((transfers or {}).get("in") or [])
         + render_transfers_out((transfers or {}).get("out") or [])
@@ -1573,6 +1712,7 @@ def main():
             recent_matches, refresh_tactics(recent_matches) or latest_tactics_entry())
         fixtures = refresh_fixtures()
         standing = refresh_standing()
+        compare = refresh_season_comparison()
         refresh_transfers()
         transfers, rumors = recent_transfers(), recent_rumors()
         lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
@@ -1594,7 +1734,7 @@ def main():
                 lesson_number=lesson_number,
                 fixtures=fixtures,
                 standing=standing,
-                transfers=transfers, rumors=rumors,
+                transfers=transfers, rumors=rumors, compare=compare,
             )
             send_email(html_body, "quiet news cycle", 0)
             record_send()
@@ -1616,7 +1756,7 @@ def main():
             lesson_number=lesson_number,
             fixtures=fixtures,
             standing=standing,
-            transfers=transfers, rumors=rumors,
+            transfers=transfers, rumors=rumors, compare=compare,
         )
         send_email(html_body, result.get("subject_highlight", ""), len(items))
         record_send()

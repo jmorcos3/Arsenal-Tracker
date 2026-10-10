@@ -1,0 +1,654 @@
+{
+  "currentSeason": "2026/2027",
+  "previousSeason": "2025/2026",
+  "lastUpdated": "2026-10-10",
+  "rows": [
+    {
+      "round": 1,
+      "opponent": "Coventry City",
+      "opponentShort": "Coventry",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8669.png",
+      "venue": "H",
+      "kickoff": "2026-08-21T19:00:00Z",
+      "previous": null,
+      "current": {
+        "result": "W",
+        "score": "3-0",
+        "points": 3
+      },
+      "delta": null,
+      "aggregate": 0
+    },
+    {
+      "round": 2,
+      "opponent": "Aston Villa",
+      "opponentShort": "Aston Villa",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10252.png",
+      "venue": "A",
+      "kickoff": "2026-08-31T19:00:00Z",
+      "previous": {
+        "result": "L",
+        "score": "1-2",
+        "points": 0,
+        "venue": "A"
+      },
+      "current": {
+        "result": "W",
+        "score": "1-0",
+        "points": 3
+      },
+      "delta": 3,
+      "aggregate": 3
+    },
+    {
+      "round": 3,
+      "opponent": "Chelsea",
+      "opponentShort": "Chelsea",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png",
+      "venue": "H",
+      "kickoff": "2026-09-06T15:30:00Z",
+      "previous": {
+        "result": "W",
+        "score": "2-1",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": {
+        "result": "W",
+        "score": "2-1",
+        "points": 3
+      },
+      "delta": 0,
+      "aggregate": 3
+    },
+    {
+      "round": 4,
+      "opponent": "Sunderland",
+      "opponentShort": "Sunderland",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8472.png",
+      "venue": "A",
+      "kickoff": "2026-09-12T19:00:00Z",
+      "previous": {
+        "result": "D",
+        "score": "2-2",
+        "points": 1,
+        "venue": "A"
+      },
+      "current": {
+        "result": "W",
+        "score": "2-0",
+        "points": 3
+      },
+      "delta": 2,
+      "aggregate": 5
+    },
+    {
+      "round": 5,
+      "opponent": "Brighton & Hove Albion",
+      "opponentShort": "Brighton",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10204.png",
+      "venue": "A",
+      "kickoff": "2026-09-19T14:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "1-0",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": {
+        "result": "L",
+        "score": "0-3",
+        "points": 0
+      },
+      "delta": -3,
+      "aggregate": 2
+    },
+    {
+      "round": 6,
+      "opponent": "Leeds United",
+      "opponentShort": "Leeds",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8463.png",
+      "venue": "H",
+      "kickoff": "2026-10-10T11:30:00.000Z",
+      "previous": {
+        "result": "W",
+        "score": "5-0",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": {
+        "result": "W",
+        "score": "2-1",
+        "points": 3
+      },
+      "delta": 0,
+      "aggregate": 2
+    },
+    {
+      "round": 7,
+      "opponent": "Nottingham Forest",
+      "opponentShort": "Nottm Forest",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10203.png",
+      "venue": "A",
+      "kickoff": "2026-10-18T15:30:00Z",
+      "previous": {
+        "result": "D",
+        "score": "0-0",
+        "points": 1,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 8,
+      "opponent": "Everton",
+      "opponentShort": "Everton",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8668.png",
+      "venue": "H",
+      "kickoff": "2026-10-24T14:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "2-0",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 9,
+      "opponent": "Liverpool",
+      "opponentShort": "Liverpool",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png",
+      "venue": "A",
+      "kickoff": "2026-11-01T16:30:00Z",
+      "previous": {
+        "result": "L",
+        "score": "0-1",
+        "points": 0,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 10,
+      "opponent": "Hull City",
+      "opponentShort": "Hull",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8667.png",
+      "venue": "H",
+      "kickoff": "2026-11-07T15:00:00Z",
+      "previous": null,
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 11,
+      "opponent": "Newcastle United",
+      "opponentShort": "Newcastle",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10261.png",
+      "venue": "A",
+      "kickoff": "2026-11-21T17:30:00Z",
+      "previous": {
+        "result": "W",
+        "score": "2-1",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 12,
+      "opponent": "Manchester City",
+      "opponentShort": "Man City",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png",
+      "venue": "H",
+      "kickoff": "2026-11-29T16:30:00Z",
+      "previous": {
+        "result": "D",
+        "score": "1-1",
+        "points": 1,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 13,
+      "opponent": "Brentford",
+      "opponentShort": "Brentford",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9937.png",
+      "venue": "A",
+      "kickoff": "2026-12-02T20:00:00Z",
+      "previous": {
+        "result": "D",
+        "score": "1-1",
+        "points": 1,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 14,
+      "opponent": "Tottenham Hotspur",
+      "opponentShort": "Tottenham",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png",
+      "venue": "A",
+      "kickoff": "2026-12-05T15:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "4-1",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 15,
+      "opponent": "AFC Bournemouth",
+      "opponentShort": "Bournemouth",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8678.png",
+      "venue": "H",
+      "kickoff": "2026-12-12T15:00:00Z",
+      "previous": {
+        "result": "L",
+        "score": "1-2",
+        "points": 0,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 16,
+      "opponent": "Manchester United",
+      "opponentShort": "Man United",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png",
+      "venue": "H",
+      "kickoff": "2026-12-19T15:00:00Z",
+      "previous": {
+        "result": "L",
+        "score": "2-3",
+        "points": 0,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 17,
+      "opponent": "Crystal Palace",
+      "opponentShort": "Crystal Palace",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
+      "venue": "A",
+      "kickoff": "2026-12-27T19:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "2-1",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 18,
+      "opponent": "Fulham",
+      "opponentShort": "Fulham",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9879.png",
+      "venue": "A",
+      "kickoff": "2026-12-30T19:30:00Z",
+      "previous": {
+        "result": "W",
+        "score": "1-0",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 19,
+      "opponent": "Ipswich Town",
+      "opponentShort": "Ipswich",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9902.png",
+      "venue": "H",
+      "kickoff": "2027-01-02T15:00:00Z",
+      "previous": null,
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 20,
+      "opponent": "Brentford",
+      "opponentShort": "Brentford",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9937.png",
+      "venue": "H",
+      "kickoff": "2027-01-05T19:30:00Z",
+      "previous": {
+        "result": "W",
+        "score": "2-0",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 21,
+      "opponent": "Hull City",
+      "opponentShort": "Hull",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8667.png",
+      "venue": "A",
+      "kickoff": "2027-01-16T15:00:00Z",
+      "previous": null,
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 22,
+      "opponent": "Newcastle United",
+      "opponentShort": "Newcastle",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10261.png",
+      "venue": "H",
+      "kickoff": "2027-01-23T15:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "1-0",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 23,
+      "opponent": "Manchester City",
+      "opponentShort": "Man City",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png",
+      "venue": "A",
+      "kickoff": "2027-01-30T15:00:00Z",
+      "previous": {
+        "result": "L",
+        "score": "1-2",
+        "points": 0,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 24,
+      "opponent": "Liverpool",
+      "opponentShort": "Liverpool",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png",
+      "venue": "H",
+      "kickoff": "2027-02-06T15:00:00Z",
+      "previous": {
+        "result": "D",
+        "score": "0-0",
+        "points": 1,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 25,
+      "opponent": "Ipswich Town",
+      "opponentShort": "Ipswich",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9902.png",
+      "venue": "A",
+      "kickoff": "2027-02-10T20:00:00Z",
+      "previous": null,
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 26,
+      "opponent": "Fulham",
+      "opponentShort": "Fulham",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9879.png",
+      "venue": "H",
+      "kickoff": "2027-02-20T15:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "3-0",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 27,
+      "opponent": "Manchester United",
+      "opponentShort": "Man United",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10260.png",
+      "venue": "A",
+      "kickoff": "2027-02-27T15:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "1-0",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 28,
+      "opponent": "Crystal Palace",
+      "opponentShort": "Crystal Palace",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9826.png",
+      "venue": "H",
+      "kickoff": "2027-03-03T20:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "1-0",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 29,
+      "opponent": "Chelsea",
+      "opponentShort": "Chelsea",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8455.png",
+      "venue": "A",
+      "kickoff": "2027-03-13T15:00:00Z",
+      "previous": {
+        "result": "D",
+        "score": "1-1",
+        "points": 1,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 30,
+      "opponent": "Sunderland",
+      "opponentShort": "Sunderland",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8472.png",
+      "venue": "H",
+      "kickoff": "2027-03-20T15:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "3-0",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 31,
+      "opponent": "Coventry City",
+      "opponentShort": "Coventry",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8669.png",
+      "venue": "A",
+      "kickoff": "2027-04-10T14:00:00Z",
+      "previous": null,
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 32,
+      "opponent": "Aston Villa",
+      "opponentShort": "Aston Villa",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10252.png",
+      "venue": "H",
+      "kickoff": "2027-04-17T14:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "4-1",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 33,
+      "opponent": "AFC Bournemouth",
+      "opponentShort": "Bournemouth",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8678.png",
+      "venue": "A",
+      "kickoff": "2027-04-24T14:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "3-2",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 34,
+      "opponent": "Tottenham Hotspur",
+      "opponentShort": "Tottenham",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png",
+      "venue": "H",
+      "kickoff": "2027-05-01T14:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "4-1",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 35,
+      "opponent": "Leeds United",
+      "opponentShort": "Leeds",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8463.png",
+      "venue": "A",
+      "kickoff": "2027-05-08T14:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "4-0",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 36,
+      "opponent": "Nottingham Forest",
+      "opponentShort": "Nottm Forest",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10203.png",
+      "venue": "H",
+      "kickoff": "2027-05-15T14:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "3-0",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 37,
+      "opponent": "Everton",
+      "opponentShort": "Everton",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8668.png",
+      "venue": "A",
+      "kickoff": "2027-05-23T14:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "1-0",
+        "points": 3,
+        "venue": "A"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    },
+    {
+      "round": 38,
+      "opponent": "Brighton & Hove Albion",
+      "opponentShort": "Brighton",
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10204.png",
+      "venue": "H",
+      "kickoff": "2027-05-30T15:00:00Z",
+      "previous": {
+        "result": "W",
+        "score": "2-1",
+        "points": 3,
+        "venue": "H"
+      },
+      "current": null,
+      "delta": null,
+      "aggregate": null
+    }
+  ],
+  "previousTotal": 85,
+  "currentTotal": 15,
+  "played": 6,
+  "swing": 2,
+  "comparable": 5,
+  "withoutBaseline": 6,
+  "projected": 87
+}
