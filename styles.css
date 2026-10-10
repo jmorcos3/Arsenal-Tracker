@@ -363,3 +363,97 @@ footer { padding: 20px 0 40px; color: var(--ink-soft); text-align: center; }
   display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 4px;
   background: #eceff3; color: var(--ink-soft); font-size: 11px; font-weight: 700;
 }
+
+/* ---- This Season vs Last -------------------------------------------- */
+/* Mirrors the spreadsheet: two halves of the season side by side on a wide
+   screen, stacking to one column on a phone. */
+.cmp-totals {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0 0 16px;
+}
+.cmp-tile {
+  background: var(--card-alt, #fafbfc);
+  border: 1px solid var(--border, #e3e6ea);
+  border-radius: 8px;
+  padding: 10px 6px;
+  text-align: center;
+}
+.cmp-tile-value { font-size: 22px; font-weight: 700; line-height: 1.1; }
+.cmp-tile-value.is-up { color: #1b7a1b; }
+.cmp-tile-value.is-down { color: #b8000d; }
+.cmp-tile-value.is-accent { color: var(--arsenal-red-dark, #b8000d); }
+.cmp-tile-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--ink-soft, #4a5560);
+  margin-top: 3px;
+}
+
+.cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.cmp-table th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--ink-soft, #4a5560);
+  font-weight: 700;
+  text-align: center;
+  padding: 6px 3px;
+  border-bottom: 1px solid var(--border, #e3e6ea);
+}
+.cmp-table td {
+  text-align: center;
+  padding: 5px 3px;
+  border-bottom: 1px solid var(--border, #e3e6ea);
+}
+.cmp-table th.cmp-opp, .cmp-table td.cmp-opp { text-align: left; }
+.cmp-gw { color: var(--ink-soft, #4a5560); font-variant-numeric: tabular-nums; }
+.cmp-opp { white-space: nowrap; }
+.cmp-opp img { vertical-align: middle; margin-right: 5px; }
+.cmp-opp span:not(.cmp-venue) { font-weight: 600; }
+.cmp-venue {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ink-soft, #4a5560);
+}
+.cmp-venue.is-home { background: #fdeaec; }
+.cmp-venue.is-away { background: #e8f1fb; }
+.cmp-res {
+  display: inline-block;
+  min-width: 22px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.cmp-W { background: #6fd36f; color: #0b3d0b; }
+.cmp-L { background: #f4645f; color: #4a0004; }
+.cmp-D { background: #c9ced3; color: #2b3238; }
+.cmp-none, .cmp-agg { color: var(--ink-soft, #4a5560); }
+.cmp-delta { font-weight: 700; font-variant-numeric: tabular-nums; }
+.cmp-delta.is-up { color: #1b7a1b; }
+.cmp-delta.is-down { color: #b8000d; }
+.cmp-delta.is-flat { color: var(--ink-soft, #4a5560); }
+.cmp-agg { font-variant-numeric: tabular-nums; }
+.cmp-note { margin-top: 12px; }
+
+@media (max-width: 760px) {
+  .cmp-grid { grid-template-columns: 1fr; gap: 0; }
+}
+@media (max-width: 420px) {
+  .cmp-totals { grid-template-columns: repeat(2, 1fr); }
+  .cmp-table { font-size: 12px; }
+}
+
+/* The stat label is nowrap so short labels stay on one line, but a long one
+   pushed the whole page sideways on a phone. Let it wrap once space is tight. */
+@media (max-width: 760px) {
+  .stat-table th { white-space: normal; }
+}

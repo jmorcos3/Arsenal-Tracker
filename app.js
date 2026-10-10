@@ -1,5 +1,5 @@
 (async function () {
-  const [odds, transfers, plTransfers, rumors, sources, tactics, glossary, fixtures, standing] = await Promise.all([
+  const [odds, transfers, plTransfers, rumors, sources, tactics, glossary, fixtures, standing, compare] = await Promise.all([
     fetchJSON('data/odds.json'),
     fetchJSON('data/transfers.json'),
     fetchJSON('data/pl-transfers.json'),
@@ -9,12 +9,14 @@
     fetchJSON('data/glossary.json'),
     fetchJSON('data/fixtures.json'),
     fetchJSON('data/standing.json'),
+    fetchJSON('data/season-compare.json'),
   ]);
 
   renderStanding(standing);
   renderTactics(tactics, glossary);
   renderGlossary(glossary, tactics);
   renderFixtures(fixtures);
+  renderSeasonCompare(compare);
   renderOdds(odds);
   renderTransfers(transfers);
   renderPLTransfers(plTransfers);
@@ -203,6 +205,100 @@ function renderFixtures(data) {
       <td class="fx-when">${escapeHTML(f.kickoffLocal || f.date || '')}</td>
     </tr>
   `).join('');
+}
+
+// This season against last, fixture by fixture, mirroring the spreadsheet this
+// was modelled on: two halves side by side on a wide screen, one column on a phone.
+function renderSeasonCompare(data) {
+  const section = document.getElementById('compare-section');
+  if (!section) return;
+  const rows = (data && data.rows) || [];
+  if (!rows.length) {
+    section.hidden = true;
+    return;
+  }
+  section.hidden = false;
+
+  const prevLabel = shortSeason(data.previousSeason);
+  const curLabel = shortSeason(data.currentSeason);
+
+  const tiles = [
+    { value: data.previousTotal, label: `${escapeHTML(data.previousSeason || '')} final` },
+    { value: data.currentTotal, label: `${escapeHTML(data.currentSeason || '')} so far` },
+    { value: signed(data.swing), label: 'swing', tone: tone(data.swing) },
+    { value: data.projected, label: 'projected', tone: 'accent' },
+  ];
+  document.getElementById('compare-totals').innerHTML = tiles.map(t => `
+    <div class="cmp-tile">
+      <div class="cmp-tile-value${t.tone ? ' is-' + t.tone : ''}">${escapeHTML(String(t.value ?? '—'))}</div>
+      <div class="cmp-tile-label">${t.label}</div>
+    </div>
+  `).join('');
+
+  const half = Math.ceil(rows.length / 2);
+  const halves = [rows.slice(0, half), rows.slice(half)];
+  document.getElementById('compare-grid').innerHTML = halves.map(chunk => `
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>GW</th><th class="cmp-opp">Opponent</th>
+          <th>${escapeHTML(prevLabel)}</th><th>${escapeHTML(curLabel)}</th>
+          <th>+/-</th><th>Agg</th>
+        </tr>
+      </thead>
+      <tbody>${chunk.map(compareRow).join('')}</tbody>
+    </table>
+  `).join('');
+
+  const note = document.getElementById('compare-note');
+  let text = `Each fixture is matched to ${escapeHTML(data.previousSeason || 'last season')}'s meeting with the
+    same opponent at the same venue. Projected = ${escapeHTML(String(data.previousTotal ?? '?'))} + swing.`;
+  if (data.withoutBaseline) {
+    text += ` ${data.withoutBaseline} fixtures are against promoted sides with no
+      ${escapeHTML(data.previousSeason || 'prior')} meeting — those show — and sit outside the swing.`;
+  }
+  note.innerHTML = text;
+}
+
+function compareRow(r) {
+  const venue = r.venue === 'H' ? 'is-home' : 'is-away';
+  const agg = r.aggregate === null || r.aggregate === undefined ? '—' : r.aggregate;
+  return `
+    <tr>
+      <td class="cmp-gw">${escapeHTML(String(r.round ?? ''))}</td>
+      <td class="cmp-opp">
+        ${r.crestUrl ? `<img src="${escapeAttr(r.crestUrl)}" alt="" width="18" height="18" />` : ''}
+        <span>${escapeHTML(r.opponentShort || r.opponent || '?')}</span>
+        <span class="cmp-venue ${venue}">${r.venue === 'H' ? 'H' : 'A'}</span>
+      </td>
+      <td>${resultPill(r.previous && r.previous.result, r.previous && r.previous.score)}</td>
+      <td>${resultPill(r.current && r.current.result, r.current && r.current.score)}</td>
+      <td class="cmp-delta is-${tone(r.delta)}">${r.delta === null || r.delta === undefined ? '—' : signed(r.delta)}</td>
+      <td class="cmp-agg">${escapeHTML(String(agg))}</td>
+    </tr>
+  `;
+}
+
+function resultPill(result, score) {
+  if (!result) return '<span class="cmp-none">—</span>';
+  const title = score ? ` title="${escapeAttr(score)}"` : '';
+  return `<span class="cmp-res cmp-${result}"${title}>${result}</span>`;
+}
+
+function tone(n) {
+  if (n === null || n === undefined || n === 0) return 'flat';
+  return n > 0 ? 'up' : 'down';
+}
+
+function signed(n) {
+  if (n === null || n === undefined) return '—';
+  return n > 0 ? `+${n}` : String(n);
+}
+
+function shortSeason(s) {
+  if (!s) return '';
+  const m = String(s).match(/^(\d{2})(\d{2})\/(\d{2})(\d{2})$/);
+  return m ? `${m[2]}/${m[4]}` : String(s);
 }
 
 function renderOdds(data) {
