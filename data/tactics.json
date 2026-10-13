@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-09-29",
+  "lastUpdated": "2026-10-13",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -9,9 +9,160 @@
     "half-space",
     "formation",
     "progressive",
-    "rest-defence"
+    "rest-defence",
+    "switch"
   ],
   "matches": [
+    {
+      "fixtureId": 5795465,
+      "date": "2026-10-10",
+      "grounded": {
+        "fixtureId": 5795465,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/leeds-united-vs-arsenal/2rkmmx#5795465",
+        "date": "2026-10-10",
+        "competition": "Premier League",
+        "round": "6",
+        "homeAway": "H",
+        "opponent": "Leeds United",
+        "opponentId": 8463,
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "3-5-2",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Daniel Farke",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Declan Rice",
+          "Myles Lewis-Skelly",
+          "Bukayo Saka",
+          "Martin \u00d8degaard",
+          "Noni Madueke",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "James Trafford",
+          "James Justin",
+          "Nico Elvedi",
+          "Tarik Muharemovi\u0107",
+          "Jayden Bogle",
+          "Anton Stach",
+          "Ethan Ampadu",
+          "Ao Tanaka",
+          "Gabriel Gudmundsson",
+          "Dominic Calvert-Lewin",
+          "Noah Okafor"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 58,
+            "xg": 2.33,
+            "shots": 13,
+            "shotsOnTarget": 6,
+            "touchesInBox": 37,
+            "bigChances": 4,
+            "bigChancesMissed": 3,
+            "accuratePasses": 437,
+            "corners": 2,
+            "shotsInBox": 8,
+            "xgOpenPlay": 2.28,
+            "xgSetPlay": 0.05,
+            "xgot": 2.11,
+            "passesOppositionHalf": 266,
+            "tackles": 12,
+            "interceptions": 7,
+            "saves": 4,
+            "fouls": 12
+          },
+          "opponent": {
+            "possession": 42,
+            "xg": 0.62,
+            "shots": 11,
+            "shotsOnTarget": 5,
+            "touchesInBox": 17,
+            "bigChances": 2,
+            "bigChancesMissed": 1,
+            "accuratePasses": 281,
+            "corners": 4,
+            "shotsInBox": 7,
+            "xgOpenPlay": 0.47,
+            "xgSetPlay": 0.16,
+            "xgot": 1.83,
+            "passesOppositionHalf": 105,
+            "tackles": 10,
+            "interceptions": 8,
+            "saves": 4,
+            "fouls": 20
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "James Justin",
+            "minute": 55,
+            "team": "Leeds United",
+            "assist": "Gabriel Gudmundsson"
+          },
+          {
+            "player": "Riccardo Calafiori",
+            "minute": 62,
+            "team": "Arsenal",
+            "assist": "Ben White"
+          },
+          {
+            "player": "Bruno Guimar\u00e3es",
+            "minute": 70,
+            "team": "Arsenal",
+            "assist": "Declan Rice"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal controlled the ball for most of the afternoon and spent far more time camped near the Leeds goal, but the first goal went the other way: James Justin scored for Leeds on 55 minutes after a pass from Gabriel Gudmundsson. Arsenal needed seven minutes to level, Riccardo Calafiori finishing from a Ben White pass on 62. Eight minutes later Declan Rice set up Bruno Guimar\u00e3es for the winner, and it finished 2-1.",
+        "opponentPlan": "Daniel Farke set Leeds up in a 3-5-2, which is a shape built to be hard to play through the middle: three centre-backs, three central midfielders, and two strikers who can stay high rather than tracking back. The trade-off is width \u2014 a 3-5-2 has only two wing-backs covering both touchlines, so if Arsenal get the ball to the far side quickly, someone has to sprint 50 yards to meet it. Arsenal's 58% possession and 266 passes in the opposition half against Leeds' 105 show which way that balance tipped: Arsenal were allowed the ball and used it to keep stretching that five-man midfield line sideways, ending with 37 touches in the Leeds box to Leeds' 17. What Leeds did get from the setup was danger on the break and from set pieces \u2014 two strikers already high up the pitch meant every turnover was a threat, and they won four corners to Arsenal's two.",
+        "keyMoment": "The 55th minute, when James Justin put Leeds ahead against the run of play from a Gabriel Gudmundsson assist. Up to that point Arsenal had been accumulating territory without a breakthrough; going behind forced them to attack a Leeds side that could now legitimately sit deeper and defend its lead. The answer came from the widest parts of the pitch \u2014 Ben White found Calafiori for 2-1... sorry, for 1-1 on 62, and Rice found Bruno Guimar\u00e3es on 70 for the winner. Two goals in eight minutes, both created by players who start the game nominally behind the forward line.",
+        "nerdCorner": "The interesting split here is xG 2.33 vs 0.62 against xGOT 2.11 vs 1.83. Leeds' xGOT being nearly three times their xG means their shots on target were struck far better than the positions they came from deserved \u2014 that is finishing and shot placement, which is the least repeatable thing in football, not a structural weakness in Arsenal's defending. Arsenal's own xGOT (2.11) sitting slightly below their xG (2.33) is the more normal picture. The other thing worth noting is that the shot volumes were nearly level (13-11, six on target to five, eight inside the box to seven) while the territorial numbers were lopsided (37 box touches to 17, 266 passes in the opposition half to 105). That combination \u2014 control of territory but not of shot count \u2014 is the price of playing against a 3-5-2 with two strikers permanently high: Leeds' chances came from a small number of moments rather than sustained pressure, and four corners to Arsenal's two gave them a route to goal that doesn't require possession at all.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper Arsenal line up 4-2-3-1, but a back four and two midfielders is a defensive arrangement, not an attacking one. With the ball this group usually rearranges itself: one full-back steps inside next to Declan Rice to form a two-man base, the other full-back and the centre-backs make a back three behind them, and five players spread across the width of the final third. That full-back stepping inside is the movement that does it \u2014 he vacates the touchline so Saka or Madueke can stay wide and isolated against a defender, and he adds a body in central midfield so Arsenal can keep circulating the ball. When possession is lost the full-back simply drops back out to his side and the familiar flat four reappears."
+        },
+        "lesson": {
+          "conceptId": "switch",
+          "term": "Switch of play",
+          "level": 2,
+          "explain": "A switch is a long diagonal pass that takes the ball from one touchline to the other in a single move. It matters because defending is a sideways-shuffling job: when Leeds' 3-5-2 slides across to crowd the ball, the far side is left with one wing-back covering a huge amount of grass, and a ball that travels 50 yards in two seconds arrives faster than a defender can run it. That is the structural reason Arsenal's full-backs end up so involved in the final third \u2014 Ben White assisting Calafiori is the signature of a team working the ball side to side until a wide player is free near the box. The numbers underneath it are the 266 passes in the Leeds half against 105, and 37 touches in the opposition box against 17: Arsenal weren't just passing more, they were passing in the areas where a switch actually pays off.",
+          "spotIt": "Watch the far-side Arsenal full-back or winger rather than the ball \u2014 if he is standing alone on the opposite touchline with no one near him, a switch is coming, and the whole Leeds defence will have to sprint sideways to reach him."
+        },
+        "statTranslations": [
+          {
+            "stat": "xG 2.33 vs 0.62",
+            "plain": "Arsenal built up more than three times the quality of chance Leeds did \u2014 the 2-1 scoreline flatters Leeds considerably."
+          },
+          {
+            "stat": "xGOT 2.11 vs 1.83 (from xG 0.62)",
+            "plain": "Leeds' shots were far better placed than they were created \u2014 they turned 0.62 worth of chances into 1.83 worth of finishing, which is the kind of shooting you cannot rely on repeating."
+          },
+          {
+            "stat": "Touches in opposition box 37 vs 17",
+            "plain": "Arsenal didn't just have the ball, they had it in the one area that actually produces goals, more than twice as often."
+          },
+          {
+            "stat": "Passes in opposition half 266 vs 105",
+            "plain": "Leeds spent the match defending their own territory; Arsenal essentially played the game in Leeds' half."
+          },
+          {
+            "stat": "Total shots 13 vs 11, big chances 4 vs 2",
+            "plain": "The shot counts look close, but Arsenal's were the better ones \u2014 raw shot totals hide chance quality, which is exactly what big chances and xG are for."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795457,
       "date": "2026-09-19",

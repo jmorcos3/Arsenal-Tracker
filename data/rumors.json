@@ -1,7 +1,40 @@
 {
-  "lastUpdated": "2026-10-08",
+  "lastUpdated": "2026-10-13",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Christian Kofane",
+      "club": "Bayer Leverkusen",
+      "direction": "in",
+      "fee": "\u20ac40M",
+      "date": "2026-10-13",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Emanuele Lulli",
+      "club": "Roma",
+      "direction": "in",
+      "fee": "\u20ac8.0M",
+      "date": "2026-10-11",
+      "position": "RWB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Gilberto Mora",
+      "club": "Tijuana",
+      "direction": "in",
+      "fee": "\u20ac28M",
+      "date": "2026-10-10",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Jurrien Timber",
       "club": "Arsenal",
@@ -53,17 +86,6 @@
       "fee": "\u20ac25M",
       "date": "2026-10-07",
       "position": "RW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Gilberto Mora",
-      "club": "Tijuana",
-      "direction": "in",
-      "fee": "\u20ac25M",
-      "date": "2026-10-07",
-      "position": "AM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -317,39 +339,6 @@
       "fee": "\u20ac65M",
       "date": "2026-09-08",
       "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Marcus Rashford",
-      "club": "Manchester United",
-      "direction": "in",
-      "fee": "\u20ac40M",
-      "date": "2026-08-29",
-      "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Juli\u00e1n \u00c1lvarez",
-      "club": "Atl\u00e9tico Madrid",
-      "direction": "in",
-      "fee": "\u20ac135M",
-      "date": "2026-08-28",
-      "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Igor Paix\u00e3o",
-      "club": "Marseille",
-      "direction": "in",
-      "fee": "\u20ac36M",
-      "date": "2026-08-26",
-      "position": "LW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"

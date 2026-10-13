@@ -1,7 +1,7 @@
 {
   "currentSeason": "2026/2027",
   "previousSeason": "2025/2026",
-  "lastUpdated": "2026-10-10",
+  "lastUpdated": "2026-10-13",
   "rows": [
     {
       "round": 1,
@@ -109,7 +109,7 @@
       "opponentShort": "Leeds",
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8463.png",
       "venue": "H",
-      "kickoff": "2026-10-10T11:30:00.000Z",
+      "kickoff": "2026-10-10T11:30:00Z",
       "previous": {
         "result": "W",
         "score": "5-0",
