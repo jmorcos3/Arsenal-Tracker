@@ -1,7 +1,40 @@
 {
-  "lastUpdated": "2026-10-13",
+  "lastUpdated": "2026-10-15",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Bazoumana Toure",
+      "club": "Newcastle United",
+      "direction": "in",
+      "fee": "\u20ac50M",
+      "date": "2026-10-15",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Juli\u00e1n \u00c1lvarez",
+      "club": "Atl\u00e9tico Madrid",
+      "direction": "in",
+      "fee": "\u20ac120M",
+      "date": "2026-10-14",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Andy Diouf",
+      "club": "Inter",
+      "direction": "in",
+      "fee": "\u20ac55M",
+      "date": "2026-10-14",
+      "position": "RM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Christian Kofane",
       "club": "Bayer Leverkusen",

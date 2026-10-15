@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-10-13",
+  "lastUpdated": "2026-10-15",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -10,9 +10,160 @@
     "formation",
     "progressive",
     "rest-defence",
-    "switch"
+    "switch",
+    "inverted-fullback"
   ],
   "matches": [
+    {
+      "fixtureId": 6106260,
+      "date": "2026-10-13",
+      "grounded": {
+        "fixtureId": 6106260,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/lille-vs-arsenal/2thy7l#6106260",
+        "date": "2026-10-13",
+        "competition": "Champions League",
+        "round": "2",
+        "homeAway": "H",
+        "opponent": "Lille",
+        "opponentId": 8639,
+        "goalsFor": 3,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-3-3",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Davide Ancelotti",
+        "arsenalXI": [
+          "David Raya",
+          "Jurri\u00ebn Timber",
+          "Ezri Konsa",
+          "Gabriel",
+          "Myles Lewis-Skelly",
+          "Declan Rice",
+          "Bruno Guimar\u00e3es",
+          "Noni Madueke",
+          "Mikel Merino",
+          "Eberechi Eze",
+          "Viktor Gy\u00f6keres"
+        ],
+        "opponentXI": [
+          "Berke \u00d6zer",
+          "Maxima Goffi",
+          "Nathan Ngoy",
+          "Alexsandro Ribeiro",
+          "Romain Perraud",
+          "Ngal Ayel Mukau",
+          "Nabil Bentaleb",
+          "Benjamin Andr\u00e9",
+          "Dilane Bakwa",
+          "Ayase Ueda",
+          "H\u00e1kon Arnar Haraldsson"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 58,
+            "xg": 1.7,
+            "shots": 16,
+            "shotsOnTarget": 8,
+            "touchesInBox": 54,
+            "bigChances": 4,
+            "bigChancesMissed": 2,
+            "accuratePasses": 488,
+            "corners": 7,
+            "shotsInBox": 12,
+            "xgOpenPlay": 1.67,
+            "xgSetPlay": 0.04,
+            "xgot": 1.95,
+            "passesOppositionHalf": 319,
+            "tackles": 16,
+            "interceptions": 6,
+            "saves": 0,
+            "fouls": 13
+          },
+          "opponent": {
+            "possession": 42,
+            "xg": 0.3,
+            "shots": 4,
+            "shotsOnTarget": 0,
+            "touchesInBox": 3,
+            "bigChances": 0,
+            "bigChancesMissed": 0,
+            "accuratePasses": 343,
+            "corners": 0,
+            "shotsInBox": 1,
+            "xgOpenPlay": 0.3,
+            "xgSetPlay": 0.0,
+            "xgot": 0.0,
+            "passesOppositionHalf": 86,
+            "tackles": 19,
+            "interceptions": 8,
+            "saves": 5,
+            "fouls": 9
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Jurri\u00ebn Timber",
+            "minute": 64,
+            "team": "Arsenal",
+            "assist": "Noni Madueke"
+          },
+          {
+            "player": "Eberechi Eze",
+            "minute": 67,
+            "team": "Arsenal",
+            "assist": "Bukayo Saka"
+          },
+          {
+            "player": "Bukayo Saka",
+            "minute": 71,
+            "team": "Arsenal",
+            "assist": "Kai Havertz"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal controlled the match from the start but could not find a way through for an hour \u2014 Lille defended deep, kept bodies in front of their goal and did not manage a single shot on target all night. Then the game broke open in seven minutes: Timber scored on 64, Eze on 67, and Saka on 71. Lille's goalkeeper made five saves, Raya made none, and the 3-0 scoreline arguably flatters Lille rather than Arsenal.",
+        "opponentPlan": "Davide Ancelotti set Lille up in a 4-3-3, but the numbers say that was a defensive 4-3-3 \u2014 the two wide forwards tucking back to make a compact block and the three midfielders screening in front of the back four. The evidence is in the territory: Lille completed only 86 passes in the opposition half to Arsenal's 319, and registered three touches in Arsenal's box all match. They also made more tackles (19 v 16) and more interceptions (8 v 6) than Arsenal, which is what happens when you spend the night defending your own penalty area rather than contesting the ball up the pitch. Arsenal's answer was to accept the possession (58%), work the ball wide and win corners \u2014 seven of them, against Lille's zero \u2014 and keep loading the box until the structure cracked.",
+        "keyMoment": "The seven-minute window between 64' and 71'. Timber's goal from Madueke's assist on 64 was the first crack; Eze made it two on 67 from Saka's pass, and Saka scored the third on 71, assisted by Kai Havertz \u2014 two of those three goals involved players who had come off the bench, and the fresh legs arriving into a defence that had been retreating for an hour is the pattern the scoreline is hiding.",
+        "nerdCorner": "The interesting tension is between the xG (1.7) and the xGOT (1.95). xG measures how good the chances were at the moment of the shot; xGOT measures how good the shots were once struck, counting only efforts on target. When xGOT comes in above xG, it means the finishing and shot placement beat the raw quality of the openings \u2014 Arsenal did not just manufacture 16 shots, they hit the corners with them. Pair that with Lille's xGOT of 0.0 and you get the real story: Arsenal over-performed their chance quality and Lille produced literally nothing on target from 0.3 xG. The other thing worth flagging is the tackle and interception count going Lille's way (19-16, 8-6). Beginners read that as 'Lille competed more'. It is the opposite \u2014 defensive actions pile up for the team that is permanently defending, and the four big chances to zero tells you who was actually winning the duels that mattered.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper Arsenal line up 4-2-3-1, but a back four and two holding midfielders is not a great way to attack a team sitting deep \u2014 you end up with too many players behind the ball and not enough in dangerous areas. So with the ball this side usually slides into something closer to a 3-2-5: one full-back (typically Timber on the right) tucks inside or stays back to make a back three, the other pushes high, and five players occupy the width and the space between the opposition defenders. When possession is lost, those front players drop back into two banks of four and Arsenal defend as a 4-4-2 again. The full-backs' movement is what causes the shape to flip back and forth."
+        },
+        "lesson": {
+          "conceptId": "inverted-fullback",
+          "term": "Inverted full-back",
+          "level": 2,
+          "explain": "An inverted full-back is a defender who, instead of running up and down the touchline, steps inside into the middle of the pitch when his team has the ball. The point is control: it puts an extra body in central midfield, which means more short passing options against a packed defence and more cover if possession is lost. Arsenal's 4-2-3-1 typically uses Timber this way on the right \u2014 he tucks in alongside Rice and Bruno Guimar\u00e3es, which frees Madueke to stay wide and lets Lewis-Skelly push high on the left. The reward showed up on the scoresheet: Timber, nominally a full-back, was the one who scored on 64 from Madueke's assist, because an inverted full-back finishes attacks from central areas rather than from the corner flag.",
+          "spotIt": "When Arsenal have the ball in the opposition half, ignore the ball and watch the right-back \u2014 if he drifts into the middle of the pitch next to Declan Rice instead of running down the wing, you're watching an inverted full-back."
+        },
+        "statTranslations": [
+          {
+            "stat": "Shots on target: Arsenal 8 | Lille 0",
+            "plain": "Lille never once forced Raya into a save \u2014 this was a one-way game, not a tight one."
+          },
+          {
+            "stat": "Touches in opposition box: Arsenal 54 | Lille 3",
+            "plain": "Arsenal got the ball into the danger area eighteen times more often than Lille did, which is the single clearest measure of territorial dominance."
+          },
+          {
+            "stat": "Shots inside box: Arsenal 12 of 16",
+            "plain": "Three quarters of Arsenal's shots came from close range rather than hopeful long-range efforts, which is why the quality of chances was so lopsided."
+          },
+          {
+            "stat": "Goalkeeper saves: Lille 5 | Arsenal 0",
+            "plain": "The scoreline could have been bigger \u2014 Lille's goalkeeper was the busiest player on the pitch and Arsenal's had nothing to do."
+          },
+          {
+            "stat": "Corners: Arsenal 7 | Lille 0",
+            "plain": "Lille never got close enough to Arsenal's goal to win a single corner, while Arsenal kept forcing the ball into the box until something gave."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795465,
       "date": "2026-10-10",
