@@ -1,18 +1,7 @@
 {
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "timezone": "America/New_York",
   "items": [
-    {
-      "fixtureId": 5795483,
-      "date": "2026-10-18",
-      "kickoffUtc": "2026-10-18T15:30:00.000Z",
-      "kickoffLocal": "Sun Oct 18, 11:30 AM EDT",
-      "opponent": "Nottm Forest",
-      "opponentId": 10203,
-      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10203.png",
-      "competition": "Premier League",
-      "homeAway": "A"
-    },
     {
       "fixtureId": 6106238,
       "date": "2026-10-21",
@@ -55,6 +44,17 @@
       "opponentId": 8650,
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8650.png",
       "competition": "Premier League",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 6106389,
+      "date": "2026-11-04",
+      "kickoffUtc": "2026-11-04T20:00:00.000Z",
+      "kickoffLocal": "Wed Nov 4, 3:00 PM EST",
+      "opponent": "Slavia Prague",
+      "opponentId": 7787,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/7787.png",
+      "competition": "Champions League",
       "homeAway": "A"
     }
   ]

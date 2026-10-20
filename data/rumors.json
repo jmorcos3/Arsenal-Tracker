@@ -1,7 +1,29 @@
 {
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Wesley",
+      "club": "Roma",
+      "direction": "in",
+      "fee": "\u20ac60M",
+      "date": "2026-10-18",
+      "position": "LWB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Kevin Schade",
+      "club": "Brentford",
+      "direction": "in",
+      "fee": "\u20ac65M",
+      "date": "2026-10-17",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Bazoumana Toure",
       "club": "Newcastle United",
@@ -262,17 +284,6 @@
       "fee": "\u20ac227M",
       "date": "2026-09-28",
       "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Kevin Schade",
-      "club": "Brentford",
-      "direction": "in",
-      "fee": "\u20ac35M",
-      "date": "2026-09-26",
-      "position": "LW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"

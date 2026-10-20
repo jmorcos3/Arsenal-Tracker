@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-10-15",
+  "lastUpdated": "2026-10-20",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -11,9 +11,148 @@
     "progressive",
     "rest-defence",
     "switch",
-    "inverted-fullback"
+    "inverted-fullback",
+    "man-vs-zonal"
   ],
   "matches": [
+    {
+      "fixtureId": 5795483,
+      "date": "2026-10-18",
+      "grounded": {
+        "fixtureId": 5795483,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-nottingham-forest/3bf4p3#5795483",
+        "date": "2026-10-18",
+        "competition": "Premier League",
+        "round": "7",
+        "homeAway": "A",
+        "opponent": "Nottingham Forest",
+        "opponentId": 10203,
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "3-4-2-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Oliver Glasner",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Bruno Guimar\u00e3es",
+          "Declan Rice",
+          "Bukayo Saka",
+          "Martin \u00d8degaard",
+          "Eberechi Eze",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Matz Sels",
+          "Jair Cunha",
+          "Ousmane Diomande",
+          "Murillo",
+          "Daniel Mu\u00f1oz",
+          "James McAtee",
+          "Xaver Schlager",
+          "Neco Williams",
+          "Dan Ndoye",
+          "Nicol\u00e1s Dominguez",
+          "Liam Delap"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 74,
+            "xg": 1.14,
+            "shots": 9,
+            "shotsOnTarget": 1,
+            "touchesInBox": 30,
+            "bigChances": 1,
+            "bigChancesMissed": 1,
+            "accuratePasses": 569,
+            "corners": 6,
+            "shotsInBox": 7,
+            "xgOpenPlay": 0.5,
+            "xgSetPlay": 0.64,
+            "xgot": 0.19,
+            "passesOppositionHalf": 335,
+            "tackles": 9,
+            "interceptions": 8,
+            "saves": 2,
+            "fouls": 8
+          },
+          "opponent": {
+            "possession": 26,
+            "xg": 0.9,
+            "shots": 14,
+            "shotsOnTarget": 2,
+            "touchesInBox": 17,
+            "bigChances": 0,
+            "bigChancesMissed": 0,
+            "accuratePasses": 158,
+            "corners": 8,
+            "shotsInBox": 8,
+            "xgOpenPlay": 0.53,
+            "xgSetPlay": 0.37,
+            "xgot": 0.12,
+            "passesOppositionHalf": 68,
+            "tackles": 22,
+            "interceptions": 7,
+            "saves": 0,
+            "fouls": 14
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Noni Madueke",
+            "minute": 80,
+            "team": "Arsenal",
+            "assist": "Declan Rice"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal went to Nottingham Forest and had the ball almost all afternoon \u2014 74% of it \u2014 but for 80 minutes they couldn't find a way through a packed home defence. Forest actually had more shots (14 to Arsenal's 9), mostly from distance or from set pieces, and forced David Raya into two saves. Then on 80 minutes Declan Rice set up substitute Noni Madueke for the only goal of the game, and Arsenal held on to win 1-0.",
+        "opponentPlan": "{\"\":\"\"}",
+        "keyMoment": "The 80th minute. Until then the game had settled into a stalemate that the numbers describe perfectly: Arsenal with 335 passes in the opposition half to Forest's 68, and still only one shot on target to show for it. Declan Rice's assist for Noni Madueke broke it \u2014 Arsenal's one big chance of the match (1 to Forest's 0) converted at the only moment it needed to be. Everything before that was the same pattern repeated; the goal is the only thing in the data that changes the picture.",
+        "nerdCorner": "The gap between xG and xGOT is the most interesting thing in this data set. Arsenal's xG was 1.14 but their xG on target was only 0.19 \u2014 meaning that of all the chances they generated, the ones that actually reached Hennessey's goal were worth almost nothing. Forest were the same, 0.9 down to 0.12. That isn't a finishing story so much as a blocking-and-shooting-position story: Arsenal had 7 shots inside the box and got precisely 1 on target, which usually means bodies in the way rather than wayward strikers. A 74% possession, 335-passes-in-their-half performance that produces a single shot on target is a side that controlled where the game was played without ever controlling what happened in the six-yard box \u2014 and it was a substitute, Madueke, who finally changed that. Worth holding alongside the corner count, too: Forest had 8 corners to Arsenal's 6 despite 26% of the ball, which is where a lot of those 14 shots will have come from.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper Arsenal line up 4-2-3-1, but a team's shape with the ball and without it are almost never the same thing. With the ball, this Arteta side typically pushes one full-back high and tucks the other in alongside the two deeper midfielders, so the back four becomes a back three, two players sit in front of them to recycle possession, and five attackers spread across the final third \u2014 hence 3-2-5. Without the ball it collapses back the other way: \u00d8degaard steps up next to Havertz, Saka and Eze drop into a line of four, and you get a 4-4-2. The player whose movement does most of the work is the full-back, usually Calafiori or Ben White, whose decision to go high or tuck inside is what turns four defenders into three."
+        },
+        "lesson": {
+          "conceptId": "man-vs-zonal",
+          "term": "Man-marking vs zonal marking",
+          "level": 2,
+          "explain": "There are two ways to defend: you either follow a specific opponent wherever he goes (man-marking), or you take responsibility for a patch of grass and deal with whoever enters it (zonal). Glasner's teams lean heavily on the man-oriented version, and the tackle count here is the fingerprint of it \u2014 Forest made 22 tackles to Arsenal's 9. That number is high not because Forest were better defenders but because man-marking means you are constantly arriving at an opponent and engaging him, rather than standing in a zone and letting the ball come to you. The trade-off is visible in the other direction too: Arsenal still got 30 touches in the Forest box, because if you man-mark all over the pitch, a single clever movement drags your marker out of the shape and leaves a hole where he was standing.",
+          "spotIt": "When an Arsenal player makes a run, watch the defender nearest him rather than the ball \u2014 if the defender turns and follows him across the pitch, that's man-marking; if he stays put and hands him over to a teammate, that's zonal."
+        },
+        "statTranslations": [
+          {
+            "stat": "Possession 74% vs 26%",
+            "plain": "Arsenal had the ball nearly three times as much, which tells you Forest were content to sit in and let Arsenal come to them rather than contest the game."
+          },
+          {
+            "stat": "Passes in opposition half 335 vs 68",
+            "plain": "Arsenal spent the match camped in Forest's territory \u2014 Forest barely got the ball into Arsenal's half at all, let alone kept it there."
+          },
+          {
+            "stat": "Total shots 9 vs 14, shots on target 1 vs 2",
+            "plain": "Forest had more attempts than Arsenal despite almost never having the ball, which means their shots were coming from quick moments and set pieces rather than sustained attacks \u2014 and almost nothing from either side actually tested a goalkeeper."
+          },
+          {
+            "stat": "Big chances 1 vs 0",
+            "plain": "Across 90 minutes only one genuinely clear scoring opportunity was created in the entire match, and Arsenal took it."
+          },
+          {
+            "stat": "Tackles 9 vs 22",
+            "plain": "Forest were doing more than twice as much physical defending, which is what happens when one team is defending its own box and the other is passing around in front of it."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 6106260,
       "date": "2026-10-13",
