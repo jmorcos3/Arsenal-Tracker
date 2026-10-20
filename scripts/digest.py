@@ -10,6 +10,7 @@ import smtplib
 import sys
 import traceback
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
@@ -19,7 +20,8 @@ from urllib.error import URLError
 import feedparser
 from anthropic import Anthropic
 
-from fotmob import (fetch_recent_matches, fetch_season_comparison, fetch_standing,
+from fotmob import (DISPLAY_TZ, fetch_finished_matches, fetch_recent_matches,
+                    fetch_season_comparison, fetch_standing,
                     fetch_transfers, fetch_upcoming_fixtures, summarize_for_prompt)
 from kalshi import fetch_trophy_prices, double_item
 
@@ -87,11 +89,55 @@ def news_window():
     return now - timedelta(hours=DEFAULT_LOOKBACK_HOURS), DEFAULT_LOOKBACK_HOURS
 
 
-def record_send():
+def record_send(covered_ids=()):
     path = DATA_DIR / STATE_FILE
     state = load_json(STATE_FILE) or {}
     state["lastDigestAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    covered = list(state.get("coveredMatchIds") or [])
+    covered += [m for m in covered_ids if m not in covered]
+    state["coveredMatchIds"] = covered[-MAX_COVERED_IDS:]
     path.write_text(json.dumps(state, indent=2) + "\n")
+
+
+# The digest goes out the day after Arsenal play, in any competition. The
+# workflow runs daily; on days with nothing new it refreshes the site data and
+# stops before the news and email steps.
+MAX_COVERED_IDS = 40
+# A match this old with no send is a backlog, not "yesterday's game".
+DUE_WINDOW_DAYS = 7
+
+
+def due_matches():
+    """(due, covered): finished competitive matches still owed a digest, and the
+    ids already accounted for — both are saved on send.
+
+    A match is due once its kickoff date (ET) is before today, so a Saturday
+    game is written up on Sunday and never on the day it's played. Coverage is
+    tracked by match id rather than by comparing timestamps, so a run that slips
+    or fails simply catches up the next day instead of skipping the match.
+    """
+    finished = fetch_finished_matches(days=DUE_WINDOW_DAYS)
+    if finished is None:
+        return None, []
+    state = load_json(STATE_FILE) or {}
+    if "coveredMatchIds" in state:
+        covered = set(state["coveredMatchIds"])
+    else:
+        # First run under this schedule: anything kicked off before the last
+        # send was already in that digest. This seed is only derivable while the
+        # key is absent, so it's returned and saved with the first send.
+        last = state.get("lastDigestAt") or ""
+        covered = {m["id"] for m in finished if last and m["kickoff"] < last}
+    today = datetime.now(ZoneInfo(DISPLAY_TZ)).date()
+    due = []
+    for m in finished:
+        try:
+            kicked = datetime.fromisoformat(m["kickoff"].replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if kicked.astimezone(ZoneInfo(DISPLAY_TZ)).date() < today and m["id"] not in covered:
+            due.append(m)
+    return due, sorted(covered)
 
 
 def gather_news():
@@ -1717,6 +1763,25 @@ def main():
         transfers, rumors = recent_transfers(), recent_rumors()
         lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
 
+        forced = os.environ.get("DIGEST_FORCE", "").lower() == "true"
+        due, already_covered = due_matches()
+        if due is None and not forced:
+            # Coverage is tracked per match, so a skipped day is caught up on
+            # the next run that can see the fixtures. Sending blind would repeat
+            # the email every day of an outage.
+            print("[warn] couldn't read finished fixtures; skipping today")
+            return
+        due = due or []
+        if not due and not forced:
+            print("[info] no Arsenal match finished since the last digest; "
+                  "data refreshed, no email today")
+            return
+        for m in due:
+            print(f"[info] due: {m['opponent']} ({m['competition']}) {m['kickoff'][:10]}")
+        if forced and not due:
+            print("[info] manual run; sending without a new match")
+        covered_ids = already_covered + [m["id"] for m in due]
+
         items, lookback_hours = gather_news()
         print(f"[info] gathered {len(items)} unique articles")
 
@@ -1727,7 +1792,7 @@ def main():
             html_body = render_email(
                 odds_items=odds_items,
                 additions={},
-                narrative={"summary": "Quiet news cycle. Nothing new picked up from the tracked feeds in the last 3 days."},
+                narrative={"summary": "Quiet news cycle. Nothing new picked up from the tracked feeds since the last digest."},
                 today_str=today_str,
                 preheader="Quiet news cycle",
                 tactics_entry=tactics_entry,
@@ -1737,7 +1802,7 @@ def main():
                 transfers=transfers, rumors=rumors, compare=compare,
             )
             send_email(html_body, "quiet news cycle", 0)
-            record_send()
+            record_send(covered_ids)
             return
 
         result = generate_digest(items, odds_items, lookback_hours)
@@ -1759,7 +1824,7 @@ def main():
             transfers=transfers, rumors=rumors, compare=compare,
         )
         send_email(html_body, result.get("subject_highlight", ""), len(items))
-        record_send()
+        record_send(covered_ids)
     except Exception:
         tb = traceback.format_exc()
         print(tb, file=sys.stderr)

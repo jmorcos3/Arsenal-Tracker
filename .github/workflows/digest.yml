@@ -2,11 +2,11 @@ name: Arsenal Digest
 
 on:
   schedule:
-    # Tue + Thu at 12:17 UTC = 8:17am EDT / 7:17am EST.
-    # Tuesday catches the whole league round including Monday Night Football;
-    # Thursday catches the Tue/Wed European midweek. Day-of-week rather than
-    # */3, which skipped irregularly across month boundaries.
-    - cron: '17 12 * * 2,4'
+    # Daily at 12:17 UTC = 8:17am EDT / 7:17am EST. digest.py sends only on the
+    # day after Arsenal play (any competition); other days it refreshes the
+    # site data and stops before the news and email steps.
+    - cron: '17 12 * * *'
+  # A manual run always sends, match or not.
   workflow_dispatch:
 
 permissions:
@@ -32,6 +32,7 @@ jobs:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           DIGEST_TO: jmorcos3@gmail.com
           DIGEST_FROM: jmorcos3@gmail.com
+          DIGEST_FORCE: ${{ github.event_name == 'workflow_dispatch' }}
         run: python scripts/digest.py
 
       # Runs even when the digest step failed. Odds, tactics, fixtures, standing
