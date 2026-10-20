@@ -78,9 +78,8 @@ def _num(value):
 def fetch_recent_matches(count=3):
     """The last `count` completed Arsenal fixtures, oldest first.
 
-    Several rather than one because the digest runs every 3 days: a league game
-    plus a cup tie in the same window would otherwise leave the earlier match
-    with no write-up at all.
+    Several rather than one because a send can cover more than one match — a
+    missed day's run catches up on the next — and each needs its own write-up.
     """
     team = _get("teams", {"id": ARSENAL_TEAM_ID})
     if not team:
@@ -112,6 +111,36 @@ def _is_friendly(fixture):
     """Pre-season friendlies make poor teaching material and would burn lessons."""
     name = ((fixture.get("tournament") or {}).get("name") or "").lower()
     return "friendl" in name
+
+
+def fetch_finished_matches(days=10):
+    """Competitive Arsenal fixtures finished in the last `days`, oldest first.
+
+    Every competition counts — league, Europe and both domestic cups — only
+    friendlies are left out. Light rows only (id, kickoff, opponent): this is
+    what decides whether today is a send day, not what the write-up is built from.
+    """
+    team = _get("teams", {"id": ARSENAL_TEAM_ID})
+    if not team:
+        return None
+    fixtures = (((team.get("fixtures") or {}).get("allFixtures") or {}).get("fixtures")) or []
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
+    rows = []
+    for f in fixtures:
+        status = f.get("status") or {}
+        kickoff = status.get("utcTime") or ""
+        if not (status.get("finished") and f.get("id") and kickoff[:10] >= cutoff):
+            continue
+        if _is_friendly(f) or status.get("cancelled"):
+            continue
+        rows.append({
+            "id": str(f["id"]),
+            "kickoff": kickoff,
+            "opponent": (f.get("opponent") or {}).get("name"),
+            "competition": (f.get("tournament") or {}).get("name"),
+        })
+    rows.sort(key=lambda r: r["kickoff"])
+    return rows
 
 
 def fetch_match(match_id, page_url=None):
