@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-10-20",
+  "lastUpdated": "2026-10-22",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -12,9 +12,166 @@
     "rest-defence",
     "switch",
     "inverted-fullback",
-    "man-vs-zonal"
+    "man-vs-zonal",
+    "pressing-trigger"
   ],
   "matches": [
+    {
+      "fixtureId": 6106238,
+      "date": "2026-10-21",
+      "grounded": {
+        "fixtureId": 6106238,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/bayern-munchen-vs-arsenal/36xjup#6106238",
+        "date": "2026-10-21",
+        "competition": "Champions League",
+        "round": "3",
+        "homeAway": "A",
+        "opponent": "Bayern M\u00fcnchen",
+        "opponentId": 9823,
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Vincent Kompany",
+        "arsenalXI": [
+          "David Raya",
+          "Jurri\u00ebn Timber",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Declan Rice",
+          "Bruno Guimar\u00e3es",
+          "Bukayo Saka",
+          "Martin \u00d8degaard",
+          "Noni Madueke",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Manuel Neuer",
+          "Konrad Laimer",
+          "Dayot Upamecano",
+          "Min-Jae Kim",
+          "Josip Stani\u0161i\u0107",
+          "Tom Bischof",
+          "Aleksandar Pavlovi\u0107",
+          "Serge Gnabry",
+          "Ismael Saibari",
+          "Alphonso Davies",
+          "Harry Kane"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 54,
+            "xg": 1.69,
+            "shots": 14,
+            "shotsOnTarget": 5,
+            "touchesInBox": 22,
+            "bigChances": 3,
+            "bigChancesMissed": 2,
+            "accuratePasses": 440,
+            "corners": 5,
+            "shotsInBox": 9,
+            "xgOpenPlay": 0.5,
+            "xgSetPlay": 1.19,
+            "xgot": 1.68,
+            "passesOppositionHalf": 253,
+            "tackles": 16,
+            "interceptions": 12,
+            "saves": 3,
+            "fouls": 6
+          },
+          "opponent": {
+            "possession": 46,
+            "xg": 2.46,
+            "shots": 13,
+            "shotsOnTarget": 5,
+            "touchesInBox": 29,
+            "bigChances": 4,
+            "bigChancesMissed": 2,
+            "accuratePasses": 372,
+            "corners": 3,
+            "shotsInBox": 10,
+            "xgOpenPlay": 1.67,
+            "xgSetPlay": 0.0,
+            "xgot": 2.18,
+            "passesOppositionHalf": 173,
+            "tackles": 15,
+            "interceptions": 2,
+            "saves": 3,
+            "fouls": 15
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Eberechi Eze",
+            "minute": 25,
+            "team": "Arsenal",
+            "assist": "Martin \u00d8degaard"
+          },
+          {
+            "player": "Alphonso Davies",
+            "minute": 35,
+            "team": "Bayern M\u00fcnchen",
+            "assist": "Harry Kane"
+          },
+          {
+            "player": "Harry Kane",
+            "minute": 61,
+            "team": "Bayern M\u00fcnchen",
+            "assist": null
+          },
+          {
+            "player": "Declan Rice",
+            "minute": 82,
+            "team": "Arsenal",
+            "assist": "Viktor Gy\u00f6keres"
+          }
+        ],
+        "result": "D"
+      },
+      "explained": {
+        "whatHappened": "Arsenal went to Munich and traded punches with Bayern. \u00d8degaard set up Eberechi Eze to put Arsenal ahead on 25 minutes, but Alphonso Davies levelled it on 35 and Harry Kane put Bayern in front on 61. With eight minutes left Declan Rice finished off a Viktor Gy\u00f6keres assist to make it 2-2. Arsenal saw more of the ball (54%) and had slightly more shots (14 to 13), but Bayern created the better openings and the draw was a fair reflection of a genuinely even, high-quality night.",
+        "opponentPlan": "Kompany set Bayern up in a mirror image, 4-2-3-1 against 4-2-3-1, which means every Arsenal player in build-up has a natural opponent standing in front of them \u2014 the hardest kind of game to pass your way through. Bayern conceded the ball willingly (46% possession, and only 173 passes in the opposition half to Arsenal's 253) and backed themselves to hurt Arsenal when they won it back, which they did: 29 touches in Arsenal's box against Arsenal's 22, and 10 of their 13 shots from inside the area. Arsenal's answer was to accept the ball and work it patiently \u2014 more possession, more corners (5 to 3), more territory \u2014 while defending the resulting counter-attacks aggressively, and their 12 interceptions to Bayern's 2 shows a team actively trying to intercept Bayern's forward passes rather than simply absorbing them. It mostly worked, but Bayern still manufactured four big chances to Arsenal's three.",
+        "keyMoment": "Harry Kane's goal on 61 minutes is the hinge of the match: Arsenal had led from the 25th minute, been pegged back by Davies on 35, and now had to chase for the first time all night. Needing a goal with half an hour left is what pushes a side into taking more risks higher up the pitch \u2014 and the reward came through two players who were not in the starting eleven, Gy\u00f6keres setting up Rice on 82 for 2-2. The scoreline pattern (lead, level, behind, level) tells you this was a game neither side ever controlled for long.",
+        "nerdCorner": "The number that should bother you is not xG, it is xGOT: Arsenal 1.68 from 1.69 xG, Bayern 2.18 from 2.46. Arsenal essentially converted the full value of their chances into shots on target \u2014 nothing was dragged wide, nothing was wasted, and they still only scored twice from 1.68 xGOT, meaning Neuer's goal did not get beaten by anything lucky. Bayern, by contrast, shed 0.28 of value between the chance and the strike and still produced 2.18 xGOT from four big chances. Put another way: Arsenal needed near-perfect finishing execution to draw, Bayern did not, and Raya's three saves were holding back a materially bigger wave than the three saves at the other end. The other quiet tension here is the mirrored 4-2-3-1. When shapes match man-for-man, the team that wins is usually the one whose full-backs create the extra man \u2014 which is exactly why the overlap/underlap question and that stepped-in full-back matter more than the 54% possession figure. Arsenal got the territory (253 passes in Bayern's half) but Bayern got the box (29 touches), and that scissors \u2014 lots of the ball, fewer dangerous entries \u2014 is the recurring away-leg problem worth tracking across the group.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 / 4-2-3-1 mid block",
+          "plainEnglish": "A 4-2-3-1 on the teamsheet almost never stays a 4-2-3-1 once Arsenal actually have the ball. Typically one full-back \u2014 with Timber and Calafiori as the pair, usually Timber \u2014 steps inside next to the two holding midfielders, which leaves three defenders behind the ball and two screeners in front of them, while the wingers stay wide and Havertz and \u00d8degaard occupy the space between Bayern's defence and midfield. The moment possession is lost, that stepped-in full-back sprints back out to his own side and the team snaps into two banks of four, which is why the same eleven players look like two different teams depending on who has the ball."
+        },
+        "lesson": {
+          "conceptId": "pressing-trigger",
+          "term": "Pressing trigger",
+          "level": 1,
+          "explain": "A press is not eleven players deciding independently to run at the ball \u2014 it is the whole team going at the same instant because of an agreed cue. That cue is the pressing trigger: a backwards pass, a heavy first touch, a ball played to a defender who is already facing his own goal, or a pass into a player with an opponent tight behind him. Arsenal's 12 interceptions to Bayern's 2 is the fingerprint of this: an interception usually means a defender had already started moving before the pass was played, because the trigger told him it was coming. Bayern, defending in the same 4-2-3-1 shape, were far more content to let Arsenal have the ball and stay compact \u2014 hence Arsenal's 253 passes in the opposition half against Bayern's 173, and Bayern's grand total of 2 interceptions.",
+          "spotIt": "Watch the Arsenal forward nearest the ball when an opponent plays a square or backwards pass \u2014 the second that pass leaves his foot, you will see three or four Arsenal players sprint forward together, not one."
+        },
+        "statTranslations": [
+          {
+            "stat": "xG 1.69 vs 2.46",
+            "plain": "Based on the quality of the chances created, Bayern would be expected to score roughly one more goal than Arsenal on an average night \u2014 so 2-2 was a good return from an away trip where Arsenal were second best for openings."
+          },
+          {
+            "stat": "Touches in opposition box: 22 vs 29",
+            "plain": "Bayern got into the most dangerous area of the pitch more often than Arsenal did, despite having the ball less \u2014 the sign of a team that moves it quickly and directly once it wins possession."
+          },
+          {
+            "stat": "Passes in opposition half: 253 vs 173",
+            "plain": "Arsenal spent far more of the night camped in Bayern's half, which is territorial control \u2014 but it did not convert into more box entries, which is the gap between dominating and threatening."
+          },
+          {
+            "stat": "Interceptions: 12 vs 2",
+            "plain": "Arsenal were reading and cutting out Bayern's passes rather than waiting to tackle; Bayern barely did this at all, because they were set up to stay in shape and let Arsenal come to them."
+          },
+          {
+            "stat": "Shots inside box: 9 vs 10, shots on target 5 vs 5",
+            "plain": "Almost identical volume and accuracy from both sides \u2014 the difference between these teams was the quality of the chances, not the number of them."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795483,
       "date": "2026-10-18",

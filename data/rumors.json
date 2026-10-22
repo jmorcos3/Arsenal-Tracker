@@ -1,7 +1,62 @@
 {
-  "lastUpdated": "2026-10-20",
+  "lastUpdated": "2026-10-22",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Can Uzun",
+      "club": "Eintracht Frankfurt",
+      "direction": "in",
+      "fee": "\u20ac60M",
+      "date": "2026-10-22",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Declan Rice",
+      "club": "Arsenal",
+      "direction": "in",
+      "fee": "contract extension",
+      "date": "2026-10-21",
+      "position": "DM",
+      "onLoan": false,
+      "contractExtension": true,
+      "source": "fotmob"
+    },
+    {
+      "player": "Riccardo Calafiori",
+      "club": "Real Madrid",
+      "direction": "out",
+      "fee": "\u20ac100M",
+      "date": "2026-10-21",
+      "position": "LB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Nicolo Tresoldi",
+      "club": "Club Brugge",
+      "direction": "in",
+      "fee": "\u20ac60M",
+      "date": "2026-10-21",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Xavi Espart",
+      "club": "Barcelona",
+      "direction": "in",
+      "fee": "\u20ac25M",
+      "date": "2026-10-21",
+      "position": "LB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Wesley",
       "club": "Roma",
@@ -108,17 +163,6 @@
       "fee": "contract extension",
       "date": "2026-10-08",
       "position": "CM",
-      "onLoan": false,
-      "contractExtension": true,
-      "source": "fotmob"
-    },
-    {
-      "player": "Declan Rice",
-      "club": "Arsenal",
-      "direction": "in",
-      "fee": "contract extension",
-      "date": "2026-10-08",
-      "position": "DM",
       "onLoan": false,
       "contractExtension": true,
       "source": "fotmob"
