@@ -12,12 +12,17 @@ when the season rolls over.
 """
 
 import json
+import time
 from datetime import datetime, timezone
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 API_BASE = "https://api.elections.kalshi.com/trade-api/v2"
+# Kalshi throttles bursts with 429s. Without a retry, a throttled series kept
+# its previous price under a fresh timestamp, so stale odds read as current.
+RATE_LIMIT_RETRIES = 4
+RATE_LIMIT_BACKOFF_SECONDS = 2
 TEAM_SUFFIX = "-ARS"
 
 # Competition name (as shown in the tracker) -> Kalshi series ticker.
@@ -37,12 +42,23 @@ def _get(path, params=None):
         "accept": "application/json",
         "User-Agent": "arsenal-tracker/1.0",
     })
-    try:
-        with urlopen(req, timeout=20) as resp:
-            return json.loads(resp.read().decode("utf-8"))
-    except (URLError, ValueError, TimeoutError) as e:
-        print(f"[warn] kalshi {path} failed: {e}")
-        return None
+    for attempt in range(RATE_LIMIT_RETRIES + 1):
+        try:
+            with urlopen(req, timeout=20) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except HTTPError as e:
+            if e.code == 429 and attempt < RATE_LIMIT_RETRIES:
+                try:
+                    wait = float(e.headers.get("Retry-After") or 0)
+                except (TypeError, ValueError):
+                    wait = 0
+                time.sleep(max(wait, RATE_LIMIT_BACKOFF_SECONDS * 2 ** attempt))
+                continue
+            print(f"[warn] kalshi {path} failed: {e}")
+            return None
+        except (URLError, ValueError, TimeoutError) as e:
+            print(f"[warn] kalshi {path} failed: {e}")
+            return None
 
 
 def _money(market, key):
