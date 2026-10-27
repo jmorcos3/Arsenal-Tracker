@@ -23,6 +23,7 @@ from urllib.request import Request, urlopen
 
 API_BASE = "https://api.elections.kalshi.com/trade-api/v2"
 TEAM_SUFFIX = "-ARS"
+MAX_LONE_ASK = 0.05  # dollars; see _price
 
 # Competition name (as shown in the tracker) -> Kalshi series ticker.
 SERIES = {
@@ -126,7 +127,13 @@ def _price(market):
     # A zero side is an absent quote, not a price of zero. Averaging it in would
     # halve the price of every one-sided market — the whole tail of the Ballon
     # d'Or field sits on a lone 1c ask — so fall back to the side that exists.
-    quoted = [side for side in (bid, ask) if side]
+    # A lone ask is only an upper bound: close enough to be the price at 1-2c,
+    # meaningless far from zero. A freshly listed market quoting 0 / 95c is not
+    # 95% likely, so it is left unpriced rather than averaged from one side.
+    if not bid and ask and ask > MAX_LONE_ASK:
+        quoted = []
+    else:
+        quoted = [side for side in (bid, ask) if side]
     if quoted:
         mid = sum(quoted) / len(quoted)
         if 0 < mid < 1:
