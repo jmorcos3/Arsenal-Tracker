@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-10-22",
+  "lastUpdated": "2026-10-27",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -13,9 +13,154 @@
     "switch",
     "inverted-fullback",
     "man-vs-zonal",
-    "pressing-trigger"
+    "pressing-trigger",
+    "set-piece-xg"
   ],
   "matches": [
+    {
+      "fixtureId": 5795485,
+      "date": "2026-10-24",
+      "grounded": {
+        "fixtureId": 5795485,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/everton-vs-arsenal/2ttfpg#5795485",
+        "date": "2026-10-24",
+        "competition": "Premier League",
+        "round": "8",
+        "homeAway": "H",
+        "opponent": "Everton",
+        "opponentId": 8668,
+        "goalsFor": 2,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "David Moyes",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Ezri Konsa",
+          "Gabriel",
+          "Myles Lewis-Skelly",
+          "Declan Rice",
+          "Mikel Merino",
+          "Noni Madueke",
+          "Martin \u00d8degaard",
+          "Eberechi Eze",
+          "Viktor Gy\u00f6keres"
+        ],
+        "opponentXI": [
+          "Jordan Pickford",
+          "Merlin R\u00f6hl",
+          "James Tarkowski",
+          "Jake O'Brien",
+          "Vitaliy Mykolenko",
+          "Harrison Armstrong",
+          "James Garner",
+          "Brennan Johnson",
+          "Kiernan Dewsbury-Hall",
+          "Tyrique George",
+          "Thierno Barry"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 58,
+            "xg": 1.96,
+            "shots": 20,
+            "shotsOnTarget": 4,
+            "touchesInBox": 47,
+            "bigChances": 3,
+            "bigChancesMissed": 1,
+            "accuratePasses": 449,
+            "corners": 12,
+            "shotsInBox": 12,
+            "xgOpenPlay": 1.05,
+            "xgSetPlay": 0.91,
+            "xgot": 2.26,
+            "passesOppositionHalf": 266,
+            "tackles": 14,
+            "interceptions": 4,
+            "saves": 3,
+            "fouls": 11
+          },
+          "opponent": {
+            "possession": 42,
+            "xg": 0.63,
+            "shots": 8,
+            "shotsOnTarget": 3,
+            "touchesInBox": 17,
+            "bigChances": 2,
+            "bigChancesMissed": 2,
+            "accuratePasses": 317,
+            "corners": 3,
+            "shotsInBox": 6,
+            "xgOpenPlay": 0.63,
+            "xgSetPlay": 0.0,
+            "xgot": 0.48,
+            "passesOppositionHalf": 162,
+            "tackles": 17,
+            "interceptions": 8,
+            "saves": 2,
+            "fouls": 13
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Ezri Konsa",
+            "minute": 7,
+            "team": "Arsenal",
+            "assist": "Viktor Gy\u00f6keres"
+          },
+          {
+            "player": "Gabriel",
+            "minute": 68,
+            "team": "Arsenal",
+            "assist": "Ben White"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal scored early \u2014 Ezri Konsa headed in from a Viktor Gy\u00f6keres assist in the 7th minute \u2014 and from then on Everton barely got out of their own half. Arsenal kept the ball more (58%), had 20 shots to Everton's 8, and won 12 corners to Everton's 3. Gabriel added a second on 68 minutes from a Ben White delivery, and 2-0 was a fair reflection of a game Arsenal controlled without ever needing to be frantic.",
+        "opponentPlan": "David Moyes set Everton up in a matching 4-2-3-1, but the numbers show they were not using it to compete for the ball \u2014 they were using it to deny space. Everton made more tackles (17 v 14) and more interceptions (8 v 4) than Arsenal, which is what happens when you spend the match defending your own box rather than dictating play: your defensive actions pile up because the ball keeps arriving. Arsenal answered it the only way you can answer a compact, matched-up defence \u2014 by going wide and going again. 266 passes in the opposition half, 47 touches in Everton's box and 12 corners is the signature of a team patiently circulating the ball until a gap or a set-piece appears, and both goals came from exactly that route, with defenders Konsa and Gabriel on the end of them.",
+        "keyMoment": "Konsa's goal on 7 minutes, assisted by Gy\u00f6keres, is the moment that defines the shape of the whole match. Once Arsenal led that early, Everton had to come out at some point, but never really did \u2014 and Arsenal were free to settle into the slow, wide, corner-generating rhythm that produced 20 shots, 12 of them inside the box. Gabriel's header on 68 from Ben White's delivery was the same pattern paying out a second time: the pressure didn't spike, it just accumulated.",
+        "nerdCorner": "The interesting tension is between the shot count and the on-target count: 20 shots producing only 4 on target, yet xGOT (2.26) came in above xG (1.96). Those two things point in opposite directions. The first says Arsenal were taking a lot of low-value, blocked or speculative attempts against a packed box \u2014 exactly what 12 corners and a deep Everton block will generate. The second says that the shots which did get through were struck or headed into good spots, so the post-shot quality was higher than the pre-shot quality. Read together, the profile is a team whose volume is inflated by dead-ball situations but whose actual finishing in this match was clean. Also worth sitting with: Everton registered 2 big chances to Arsenal's 3 and forced 3 saves from Raya. The 2-0 looks comfortable, and the territory genuinely was, but Everton were never more than one moment from making it awkward \u2014 which is usually what a mid-block is designed to buy you.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-2-3-1 pressing into a 4-4-2 block",
+          "plainEnglish": "On paper this is a 4-2-3-1, but Arsenal rarely keep that shape with the ball. One full-back \u2014 in this line-up Myles Lewis-Skelly \u2014 typically steps inside next to Declan Rice or Mikel Merino, which leaves three defenders behind the ball and two midfielders in front of them, while the front five (Noni Madueke, Martin \u00d8degaard, Eberechi Eze, Viktor Gy\u00f6keres and the advanced full-back) stretch across the width of the final third. When Arsenal lose the ball, that full-back drops back out to the touchline and the front four fold back into a flat bank, so the team looks like a conventional back four again."
+        },
+        "lesson": {
+          "conceptId": "set-piece-xg",
+          "term": "Set-piece xG",
+          "level": 3,
+          "explain": "Set-piece xG is simply the share of your chance quality that comes from corners and free-kicks rather than from open play. It matters because set-pieces are the one phase where a well-drilled team can manufacture chances against an opponent who has otherwise shut the game down \u2014 you don't need to break them open, you just need the ball in the air. Arsenal won 12 corners to Everton's 3 here, and both goals were scored by centre-backs, Konsa on 7 and Gabriel on 68 from Ben White's delivery. Against a team defending deep and matched man-for-man in a 4-2-3-1, that is often the most reliable door left open.",
+          "spotIt": "Next match, count the corners and watch who Arsenal send into the box \u2014 if Gabriel and the other centre-backs are jogging forward every time, Arsenal are treating set-pieces as a scoring plan, not a bonus."
+        },
+        "statTranslations": [
+          {
+            "stat": "Corners: Arsenal 12 | Everton 3",
+            "plain": "Arsenal spent the match pinning Everton in and forcing the ball out for throws and corners \u2014 and both goals came from that pressure, scored by two centre-backs."
+          },
+          {
+            "stat": "Touches in opposition box: Arsenal 47 | Everton 17",
+            "plain": "Arsenal got the ball into the dangerous area almost three times as often, which is territorial control rather than just keeping possession for its own sake."
+          },
+          {
+            "stat": "Total shots 20 v 8, but shots on target 4 v 3",
+            "plain": "Arsenal created far more volume but didn't test the goalkeeper much more than Everton did \u2014 a lot of those 20 attempts were blocked or missed the target."
+          },
+          {
+            "stat": "xG 1.96 v 0.63, xGOT 2.26 v 0.48",
+            "plain": "The chances Arsenal created were worth about two goals before the shots were taken, and slightly more once you saw where those shots ended up \u2014 Arsenal's efforts on target were better placed than average."
+          },
+          {
+            "stat": "Tackles: Everton 17 | Arsenal 14, interceptions Everton 8 | Arsenal 4",
+            "plain": "Everton made more defensive actions not because they pressed harder but because they were the team constantly having to defend."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 6106238,
       "date": "2026-10-21",

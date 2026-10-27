@@ -1,20 +1,20 @@
 {
-  "lastUpdated": "2026-10-22T17:14:42+00:00",
+  "lastUpdated": "2026-10-27T18:03:08+00:00",
   "source": "Kalshi",
   "items": [
     {
       "competition": "Premier League",
-      "odds": 1.65,
-      "impliedProbability": 0.605,
+      "odds": 1.48,
+      "impliedProbability": 0.675,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXPREMIERLEAGUE-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxpremierleague",
-      "priceCents": 60.5,
-      "bidCents": 60,
-      "askCents": 61,
-      "openInterest": 572765.96,
-      "lastUpdated": "2026-10-22"
+      "priceCents": 67.5,
+      "bidCents": 67,
+      "askCents": 68,
+      "openInterest": 575351.96,
+      "lastUpdated": "2026-10-27"
     },
     {
       "competition": "Champions League",
@@ -27,45 +27,45 @@
       "priceCents": 13.5,
       "bidCents": 13,
       "askCents": 14,
-      "openInterest": 202677.64,
-      "lastUpdated": "2026-10-22"
+      "openInterest": 205782.11,
+      "lastUpdated": "2026-10-27"
     },
     {
       "competition": "FA Cup",
-      "odds": 5.88,
-      "impliedProbability": 0.17,
+      "odds": 5.56,
+      "impliedProbability": 0.18,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXFACUP-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxfacup",
-      "priceCents": 17.0,
-      "bidCents": 15,
+      "priceCents": 18.0,
+      "bidCents": 17,
       "askCents": 19,
-      "openInterest": 7155.54,
-      "lastUpdated": "2026-10-22"
+      "openInterest": 7465.85,
+      "lastUpdated": "2026-10-27"
     },
     {
       "competition": "Carabao Cup",
-      "odds": 3.28,
-      "impliedProbability": 0.305,
+      "odds": 3.12,
+      "impliedProbability": 0.32,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXEFLCUP-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxeflcup",
-      "priceCents": 30.5,
-      "bidCents": 28,
-      "askCents": 33,
-      "openInterest": 7264.08,
-      "lastUpdated": "2026-10-22"
+      "priceCents": 32.0,
+      "bidCents": 30,
+      "askCents": 34,
+      "openInterest": 7270.56,
+      "lastUpdated": "2026-10-27"
     },
     {
       "competition": "Double (PL + UCL)",
-      "odds": 12.24,
-      "impliedProbability": 0.0817,
+      "odds": 10.97,
+      "impliedProbability": 0.0911,
       "bestBookmaker": "Implied (product of the two Kalshi markets)",
       "source": "derived",
-      "priceCents": 8.17,
-      "lastUpdated": "2026-10-22"
+      "priceCents": 9.11,
+      "lastUpdated": "2026-10-27"
     }
   ],
   "history": [
@@ -252,6 +252,14 @@
       "FA Cup": 0.17,
       "Carabao Cup": 0.305,
       "Double (PL + UCL)": 0.0817
+    },
+    {
+      "date": "2026-10-27",
+      "Premier League": 0.675,
+      "Champions League": 0.135,
+      "FA Cup": 0.18,
+      "Carabao Cup": 0.32,
+      "Double (PL + UCL)": 0.0911
     }
   ]
 }

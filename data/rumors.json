@@ -1,7 +1,40 @@
 {
-  "lastUpdated": "2026-10-22",
+  "lastUpdated": "2026-10-27",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Gustavo Varela",
+      "club": "Monza",
+      "direction": "in",
+      "fee": "\u20ac5.0M",
+      "date": "2026-10-27",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Lennart Karl",
+      "club": "Bayern Munich",
+      "direction": "in",
+      "fee": "\u20ac61M",
+      "date": "2026-10-26",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Alejandro Baena",
+      "club": "Atl\u00e9tico Madrid",
+      "direction": "in",
+      "fee": "\u20ac45M",
+      "date": "2026-10-23",
+      "position": "LM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Can Uzun",
       "club": "Eintracht Frankfurt",
@@ -119,17 +152,6 @@
       "fee": "\u20ac40M",
       "date": "2026-10-13",
       "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Emanuele Lulli",
-      "club": "Roma",
-      "direction": "in",
-      "fee": "\u20ac8.0M",
-      "date": "2026-10-11",
-      "position": "RWB",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -405,28 +427,6 @@
       "fee": "\u20ac70M",
       "date": "2026-09-13",
       "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Mart\u00edn Zubimendi",
-      "club": "Chelsea",
-      "direction": "out",
-      "fee": "\u20ac75M",
-      "date": "2026-09-11",
-      "position": "DM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Evanilson",
-      "club": "Bournemouth",
-      "direction": "in",
-      "fee": "\u20ac65M",
-      "date": "2026-09-08",
-      "position": "ST",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
