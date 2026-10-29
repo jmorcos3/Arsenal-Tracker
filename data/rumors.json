@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-27",
+  "lastUpdated": "2026-10-29",
   "source": "fotmob",
   "items": [
     {
@@ -416,17 +416,6 @@
       "fee": "\u20ac30M",
       "date": "2026-09-16",
       "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Nico Paz",
-      "club": "Como",
-      "direction": "in",
-      "fee": "\u20ac70M",
-      "date": "2026-09-13",
-      "position": "AM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"

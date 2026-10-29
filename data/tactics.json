@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-10-27",
+  "lastUpdated": "2026-10-29",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -14,9 +14,154 @@
     "inverted-fullback",
     "man-vs-zonal",
     "pressing-trigger",
-    "set-piece-xg"
+    "set-piece-xg",
+    "xg"
   ],
   "matches": [
+    {
+      "fixtureId": 6275367,
+      "date": "2026-10-27",
+      "grounded": {
+        "fixtureId": 6275367,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-fleetwood-town/pik5if#6275367",
+        "date": "2026-10-27",
+        "competition": "EFL Cup",
+        "round": "4",
+        "homeAway": "A",
+        "opponent": "Fleetwood Town",
+        "opponentId": 45723,
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "3-5-2",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Matt Lawlor",
+        "arsenalXI": [
+          "Illan Meslier",
+          "Jurri\u00ebn Timber",
+          "Cristhian Mosquera",
+          "Marli Salmon",
+          "Piero Hincapi\u00e9",
+          "Mart\u00edn Zubimendi",
+          "Myles Lewis-Skelly",
+          "Max Dowman",
+          "Kai Havertz",
+          "Ceadach O'Neill",
+          "Viktor Gy\u00f6keres"
+        ],
+        "opponentXI": [
+          "Jay Lynch",
+          "Shaun Rooney",
+          "Conor Haughey",
+          "Finley Potter",
+          "Rhys Bennett",
+          "Crispin McLean",
+          "Harrison Neal",
+          "Mark Helm",
+          "Jake Batty",
+          "Ched Evans",
+          "Aaron Loupalo-Bi"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 78,
+            "xg": 2.21,
+            "shots": 26,
+            "shotsOnTarget": 7,
+            "touchesInBox": 59,
+            "bigChances": 6,
+            "bigChancesMissed": 5,
+            "accuratePasses": 566,
+            "corners": 5,
+            "shotsInBox": 23,
+            "xgOpenPlay": 1.52,
+            "xgSetPlay": 0.7,
+            "xgot": 1.59,
+            "passesOppositionHalf": 386,
+            "tackles": 16,
+            "interceptions": 8,
+            "saves": 1,
+            "fouls": 5
+          },
+          "opponent": {
+            "possession": 22,
+            "xg": 0.26,
+            "shots": 3,
+            "shotsOnTarget": 2,
+            "touchesInBox": 8,
+            "bigChances": 2,
+            "bigChancesMissed": 1,
+            "accuratePasses": 99,
+            "corners": 2,
+            "shotsInBox": 3,
+            "xgOpenPlay": 0.26,
+            "xgSetPlay": 0.0,
+            "xgot": 0.31,
+            "passesOppositionHalf": 70,
+            "tackles": 18,
+            "interceptions": 12,
+            "saves": 5,
+            "fouls": 14
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Aaron Loupalo-Bi",
+            "minute": 21,
+            "team": "Fleetwood Town",
+            "assist": "Harrison Neal"
+          },
+          {
+            "player": "Viktor Gy\u00f6keres",
+            "minute": 50,
+            "team": "Arsenal",
+            "assist": null
+          }
+        ],
+        "result": "D"
+      },
+      "explained": {
+        "whatHappened": "Arsenal went to Fleetwood Town in the EFL Cup with a young, heavily changed side and spent almost the entire night camped in the home half \u2014 78% of the ball and 26 shots to Fleetwood's 3. Despite that, Fleetwood scored first through Aaron Loupalo-Bi on 21 minutes, assisted by Harrison Neal. Viktor Gy\u00f6keres levelled five minutes into the second half, and from there Arsenal kept battering away without finding a winner, finishing 1-1.",
+        "opponentPlan": "Fleetwood set up in a 3-5-2, which is a shape built to be hard to get through rather than to have the ball: three centre-backs, two wing-backs who drop in to make a back five when Arsenal advance, and three central midfielders screening in front of them. Their numbers tell you they accepted this \u2014 22% possession, only 70 passes in the opposition half, three shots all night \u2014 but they also did the defensive work the shape is designed for, winning 18 tackles and 12 interceptions to Arsenal's 16 and 8. Arsenal's answer was to go wide and deep around that block rather than through it: 59 touches in the Fleetwood box, 23 of their 26 shots from inside it, and five corners. The one time Fleetwood broke out it cost Arsenal \u2014 Neal to Loupalo-Bi on 21 minutes was one of only two big chances they created, and they took it.",
+        "keyMoment": "Gy\u00f6keres equalising on 50 minutes is the moment the match stopped being a potential upset and became a siege. Arsenal had already dominated territorially before it, but they were chasing a 21st-minute deficit against a side perfectly happy to sit in; the goal removed Fleetwood's reason to ever come out, and the remainder of the game was Arsenal piling up shots inside the box against a set defence. That Fleetwood's goalkeeper still made five saves to Arsenal's one tells you how the final 40 minutes went \u2014 and why the scoreline stayed level.",
+        "nerdCorner": "The interesting number here isn't xG, it's the gap between xG 2.21 and xGOT 1.59. xGOT recalculates chance quality after you see where the shot ended up, so a drop of that size means Arsenal's shots were, in aggregate, placed worse than average for the positions they came from \u2014 this wasn't purely a heroic goalkeeper story, a meaningful chunk of the shortfall was in the striking of the ball. Note the other direction at the far end: Fleetwood's xG was 0.26 but their xGOT was 0.31, meaning their two shots on target were hit better than their positions deserved. There's also a structural cost hiding in 78% possession \u2014 386 passes in the opposition half means a team permanently committed forward, and the one Fleetwood move that mattered was a two-pass sequence from Neal to Loupalo-Bi. Dominating territory and conceding a clean counter in the same match isn't a contradiction; it's the trade-off written into the shape.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 high block",
+          "plainEnglish": "On paper this was a 4-2-3-1, but a team that keeps 78% of the ball doesn't really have a back four for most of the game \u2014 against a deep opponent an Arteta side usually slides one full-back inside or steps a centre-back up, leaving three at the back, two holders in front of them, and five attackers spread across the final line. The movement that causes it is typically the full-backs: with Timber and Hincapi\u00e9 as the wide defenders, one tucks in alongside Zubimendi while the other pushes high, which turns a flat back four into a 3-2 base plus a five-man attacking line. Without the ball those same players snap back out into two banks of four, so the shape you see when Arsenal lose it looks nothing like the shape you saw a second earlier."
+        },
+        "lesson": {
+          "conceptId": "xg",
+          "term": "xG (expected goals)",
+          "level": 3,
+          "explain": "xG puts a number on how good a chance was, between 0 and 1, based on things like distance, angle and the type of shot \u2014 a tap-in might be 0.7, a hopeful 25-yarder 0.03. Arsenal finished this match on 2.21 xG from 26 shots, which means the chances they created were, on average, worth about two goals; Fleetwood's 0.26 from three shots means their chances were worth roughly a quarter of a goal. The scoreline said 1-1, but xG says Arsenal created roughly eight times the chance quality \u2014 they didn't fail to make chances, they failed to convert them, and Fleetwood converted a chance they'd normally miss most times. That gap is why xG exists: 1-1 describes the result, 2.21 vs 0.26 describes the performance.",
+          "spotIt": "Next match, note whether a shot came from inside the six-yard box or from 25 yards out \u2014 every shot you see is quietly worth a different fraction of a goal, and the pile of low-value shots is what makes a team's xG climb without the score changing."
+        },
+        "statTranslations": [
+          {
+            "stat": "xG 2.21 vs 0.26",
+            "plain": "Arsenal created roughly two goals' worth of chances and Fleetwood created about a quarter of one \u2014 the 1-1 scoreline is the least representative thing about this match."
+          },
+          {
+            "stat": "Shots 26, with 23 inside the box",
+            "plain": "Arsenal weren't just shooting from anywhere out of frustration; they were getting into genuinely good positions and still not finishing."
+          },
+          {
+            "stat": "Touches in the opposition box: 59 vs 8",
+            "plain": "Arsenal entered the dangerous zone seven times more often than Fleetwood did, which is the clearest measure of who actually controlled the game."
+          },
+          {
+            "stat": "Goalkeeper saves: Fleetwood 5, Arsenal 1",
+            "plain": "The Fleetwood keeper had a busy, good night and Arsenal's barely had to work \u2014 the draw owes a lot to him."
+          },
+          {
+            "stat": "Tackles 16 vs 18, interceptions 8 vs 12",
+            "plain": "Fleetwood made more defensive actions despite having 22% of the ball, which is exactly what a committed deep block looks like: all the defending happens at one end."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795485,
       "date": "2026-10-24",

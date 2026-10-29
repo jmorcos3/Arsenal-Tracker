@@ -1,18 +1,7 @@
 {
-  "lastUpdated": "2026-10-27",
+  "lastUpdated": "2026-10-29",
   "timezone": "America/New_York",
   "items": [
-    {
-      "fixtureId": 6275367,
-      "date": "2026-10-27",
-      "kickoffUtc": "2026-10-27T20:00:00.000Z",
-      "kickoffLocal": "Tue Oct 27, 4:00 PM EDT",
-      "opponent": "Fleetwood",
-      "opponentId": 45723,
-      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/45723.png",
-      "competition": "EFL Cup",
-      "homeAway": "A"
-    },
     {
       "fixtureId": 5795501,
       "date": "2026-11-01",
@@ -56,6 +45,17 @@
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10261.png",
       "competition": "Premier League",
       "homeAway": "A"
+    },
+    {
+      "fixtureId": 6106259,
+      "date": "2026-11-24",
+      "kickoffUtc": "2026-11-24T20:00:00.000Z",
+      "kickoffLocal": "Tue Nov 24, 3:00 PM EST",
+      "opponent": "Dortmund",
+      "opponentId": 9789,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png",
+      "competition": "Champions League",
+      "homeAway": "H"
     }
   ]
 }
