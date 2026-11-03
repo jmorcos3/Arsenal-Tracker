@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-10-29",
+  "lastUpdated": "2026-11-03",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -15,9 +15,148 @@
     "man-vs-zonal",
     "pressing-trigger",
     "set-piece-xg",
-    "xg"
+    "xg",
+    "xgot"
   ],
   "matches": [
+    {
+      "fixtureId": 5795501,
+      "date": "2026-11-01",
+      "grounded": {
+        "fixtureId": 5795501,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/liverpool-vs-arsenal/2tmaz7#5795501",
+        "date": "2026-11-01",
+        "competition": "Premier League",
+        "round": "9",
+        "homeAway": "A",
+        "opponent": "Liverpool",
+        "opponentId": 8650,
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Andoni Iraola",
+        "arsenalXI": [
+          "David Raya",
+          "Jurri\u00ebn Timber",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Bruno Guimar\u00e3es",
+          "Declan Rice",
+          "Noni Madueke",
+          "Martin \u00d8degaard",
+          "Christos Tzolis",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Alisson Becker",
+          "Ronald Araujo",
+          "J\u00e9r\u00e9my Jacquet",
+          "Virgil van Dijk",
+          "Milo\u0161 Kerkez",
+          "Alexis Mac Allister",
+          "Trey Nyoni",
+          "Cody Gakpo",
+          "Florian Wirtz",
+          "Bradley Barcola",
+          "Alexander Isak"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 44,
+            "xg": 0.98,
+            "shots": 10,
+            "shotsOnTarget": 3,
+            "touchesInBox": 24,
+            "bigChances": 2,
+            "bigChancesMissed": 1,
+            "accuratePasses": 269,
+            "corners": 4,
+            "shotsInBox": 6,
+            "xgOpenPlay": 0.94,
+            "xgSetPlay": 0.04,
+            "xgot": 1.44,
+            "passesOppositionHalf": 144,
+            "tackles": 24,
+            "interceptions": 6,
+            "saves": 0,
+            "fouls": 10
+          },
+          "opponent": {
+            "possession": 56,
+            "xg": 1.05,
+            "shots": 17,
+            "shotsOnTarget": 0,
+            "touchesInBox": 52,
+            "bigChances": 1,
+            "bigChancesMissed": 1,
+            "accuratePasses": 380,
+            "corners": 7,
+            "shotsInBox": 14,
+            "xgOpenPlay": 0.93,
+            "xgSetPlay": 0.12,
+            "xgot": 0.0,
+            "passesOppositionHalf": 252,
+            "tackles": 17,
+            "interceptions": 12,
+            "saves": 2,
+            "fouls": 18
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Kai Havertz",
+            "minute": 16,
+            "team": "Arsenal",
+            "assist": "Declan Rice"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal went to Liverpool, scored early through Kai Havertz on 16 minutes from a Declan Rice assist, and then spent most of the rest of the afternoon defending their lead. Liverpool had the ball more (56%), took more shots (17 to Arsenal's 10) and got into Arsenal's box far more often, but they never once hit the target \u2014 David Raya made zero saves all match. Arsenal, with only three shots on target, scored with one of them and won 1-0.",
+        "opponentPlan": "Andoni Iraola's Liverpool also set up 4-2-3-1, and the numbers show what they wanted: 252 passes in the opposition half to Arsenal's 144, 52 touches in Arsenal's box to Arsenal's 24, and 14 of their 17 shots taken from inside the penalty area. That is a team committed to pinning Arsenal in, working the ball into the box repeatedly and trusting volume. Arsenal's answer was to concede the territory and defend the quality instead \u2014 24 tackles to Liverpool's 17 says Arsenal were the team constantly engaging the ball-carrier, and the shape funnelled Liverpool into shots that were crowded, rushed or taken from poor angles. Liverpool won the map and lost the match: 17 shots, 0 on target.",
+        "keyMoment": "Havertz's goal on 16 minutes, assisted by Rice, is the hinge of the whole game. Scoring that early against a team that wants to dominate the ball hands Arsenal the one thing a mid block needs \u2014 permission to sit. From that point Liverpool had to come out and chase, which is how you end up with 56% possession, 252 passes in the opposition half and 52 touches in the box, and Arsenal end up with 24 tackles and a one-goal win.",
+        "nerdCorner": "The honest reading is that a 0.98\u20131.05 xG split is a coin-flip game that Arsenal won on execution, not control \u2014 and the 52-to-24 box touches say Liverpool found the dangerous zones repeatedly. But there's a real distinction hiding in there: Liverpool took 14 of their 17 shots from inside the box and still finished on 0.0 xGOT. Getting into the box that often and never once hitting the target is not normal variance alone; it's the signature of a block that lets you in but never lets you set your feet, and the 24 Arsenal tackles support that. The trade-off is that this is a high-wire way to win away games. Arsenal's 2 big chances to Liverpool's 1 and the 1.44 xGOT suggest the finishing edge was genuine on the day, but a defensive performance that depends on the opposition missing the target 17 times in a row is one you should expect to look worse the next time the same pattern repeats.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper both teams lined up 4-2-3-1, but a formation is only a starting position \u2014 the shape changes the moment the ball does. With the ball, a Mikel Arteta side like this usually pushes one full-back high and tucks the other inside next to a holding midfielder, so the back four becomes a back three and five players end up spread across the opposition's last line; \u00d8degaard drifting forward from the number 10 role and the wingers holding their width is what turns 4-2-3-1 into something that looks like 3-2-5. Without the ball it collapses back the other way: the wingers drop level with the two central midfielders, Havertz and \u00d8degaard form a front pair, and you get two banks of four in a mid block \u2014 which, on 56% Liverpool possession, is the shape Arsenal would have spent most of this match sitting in."
+        },
+        "lesson": {
+          "conceptId": "xgot",
+          "term": "xGOT / post-shot xG",
+          "level": 3,
+          "explain": "xG asks how good a chance was at the moment the shot was struck \u2014 position, angle, body part. xGOT asks a second question: once you can see exactly where the ball ended up, how likely was that particular shot to beat a goalkeeper? That is why Liverpool's two numbers look so strange here \u2014 1.05 xG but 0.0 xGOT. They created roughly a goal's worth of chances by position, then put every single one of their 17 shots off target, so by the time you account for where the ball actually went, the threat was literally zero. Arsenal did the reverse: 0.98 xG, but 1.44 xGOT, meaning their three shots on target were struck into places goalkeepers struggle to reach.",
+          "spotIt": "Next match, watch where the shot finishes rather than where it's taken from \u2014 a scuffed shot straight at the keeper from six yards is high xG but near-zero xGOT, while a 25-yarder into the top corner is the opposite."
+        },
+        "statTranslations": [
+          {
+            "stat": "xG 0.98 vs 1.05",
+            "plain": "By the quality of chances created, this was an almost dead-even game \u2014 the scoreline flatters neither side."
+          },
+          {
+            "stat": "xGOT 1.44 vs 0.0",
+            "plain": "Arsenal's shots were aimed far better than Liverpool's; once you account for placement, Liverpool generated no genuine goal threat at all."
+          },
+          {
+            "stat": "Shots 10 vs 17, shots on target 3 vs 0",
+            "plain": "Liverpool took nearly twice as many attempts and did not force Raya into a single save."
+          },
+          {
+            "stat": "Touches in opposition box 24 vs 52",
+            "plain": "Liverpool got into dangerous areas more than twice as often, which is why the match felt like a siege even though the chance quality was level."
+          },
+          {
+            "stat": "Tackles 24 vs 17, interceptions 6 vs 12",
+            "plain": "Arsenal defended by engaging the man on the ball; Liverpool, with more of the ball, defended by reading passing lanes \u2014 two different jobs created by who was ahead."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 6275367,
       "date": "2026-10-27",

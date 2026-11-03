@@ -1,7 +1,7 @@
 {
   "currentSeason": "2026/2027",
   "previousSeason": "2025/2026",
-  "lastUpdated": "2026-10-29",
+  "lastUpdated": "2026-11-03",
   "rows": [
     {
       "round": 1,
@@ -179,9 +179,13 @@
         "points": 0,
         "venue": "A"
       },
-      "current": null,
-      "delta": null,
-      "aggregate": null
+      "current": {
+        "result": "W",
+        "score": "1-0",
+        "points": 3
+      },
+      "delta": 3,
+      "aggregate": 7
     },
     {
       "round": 10,
@@ -653,10 +657,10 @@
     }
   ],
   "previousTotal": 85,
-  "currentTotal": 21,
-  "played": 8,
-  "swing": 4,
-  "comparable": 7,
+  "currentTotal": 24,
+  "played": 9,
+  "swing": 7,
+  "comparable": 8,
   "withoutBaseline": 6,
-  "projected": 89
+  "projected": 92
 }

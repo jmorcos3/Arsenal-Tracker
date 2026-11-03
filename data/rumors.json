@@ -1,7 +1,51 @@
 {
-  "lastUpdated": "2026-10-29",
+  "lastUpdated": "2026-11-03",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Kenan Yildiz",
+      "club": "Juventus",
+      "direction": "in",
+      "fee": "\u20ac75M",
+      "date": "2026-11-03",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Eli Junior Kroupi",
+      "club": "Bournemouth",
+      "direction": "in",
+      "fee": "\u20ac70M",
+      "date": "2026-11-03",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Can Uzun",
+      "club": "Eintracht Frankfurt",
+      "direction": "in",
+      "fee": "\u20ac46M",
+      "date": "2026-11-01",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Nicolo Tresoldi",
+      "club": "Club Brugge",
+      "direction": "in",
+      "fee": "\u20ac50M",
+      "date": "2026-10-31",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Gustavo Varela",
       "club": "Monza",
@@ -36,17 +80,6 @@
       "source": "fotmob"
     },
     {
-      "player": "Can Uzun",
-      "club": "Eintracht Frankfurt",
-      "direction": "in",
-      "fee": "\u20ac60M",
-      "date": "2026-10-22",
-      "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
       "player": "Declan Rice",
       "club": "Arsenal",
       "direction": "in",
@@ -64,17 +97,6 @@
       "fee": "\u20ac100M",
       "date": "2026-10-21",
       "position": "LB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Nicolo Tresoldi",
-      "club": "Club Brugge",
-      "direction": "in",
-      "fee": "\u20ac60M",
-      "date": "2026-10-21",
-      "position": "ST",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -372,50 +394,6 @@
       "fee": "\u20ac41M",
       "date": "2026-09-21",
       "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Eli Junior Kroupi",
-      "club": "Bournemouth",
-      "direction": "in",
-      "fee": "\u20ac70M",
-      "date": "2026-09-18",
-      "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Luca Weinhandl",
-      "club": "Sturm Graz",
-      "direction": "in",
-      "fee": "\u20ac5.0M",
-      "date": "2026-09-17",
-      "position": "DM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Iv\u00e1n Fresneda",
-      "club": "Sporting CP",
-      "direction": "in",
-      "fee": "\u20ac80M",
-      "date": "2026-09-17",
-      "position": "RB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Rio Ngumoha",
-      "club": "Liverpool",
-      "direction": "in",
-      "fee": "\u20ac30M",
-      "date": "2026-09-16",
-      "position": "LW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
