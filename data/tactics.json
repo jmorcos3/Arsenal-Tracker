@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-11-03",
+  "lastUpdated": "2026-11-05",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -16,9 +16,160 @@
     "pressing-trigger",
     "set-piece-xg",
     "xg",
-    "xgot"
+    "xgot",
+    "xg-overperformance"
   ],
   "matches": [
+    {
+      "fixtureId": 6106389,
+      "date": "2026-11-04",
+      "grounded": {
+        "fixtureId": 6106389,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/slavia-prague-vs-arsenal/2kcjkf#6106389",
+        "date": "2026-11-04",
+        "competition": "Champions League",
+        "round": "4",
+        "homeAway": "A",
+        "opponent": "Slavia Prague",
+        "opponentId": 7787,
+        "goalsFor": 2,
+        "goalsAgainst": 1,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Jind\u0159ich Trpi\u0161ovsk\u00fd",
+        "arsenalXI": [
+          "David Raya",
+          "Ben White",
+          "Ezri Konsa",
+          "Gabriel",
+          "Piero Hincapi\u00e9",
+          "Mart\u00edn Zubimendi",
+          "Declan Rice",
+          "Noni Madueke",
+          "Mikel Merino",
+          "Eberechi Eze",
+          "Viktor Gy\u00f6keres"
+        ],
+        "opponentXI": [
+          "Nazar Domchak",
+          "Tom\u00e1s Vl\u010dek",
+          "Tom\u00e1s Hole\u0161",
+          "David Zima",
+          "Oskar Kubiak",
+          "David Moses",
+          "Michal Sad\u00edlek",
+          "Emmanuel Ayaosi",
+          "Mubarak Suleiman",
+          "Danijel \u0160turm",
+          "Wiktor Nowak"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 56,
+            "xg": 1.49,
+            "shots": 12,
+            "shotsOnTarget": 5,
+            "touchesInBox": 29,
+            "bigChances": 6,
+            "bigChancesMissed": 4,
+            "accuratePasses": 398,
+            "corners": 2,
+            "shotsInBox": 9,
+            "xgOpenPlay": 1.29,
+            "xgSetPlay": 0.2,
+            "xgot": 1.87,
+            "passesOppositionHalf": 222,
+            "tackles": 19,
+            "interceptions": 6,
+            "saves": 4,
+            "fouls": 10
+          },
+          "opponent": {
+            "possession": 44,
+            "xg": 2.11,
+            "shots": 18,
+            "shotsOnTarget": 6,
+            "touchesInBox": 21,
+            "bigChances": 4,
+            "bigChancesMissed": 3,
+            "accuratePasses": 300,
+            "corners": 4,
+            "shotsInBox": 12,
+            "xgOpenPlay": 0.54,
+            "xgSetPlay": 1.57,
+            "xgot": 2.59,
+            "passesOppositionHalf": 120,
+            "tackles": 17,
+            "interceptions": 19,
+            "saves": 3,
+            "fouls": 15
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Noni Madueke",
+            "minute": 9,
+            "team": "Arsenal",
+            "assist": "Viktor Gy\u00f6keres"
+          },
+          {
+            "player": "Viktor Gy\u00f6keres",
+            "minute": 38,
+            "team": "Arsenal",
+            "assist": "Mikel Merino"
+          },
+          {
+            "player": "Wiktor Nowak",
+            "minute": 90,
+            "team": "Slavia Prague",
+            "assist": "David Jur\u00e1sek"
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal scored twice in the first half away in Prague \u2014 Madueke finished a Gy\u00f6keres pass on 9 minutes, and Gy\u00f6keres himself made it two on 38 after a Merino assist \u2014 and then spent the rest of the night defending a lead. Slavia Prague kept coming, racking up 18 shots to Arsenal's 12, and finally got one back through Wiktor Nowak in the 90th minute. Arsenal had more of the ball and more big chances, but the home side had far more attempts, and the final score flattered nobody: it was 2-1 and it was uncomfortable.",
+        "opponentPlan": "Slavia set up in a mirror 4-2-3-1 under Trpi\u0161ovsk\u00fd, which means every Arsenal player had a direct opposite number \u2014 and when shapes mirror, the team that wins the individual duels and gets the ball forward faster tends to dominate the chaos. Their 19 interceptions against Arsenal's 6 is the clearest fingerprint of their plan: they were not sitting deep and absorbing, they were stepping into passing lanes, cutting the ball off early and immediately going the other way. That is why they ended with 18 shots and 12 of them inside the box despite having only 44% of the ball. Arsenal's answer was territorial: 222 passes in the opposition half to Slavia's 120, and 29 touches in the opposition box to their 21 \u2014 keeping the game at the far end of the pitch so that Slavia's counters had to start from a long way out.",
+        "keyMoment": "The 38th minute, Gy\u00f6keres finishing from Merino, is where this match's whole character was set. Two goals up inside 38 minutes with a mirrored opponent in front of them, Arsenal no longer had to chase the game \u2014 and from that point the shot count tells the story of a team happy to protect a lead rather than extend it: Slavia finished with 18 shots to Arsenal's 12, and only broke through at the very end via Nowak in the 90th.",
+        "nerdCorner": "The interesting tension in this match is that two different metrics tell opposite stories and both are honest. Arsenal win big chances 6-4 and touches in the opposition box 29-21, which says they created the cleaner looks; Slavia win total shots 18-12 and shots inside the box 12-9 with an xG of 2.11, which says volume from decent areas beat quality. Volume is the more repeatable of the two \u2014 a team that manufactures 18 shots, 12 of them in the box, largely off 19 interceptions, is running a process that will keep producing, whereas Arsenal's 2 corners suggest very little of their threat came from the dead-ball route that usually pads the xG column. The honest read is that Arsenal's margin here came from the finishing end of the pitch and Raya's 4 saves rather than from control, and the 90th-minute Nowak goal is the version of this script where the variance partly corrects. Winning away in Europe while being out-chanced is a perfectly good outcome; building a season on it is not a plan.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper both teams lined up 4-2-3-1, but a listed formation is only the starting grid \u2014 it changes the moment someone has the ball. With possession, an Arteta side like this usually slides one full-back inside or lets a centre-back step out, so the back four becomes a back three, two midfielders (Zubimendi and Rice here) sit in front of them as a shield, and five players spread across the opponent's last line. Without the ball it folds back: the wide attackers like Madueke and Eze drop into a flat line of four midfielders, Gy\u00f6keres and the number ten press the ball together, and you get the familiar two banks of four."
+        },
+        "lesson": {
+          "conceptId": "xg-overperformance",
+          "term": "xG overperformance (and regression)",
+          "level": 3,
+          "explain": "Arsenal won 2-1 while generating 1.49 xG against Slavia's 2.11 \u2014 in other words, the chances created over ninety minutes favoured the home side, and Arsenal still took the three points. That is xG overperformance: converting a smaller pile of chances into a bigger pile of goals, usually through excellent finishing, excellent goalkeeping, or simple variance. Look at the shooting detail and you can see both halves of it \u2014 Arsenal's xG on target (1.87) was well above their xG (1.49), meaning their shots were struck well and placed in difficult spots, while Raya made 4 saves against Slavia's 2.59 xGOT. The reason coaches worry about this rather than celebrate it is that finishing and goalkeeping fluctuate far more than chance creation does, so a team that repeatedly wins while being out-chanced will eventually have a night where the same performance produces a loss.",
+          "spotIt": "At full-time, compare the final score to the xG line: if Arsenal won but had the lower xG, note it \u2014 and watch whether the next few matches with similar chance quality produce the same results."
+        },
+        "statTranslations": [
+          {
+            "stat": "xG 1.49 (Arsenal) vs 2.11 (Slavia Prague)",
+            "plain": "By the quality of chances created, Slavia had the better of this match \u2014 Arsenal won it despite the balance of opportunities, not because of it."
+          },
+          {
+            "stat": "Total shots 12 vs 18, shots inside box 9 vs 12",
+            "plain": "Slavia did not just shoot more, they shot more from good areas, so their volume was genuinely threatening rather than hopeful long-range efforts."
+          },
+          {
+            "stat": "Interceptions 6 (Arsenal) vs 19 (Slavia Prague)",
+            "plain": "Slavia were aggressively reading and cutting out Arsenal passes, which is how a team with less of the ball manufactures so many attacks."
+          },
+          {
+            "stat": "Passes in opposition half 222 vs 120, touches in opposition box 29 vs 21",
+            "plain": "Arsenal still controlled where the game was played and got into dangerous areas more often \u2014 the territory was theirs even if the shot count was not."
+          },
+          {
+            "stat": "Big chances 6 (Arsenal) vs 4 (Slavia Prague)",
+            "plain": "Arsenal's smaller number of shots were, on average, better ones \u2014 fewer attempts but more genuinely clear looks at goal."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795501,
       "date": "2026-11-01",

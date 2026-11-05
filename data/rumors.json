@@ -1,7 +1,29 @@
 {
-  "lastUpdated": "2026-11-03",
+  "lastUpdated": "2026-11-05",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Piero Hincapi\u00e9",
+      "club": "Barcelona",
+      "direction": "out",
+      "fee": "\u20ac50M",
+      "date": "2026-11-04",
+      "position": "LB",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Martin \u00d8degaard",
+      "club": "Bayern Munich",
+      "direction": "out",
+      "fee": "\u20ac80M",
+      "date": "2026-11-04",
+      "position": "CM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Kenan Yildiz",
       "club": "Juventus",
@@ -372,28 +394,6 @@
       "fee": "\u20ac227M",
       "date": "2026-09-28",
       "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Raphinha",
-      "club": "Barcelona",
-      "direction": "in",
-      "fee": "\u20ac80M",
-      "date": "2026-09-22",
-      "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Maximilian Beier",
-      "club": "Dortmund",
-      "direction": "in",
-      "fee": "\u20ac41M",
-      "date": "2026-09-21",
-      "position": "AM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
