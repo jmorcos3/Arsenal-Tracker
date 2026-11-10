@@ -22,7 +22,7 @@
   renderPLTransfers(plTransfers);
   renderRumors(rumors);
   renderSources(sources);
-  renderLastUpdated([odds, transfers, plTransfers, rumors, tactics, fixtures]);
+  renderLastUpdated([odds, transfers, rumors, tactics, fixtures, standing, compare]);
 })();
 
 async function fetchJSON(path) {
@@ -71,8 +71,9 @@ function renderTactics(data, glossary) {
 
   const g = match.grounded || {};
   const x = match.explained || {};
-  const lessonNumber = ((data.conceptsTaught || []).length) || 1;
   const venue = g.homeAway === 'H' ? 'vs' : 'away at';
+  const pens = g.shootout
+    ? ` (${g.shootout.won ? 'won' : 'lost'} ${g.shootout.arsenal}–${g.shootout.opponent} on penalties)` : '';
 
   const chips = [
     ['On the teamsheet', g.arsenalFormation],
@@ -93,9 +94,14 @@ function renderTactics(data, glossary) {
       : ''}` : '';
 
   const lesson = x.lesson || {};
+  // Numbered by the concept's place in the curriculum, so it stays right for
+  // whichever match is on show; a repeat visit is a refresher, not a new lesson.
+  const taughtAt = (data.conceptsTaught || []).indexOf(lesson.conceptId);
+  const lessonLabel = match.refresher ? 'Refresher'
+    : (taughtAt >= 0 ? `Lesson ${taughtAt + 1}` : 'Lesson');
   const lessonBlock = lesson.term ? `
     <div class="lesson-card">
-      <div class="lesson-kicker">Lesson ${lessonNumber} · Level ${lesson.level || 1} of 3</div>
+      <div class="lesson-kicker">${escapeHTML(lessonLabel)} · Level ${escapeHTML(String(lesson.level || 1))} of 3</div>
       <h3 class="lesson-term">${escapeHTML(lesson.term)}</h3>
       <p class="lesson-explain">${escapeHTML(lesson.explain || '')}</p>
       <div class="lesson-spot"><strong>Watch for it:</strong> ${escapeHTML(lesson.spotIt || '')}</div>
@@ -109,7 +115,7 @@ function renderTactics(data, glossary) {
 
   el.innerHTML = `
     <div class="match-head">
-      <span class="match-score">Arsenal ${escapeHTML(String(g.goalsFor ?? '?'))}–${escapeHTML(String(g.goalsAgainst ?? '?'))} ${escapeHTML(venue)} ${escapeHTML(g.opponent || '?')}</span>
+      <span class="match-score">Arsenal ${escapeHTML(String(g.goalsFor ?? '?'))}–${escapeHTML(String(g.goalsAgainst ?? '?'))} ${escapeHTML(venue)} ${escapeHTML(g.opponent || '?')}${escapeHTML(pens)}</span>
       <span class="match-meta">${escapeHTML(g.competition || '')}${g.date ? ' · ' + escapeHTML(g.date) : ''}</span>
     </div>
     ${x.whatHappened ? `<p class="match-summary">${escapeHTML(x.whatHappened)}</p>` : ''}
@@ -185,7 +191,10 @@ function compSlug(name) {
 
 function renderFixtures(data) {
   const body = document.getElementById('fixtures-body');
-  const items = (data && data.items) || [];
+  // The list is only as fresh as the last data run, so drop anything that has
+  // kicked off since rather than showing a played match as "next".
+  const items = ((data && data.items) || [])
+    .filter(f => !f.kickoffUtc || new Date(f.kickoffUtc).getTime() > Date.now());
   if (!items.length) {
     body.innerHTML = '<tr><td colspan="4" class="empty">No upcoming fixtures.</td></tr>';
     return;
@@ -310,16 +319,17 @@ function renderOdds(data) {
   grid.innerHTML = data.items.map(item => {
     // Kalshi prices are probabilities, so lead with the percentage and keep
     // decimal odds as the secondary read.
-    const prob = item.impliedProbability == null
-      ? '—' : `${(item.impliedProbability * 100).toFixed(1)}%`;
-    const dec = item.odds == null ? '' : `${item.odds} decimal`;
+    const settled = item.settled === 'won' ? 'Won' : (item.settled ? 'Out' : '');
+    const prob = settled || (item.impliedProbability == null
+      ? '—' : `${(item.impliedProbability * 100).toFixed(1)}%`);
+    const dec = settled ? 'Market settled' : (item.odds == null ? '' : `${item.odds} decimal`);
     const spread = (item.bidCents != null && item.askCents != null)
       ? `<div class="spread">${item.bidCents}–${item.askCents}\u00a2 bid/ask</div>` : '';
     const link = item.marketUrl
       ? `<a class="market-link" href="${escapeAttr(item.marketUrl)}" target="_blank" rel="noopener">Kalshi market →</a>`
       : '';
     return `
-      <div class="odds-item">
+      <div class="odds-item${settled ? ' is-settled' : ''}">
         <div class="comp">${escapeHTML(item.competition)}</div>
         <div class="value">${escapeHTML(prob)}</div>
         <div class="book">${escapeHTML(dec)}</div>
@@ -334,8 +344,10 @@ function renderOdds(data) {
 function renderTransfers(data) {
   const listIn = document.getElementById('transfers-in');
   const listOut = document.getElementById('transfers-out');
-  const window = data && data.window ? ` (${escapeHTML(data.window)})` : '';
-  document.querySelector('#transfers-section h2').textContent = 'Summer Transfers' + window;
+  // textContent, so no escaping needed. "Transfers", not "Summer": the same
+  // list carries the winter window too.
+  const season = data && data.window ? ` ${data.window}` : '';
+  document.querySelector('#transfers-section h2').textContent = 'Transfers' + season;
 
   fillTransferList(listIn, (data && data.in) || []);
   fillTransferList(listOut, (data && data.out) || []);
@@ -407,13 +419,17 @@ function renderSources(data) {
 }
 
 function renderLastUpdated(datasets) {
+  // Files stamp either a date or a full timestamp; compare on the date part
+  // and show it as one, rather than leaking a raw ISO string into the header.
   const dates = datasets
-    .map(d => d && d.lastUpdated)
+    .map(d => d && d.lastUpdated && String(d.lastUpdated).slice(0, 10))
     .filter(Boolean)
     .sort();
   const latest = dates[dates.length - 1];
   if (latest) {
-    document.getElementById('last-updated').textContent = 'Data last updated: ' + latest;
+    const pretty = new Date(latest + 'T12:00:00Z').toLocaleDateString(
+      'en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+    document.getElementById('last-updated').textContent = 'Data last updated: ' + pretty;
   }
 }
 

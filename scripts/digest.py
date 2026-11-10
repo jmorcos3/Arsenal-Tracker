@@ -1,4 +1,4 @@
-"""Fetch Arsenal news, refresh live odds, update tracker JSON, email a digest."""
+"""Refresh the tracker's data, and email a digest the day after Arsenal play."""
 
 import copy
 import html
@@ -10,32 +10,34 @@ import smtplib
 import sys
 import traceback
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
-from urllib.request import Request, urlopen
-from urllib.error import URLError
 
 import feedparser
 from anthropic import Anthropic
 
-from fotmob import (fetch_recent_matches, fetch_season_comparison, fetch_standing,
+from fotmob import (DISPLAY_TZ, fetch_finished_matches, fetch_recent_matches,
+                    fetch_season_comparison, fetch_standing,
                     fetch_transfers, fetch_upcoming_fixtures, summarize_for_prompt)
 from kalshi import fetch_trophy_prices, double_item
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = REPO_ROOT / "data"
 
+# The three club feeds are Arsenal-specific; the transfer centre is league-wide
+# and is what feeds "Around the Premier League". Arsenal.com no longer publishes
+# RSS (its old feed URL is a 404), so there is no official-site feed here.
 FEEDS = [
-    ("Arsenal.com", "https://www.arsenal.com/rss.xml"),
-    ("BBC Sport", "http://feeds.bbci.co.uk/sport/football/teams/arsenal/rss.xml"),
-    ("Sky Sports", "https://www.skysports.com/rss/12040"),
+    ("BBC Sport", "https://feeds.bbci.co.uk/sport/football/teams/arsenal/rss.xml"),
+    ("Sky Sports", "https://www.skysports.com/rss/11670"),
     ("The Guardian", "https://www.theguardian.com/football/arsenal/rss"),
     ("Sky Sports — Transfers", "https://www.skysports.com/rss/12691"),
 ]
 
 # News window. Derived from the last successful send so it always matches the
-# actual cadence; the fallback covers the longest normal gap (Thu -> Tue).
+# actual cadence; the fallback only applies when there is no usable last send.
 DEFAULT_LOOKBACK_HOURS = 120
 MIN_LOOKBACK_HOURS = 12
 MAX_LOOKBACK_HOURS = 336
@@ -47,16 +49,16 @@ TACTICS_MODEL = "claude-opus-5"
 MAX_ODDS_HISTORY = 180
 MAX_TACTICS_HISTORY = 40
 
-# Fallback only. FotMob is the primary source; if its unofficial API changes
-# shape, the digest researches the match from published reports instead and
-# records the URLs it used on the entry.
+# Fallback only, and only on a run that is going to send. FotMob is the primary
+# source; if it has no recent match to offer, the digest researches the match
+# from published reports instead and records the URLs it used on the entry.
 WEB_SEARCH_TOOL = {"type": "web_search_20260209", "name": "web_search", "max_uses": 10}
 MAX_RESEARCH_TURNS = 6
 
 # Order the trophy cards appear in, on the site and in the email.
 INDIVIDUAL_COMPS = ["Premier League", "Champions League", "FA Cup", "Carabao Cup"]
 
-SITE_URL = os.environ.get("SITE_URL", "https://github.com/jmorcos3/Arsenal-Tracker")
+SITE_URL = os.environ.get("SITE_URL", "https://jmorcos3.github.io/Arsenal-Tracker/")
 
 # Marker so the workflow does not also send its "script never started" alert.
 FAILURE_SENTINEL = ".failure-notified"
@@ -87,11 +89,58 @@ def news_window():
     return now - timedelta(hours=DEFAULT_LOOKBACK_HOURS), DEFAULT_LOOKBACK_HOURS
 
 
-def record_send():
+def record_send(covered_ids=None):
+    """Stamp the send. `covered_ids` is None when the fixture list couldn't be
+    read, in which case the stored coverage is left untouched."""
     path = DATA_DIR / STATE_FILE
     state = load_json(STATE_FILE) or {}
     state["lastDigestAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    if covered_ids is not None:
+        covered = list(state.get("coveredMatchIds") or [])
+        covered += [m for m in covered_ids if m not in covered]
+        state["coveredMatchIds"] = covered[-MAX_COVERED_IDS:]
     path.write_text(json.dumps(state, indent=2) + "\n")
+
+
+# The digest goes out the day after Arsenal play, in any competition. The
+# workflow runs daily; on days with nothing new it refreshes the site data and
+# stops before the news and email steps.
+MAX_COVERED_IDS = 40
+# A match this old with no send is a backlog, not "yesterday's game".
+DUE_WINDOW_DAYS = 7
+
+
+def due_matches():
+    """(due, covered): finished competitive matches still owed a digest, and the
+    ids already accounted for — both are saved on send.
+
+    A match is due once its kickoff date (ET) is before today, so a Saturday
+    game is written up on Sunday and never on the day it's played. Coverage is
+    tracked by match id rather than by comparing timestamps, so a run that slips
+    or fails simply catches up the next day instead of skipping the match.
+    """
+    finished = fetch_finished_matches(days=DUE_WINDOW_DAYS)
+    if finished is None:
+        return None, []
+    state = load_json(STATE_FILE) or {}
+    if "coveredMatchIds" in state:
+        covered = set(state["coveredMatchIds"])
+    else:
+        # First run under this schedule: anything kicked off before the last
+        # send was already in that digest. This seed is only derivable while the
+        # key is absent, so it's returned and saved with the first send.
+        last = state.get("lastDigestAt") or ""
+        covered = {m["id"] for m in finished if last and m["kickoff"] < last}
+    today = datetime.now(ZoneInfo(DISPLAY_TZ)).date()
+    due = []
+    for m in finished:
+        try:
+            kicked = datetime.fromisoformat(m["kickoff"].replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if kicked.astimezone(ZoneInfo(DISPLAY_TZ)).date() < today and m["id"] not in covered:
+            due.append(m)
+    return due, sorted(covered)
 
 
 def gather_news():
@@ -101,6 +150,11 @@ def gather_news():
     for source, url in FEEDS:
         try:
             feed = feedparser.parse(url)
+            if not feed.entries:
+                # feedparser doesn't raise on a dead URL, it returns nothing —
+                # which is how a 404 feed went unnoticed in the logs.
+                print(f"[warn] {source} feed returned no entries "
+                      f"(HTTP {getattr(feed, 'status', 'n/a')})")
             for entry in feed.entries[:25]:
                 pub_struct = entry.get("published_parsed") or entry.get("updated_parsed")
                 if pub_struct:
@@ -168,6 +222,9 @@ def refresh_odds_file():
 
     history = current.get("history", [])
     if len(snapshot) > 1:
+        # One row per day: a second run on the same date replaces the first
+        # rather than stacking a duplicate.
+        history = [h for h in history if h.get("date") != snapshot["date"]]
         history.append(snapshot)
         history = history[-MAX_ODDS_HISTORY:]
 
@@ -278,34 +335,18 @@ DIGEST_TOOL = {
             "additions": {
                 "type": "object",
                 "properties": {
-                    "transfers_in": {"type": "array", "items": {"type": "object", "properties": {
-                        "player": {"type": "string"}, "club": {"type": "string"},
-                        "fee": {"type": "string"}, "date": {"type": "string"},
-                        "sourceUrl": {"type": "string"},
-                    }, "required": ["player"]}},
-                    "transfers_out": {"type": "array", "items": {"type": "object", "properties": {
-                        "player": {"type": "string"}, "club": {"type": "string"},
-                        "fee": {"type": "string"}, "date": {"type": "string"},
-                        "sourceUrl": {"type": "string"},
-                    }, "required": ["player"]}},
                     "pl_transfers": {"type": "array", "items": {"type": "object", "properties": {
                         "player": {"type": "string"}, "from": {"type": "string"},
                         "to": {"type": "string"}, "fee": {"type": "string"},
                         "date": {"type": "string"}, "sourceUrl": {"type": "string"},
                     }, "required": ["player"]}},
-                    "rumors": {"type": "array", "items": {"type": "object", "properties": {
-                        "headline": {"type": "string"},
-                        "reliability": {"type": "string", "enum": ["high", "medium", "low"]},
-                        "source": {"type": "string"}, "sourceUrl": {"type": "string"},
-                        "date": {"type": "string"},
-                    }, "required": ["headline"]}},
                 },
             },
             "narrative": {
                 "type": "object",
                 "properties": {
-                    "summary": {"type": "string", "description": "1-2 sentence overview of the past 3 days."},
-                    "odds_commentary": {"type": "string", "description": "Optional short note on odds movement."},
+                    "summary": {"type": "string", "description": "1-2 sentence overview of the news since the last digest."},
+                    "odds_commentary": {"type": "string", "description": "Optional short note on the odds movement listed in the prompt."},
                     "squad_news": {"type": "array", "items": {"type": "object", "properties": {
                         "text": {"type": "string"}, "url": {"type": "string"},
                     }, "required": ["text"]}},
@@ -329,7 +370,36 @@ def load_json(name):
     return json.loads(p.read_text()) if p.exists() else {}
 
 
-def generate_digest(items, odds_snapshot, lookback_hours=DEFAULT_LOOKBACK_HOURS):
+def odds_lines_for_prompt():
+    """Current prices plus the change since the last digest, from stored history.
+
+    The model is asked to remark on movement, so it has to be shown the
+    movement — given only today's prices it could only guess at one.
+    """
+    data = load_json("odds.json")
+    last_send = ((load_json(STATE_FILE) or {}).get("lastDigestAt") or "")[:10]
+    baseline = None
+    for row in data.get("history") or []:  # chronological
+        if last_send and (row.get("date") or "") <= last_send:
+            baseline = row
+    lines = []
+    for item in data.get("items") or []:
+        prob = item.get("impliedProbability")
+        if prob is None:
+            continue
+        if item.get("settled"):
+            state = "won" if item["settled"] == "won" else "Arsenal are out"
+            lines.append(f"- {item['competition']}: {state} (market settled {item.get('lastUpdated')})")
+            continue
+        line = f"- {item['competition']}: {prob * 100:.1f}%"
+        before = (baseline or {}).get(item["competition"])
+        if before is not None:
+            line += f" ({(prob - before) * 100:+.1f} points since {baseline['date']})"
+        lines.append(line)
+    return "\n".join(lines) or "(no prices available)"
+
+
+def generate_digest(items, lookback_hours=DEFAULT_LOOKBACK_HOURS):
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
     articles_block = "\n\n".join(
@@ -339,15 +409,9 @@ def generate_digest(items, odds_snapshot, lookback_hours=DEFAULT_LOOKBACK_HOURS)
         for i in items
     ) or "(no articles found in lookback window)"
 
-    tracker_state = {
-        "transfers": load_json("transfers.json"),
-        "pl_transfers": load_json("pl-transfers.json"),
-        "rumors": load_json("rumors.json"),
-    }
-    odds_lines = "\n".join(
-        f"- {i['competition']}: {i.get('odds')} ({i.get('bestBookmaker') or 'n/a'})"
-        for i in odds_snapshot
-    )
+    # Arsenal's own transfers and rumours come from FotMob, so the only rows
+    # this call can add are rival-club moves.
+    tracked_pl = (load_json("pl-transfers.json") or {}).get("items") or []
 
     today = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
 
@@ -356,27 +420,26 @@ def generate_digest(items, odds_snapshot, lookback_hours=DEFAULT_LOOKBACK_HOURS)
 TODAY: {today}
 LOOKBACK: last {lookback_hours:.0f} hours
 
-CURRENT LIVE ODDS (Arsenal to win each trophy):
-{odds_lines}
+ARSENAL'S CHANCE OF EACH TROPHY (Kalshi market price, with the change since the last digest):
+{odds_lines_for_prompt()}
 
-ALREADY-TRACKED (do not re-add; only add genuinely new items):
-{json.dumps(tracker_state, indent=2)[:4000]}
+RIVAL-CLUB TRANSFERS ALREADY TRACKED (do not re-add):
+{json.dumps(tracked_pl, indent=2)}
 
 RECENT ARTICLES:
 {articles_block}
 
 Call the `publish_digest` tool. Rules:
 
-1. `subject_highlight` — the biggest single story of the last 3 days in 3-8 words. Neutral phrasing.
+1. `subject_highlight` — the biggest single Arsenal story since the last digest in 3-8 words. Neutral phrasing.
 
-2. `additions` — ONLY new items (not in ALREADY-TRACKED). Include a `sourceUrl` on each item when a URL was provided. Rumor reliability:
-   - high: David Ornstein, Fabrizio Romano, BBC, The Athletic
-   - medium: Sky Sports, The Guardian, The Telegraph
-   - low: tabloids, unnamed sources, aggregators
+2. `additions.pl_transfers` — ONLY completed transfers at other Premier League clubs that are not
+   already tracked. Not rumours, and not Arsenal's own business (that is tracked separately).
+   Include a `sourceUrl` when a URL was provided.
 
 3. `narrative` — extra content for the email body that doesn't fit as tracker rows:
    - `summary`: 1-2 sentence overview.
-   - `odds_commentary`: optional 1-liner if odds moved notably.
+   - `odds_commentary`: optional 1-liner, only if a price above moved by 2 points or more. Use only the figures given.
    - `squad_news`: bullets on injuries, contract extensions, returns, tactical notes. Each with `text` and `url` if from a specific article.
    - `around_pl_notes`: bullets on rival club news beyond confirmed transfers (manager changes, contract news, etc.).
    - `fixtures`: bullets on upcoming/notable fixtures mentioned.
@@ -534,19 +597,56 @@ TACTICS_TOOL = {
 }
 
 
-def _concept_menu(concepts_taught):
-    """Eligible lessons plus the level cap, so the curriculum ramps."""
+REFRESHER_SPACING = 8
+
+
+def _curriculum_block(concepts_taught):
+    """The prompt's lesson menu, with the level cap that makes the curriculum ramp.
+
+    Once every concept has been taught the lesson becomes a refresher. The menu
+    then leaves out whatever the last few matches used, so refreshers rotate
+    through the library instead of returning to the same favourites.
+    """
     glossary = load_json("glossary.json").get("items", [])
     taught = set(concepts_taught or [])
-    available = [g for g in glossary if g["id"] not in taught]
-    if not available:
-        # Curriculum complete — allow revisiting, deepest concepts first.
-        available = sorted(glossary, key=lambda g: -g["level"])
+    line = lambda g: f"- {g['id']} (level {g['level']}) — {g['term']}: {g['short']}"
 
-    max_level = 1 if len(taught) < 6 else (2 if len(taught) < 12 else 3)
-    eligible = [g for g in available if g["level"] <= max_level] or available
-    menu = "\n".join(f"- {g['id']} (level {g['level']}) — {g['term']}: {g['short']}" for g in eligible)
-    return taught, menu
+    available = [g for g in glossary if g["id"] not in taught]
+    if available:
+        max_level = 1 if len(taught) < 6 else (2 if len(taught) < 12 else 3)
+        eligible = [g for g in available if g["level"] <= max_level] or available
+        return (
+            f"CONCEPTS ALREADY TAUGHT (do not repeat these): "
+            f"{', '.join(sorted(taught)) or '(none yet — this is lesson 1)'}\n\n"
+            "CONCEPTS AVAILABLE TO TEACH THIS TIME (pick exactly one, the one this match illustrates best):\n"
+            + "\n".join(line(g) for g in eligible)
+        )
+
+    stored = (load_json("tactics.json") or {}).get("matches") or []
+    recent = {((m.get("explained") or {}).get("lesson") or {}).get("conceptId")
+              for m in stored[:REFRESHER_SPACING]}
+    eligible = [g for g in glossary if g["id"] not in recent] or glossary
+    return (
+        "Every concept in the curriculum has been taught once, so this lesson is a REFRESHER.\n\n"
+        "CONCEPTS TO REVISIT (pick exactly one, the one this match illustrates best, and teach it "
+        "through this match rather than restating the definition):\n"
+        + "\n".join(line(g) for g in eligible)
+    )
+
+
+def lesson_label(entry, concepts_taught):
+    """'Lesson 7' for a concept's first outing, 'Refresher' after that.
+
+    Numbered by the concept's place in the curriculum rather than by how many
+    have been taught so far, so an older entry keeps its own number.
+    """
+    entry = entry or {}
+    if entry.get("refresher"):
+        return "Refresher"
+    concept = ((entry.get("explained") or {}).get("lesson") or {}).get("conceptId")
+    if concept in (concepts_taught or []):
+        return f"Lesson {concepts_taught.index(concept) + 1}"
+    return "Lesson"
 
 
 READER_BRIEF = """THE READER: a passionate Arsenal fan who watches every match but has never been taught
@@ -558,12 +658,11 @@ talking to an interested adult."""
 def research_and_generate_tactics(concepts_taught, known_keys):
     """Research Arsenal's most recent match on the web, then write it up.
 
-    Used because no free match-data API covers the current season. Claude does the
+    The fallback for when FotMob has no recent match to offer. Claude does the
     searching server-side and must cite the pages it actually opened, so a beginner
     who can't fact-check the analysis can at least follow it back to a source.
     """
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-    taught, menu = _concept_menu(concepts_taught)
     today = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
 
     already = "\n".join(f"- {k}" for k in sorted(known_keys)) or "(none yet)"
@@ -588,10 +687,7 @@ ALREADY WRITTEN UP (if the most recent match is one of these, set matchFound=fal
 do not write it up twice):
 {already}
 
-CONCEPTS ALREADY TAUGHT (do not repeat these): {', '.join(sorted(taught)) or '(none yet — this is lesson 1)'}
-
-CONCEPTS AVAILABLE TO TEACH THIS TIME (pick exactly one, the one this match illustrates best):
-{menu}
+{_curriculum_block(concepts_taught)}
 
 HARD RULES — a wrong claim here is worse than no claim, because the reader cannot catch it:
 
@@ -664,7 +760,7 @@ def _build_grounded_tool():
     """
     tool = copy.deepcopy(TACTICS_TOOL)
     schema = tool["input_schema"]
-    for research_only in ("matchFound", "match", "confidence", "sources"):
+    for research_only in ("matchFound", "match", "confidence"):
         schema["properties"].pop(research_only, None)
     schema["required"] = list(schema["properties"].keys())
 
@@ -679,31 +775,27 @@ def _build_grounded_tool():
         "Emit a beginner-friendly tactical breakdown of the Arsenal match whose "
         "verified data is given in the prompt. Every field is required."
     )
-    return dict(_strictify(tool), strict=True)
+    return _strictify(tool)
 
 
-GROUNDED_TACTICS_TOOL = _build_grounded_tool()
+# Same schema twice: validated server-side, and as a plain tool for the retry
+# if strict mode ever rejects it.
+GROUNDED_TACTICS_TOOL_LOOSE = _build_grounded_tool()
+GROUNDED_TACTICS_TOOL = dict(GROUNDED_TACTICS_TOOL_LOOSE, strict=True)
 
 
 def generate_tactics(match, concepts_taught):
     """Explain a match. Every fact must come from `match`; the model adds only interpretation."""
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-    taught, concept_menu = _concept_menu(concepts_taught)
 
     prompt = f"""You are writing the tactical education section of an Arsenal FC digest.
 
 {READER_BRIEF}
 
-Set matchFound=true. You do not need to fill the `match` object — the facts below are
-already recorded from a structured data source.
-
 GROUNDED MATCH DATA — this is the complete set of facts you may state:
 {summarize_for_prompt(match)}
 
-CONCEPTS ALREADY TAUGHT (do not repeat these): {', '.join(sorted(taught)) or '(none yet — this is lesson 1)'}
-
-CONCEPTS AVAILABLE TO TEACH THIS TIME (pick exactly one, the one this match illustrates best):
-{concept_menu}
+{_curriculum_block(concepts_taught)}
 
 HARD RULES — a wrong claim here is worse than no claim, because the reader cannot catch it:
 
@@ -744,7 +836,7 @@ Call the `publish_tactics` tool."""
         if "strict" not in str(e).lower() and "schema" not in str(e).lower():
             raise
         print(f"[warn] strict tool use rejected ({e}); retrying without it")
-        return call(TACTICS_TOOL)
+        return call(GROUNDED_TACTICS_TOOL_LOOSE)
 
 
 def latest_tactics_entry(max_age_days=10):
@@ -852,7 +944,8 @@ def _research_entry(current):
         print("[warn] research returned no usable lesson; discarding")
         return None
     concept_id = explained["lesson"].get("conceptId")
-    if concept_id and concept_id not in current["conceptsTaught"]:
+    refresher = bool(concept_id) and concept_id in current["conceptsTaught"]
+    if concept_id and not refresher:
         current["conceptsTaught"].append(concept_id)
 
     print(f"[ok] tactics researched for {match.get('opponent')} "
@@ -862,6 +955,7 @@ def _research_entry(current):
     return {
         "date": (match.get("date") or "")[:10],
         "researched": True,
+        **({"refresher": True} if refresher else {}),
         "confidence": result.get("confidence"),
         "grounded": match,
         "explained": explained,
@@ -892,12 +986,14 @@ def ensure_latest_match(matches, entry):
     }
 
 
-def refresh_tactics(matches):
+def refresh_tactics(matches, allow_research=False):
     """Write up every supplied fixture that isn't already covered.
 
     Matches arrive oldest-first so lessons are taught in the order they were
-    played. Falls back to web research when no structured data is available,
-    which is the normal path on the free API tiers. Returns the newest entry
+    played. With `allow_research`, falls back to web research when FotMob has
+    no recent match — the caller sets it only on a run that will send, because
+    that path is a multi-turn search on the strongest model and would otherwise
+    repeat every day of an off-season or an outage. Returns the newest entry
     for the email, or None.
     """
     path = DATA_DIR / "tactics.json"
@@ -908,7 +1004,7 @@ def refresh_tactics(matches):
     newest = None
     wrote = False
 
-    if not matches:
+    if not matches and allow_research:
         entry = _research_entry(current)
         if entry:
             current["matches"].insert(0, entry)
@@ -953,13 +1049,15 @@ def refresh_tactics(matches):
             "grounded": match,
             "explained": explained,
         }
+        concept_id = (explained.get("lesson") or {}).get("conceptId")
+        if concept_id and concept_id in current["conceptsTaught"]:
+            entry["refresher"] = True
+        elif concept_id:
+            current["conceptsTaught"].append(concept_id)
         current["matches"].insert(0, entry)
         newest = entry
         wrote = True
 
-        concept_id = (explained.get("lesson") or {}).get("conceptId")
-        if concept_id and concept_id not in current["conceptsTaught"]:
-            current["conceptsTaught"].append(concept_id)
         print(f"[ok] tactics recorded for {match['opponent']} ({concept_id})")
 
     if wrote:
@@ -990,24 +1088,16 @@ def _merge(existing_list, additions, key_fn):
 
 
 def apply_additions(additions):
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-
-    transfers = load_json("transfers.json") or {"window": "Summer 2026", "in": [], "out": []}
-    transfers.setdefault("in", [])
-    transfers.setdefault("out", [])
-    # Arsenal's own transfers come from FotMob in refresh_transfers(); the news
-    # model no longer gets to add rows here.
-
-    pl = load_json("pl-transfers.json") or {"window": "Summer 2026", "items": []}
+    """Store new rival-club transfers. Arsenal's own transfers and rumours come
+    from FotMob in refresh_transfers(), not from the news model."""
+    pl = load_json("pl-transfers.json") or {"items": []}
     pl.setdefault("items", [])
-    _merge(pl["items"], additions.get("pl_transfers"),
-           lambda t: _norm(t.get("player")) + "|" + _norm(t.get("to")))
-    pl["lastUpdated"] = today
-    (DATA_DIR / "pl-transfers.json").write_text(json.dumps(pl, indent=2) + "\n")
-
-    # Rumours likewise come from FotMob, not from headline inference.
-
-    print("[ok] additions applied")
+    added = _merge(pl["items"], additions.get("pl_transfers"),
+                   lambda t: _norm(t.get("player")) + "|" + _norm(t.get("to")))
+    if added:
+        pl["lastUpdated"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        (DATA_DIR / "pl-transfers.json").write_text(json.dumps(pl, indent=2) + "\n")
+    print(f"[ok] {added} rival-club transfer(s) added")
 
 
 # ---------- email HTML rendering ----------
@@ -1139,6 +1229,9 @@ def render_odds(odds_items, commentary):
         # for anyone used to reading a bookmaker price.
         prob = "—" if not item or item.get("impliedProbability") is None else f'{item["impliedProbability"] * 100:.1f}%'
         odds = "" if not item or item.get("odds") is None else f'{item["odds"]:.2f} decimal'
+        if item and item.get("settled"):
+            prob = "Won" if item["settled"] == "won" else "Out"
+            odds = f'settled {item.get("lastUpdated") or ""}'.strip()
         spread = ""
         if item and item.get("bidCents") is not None and item.get("askCents") is not None:
             spread = f'{item["bidCents"]}–{item["askCents"]}\u00a2 bid/ask'
@@ -1161,7 +1254,7 @@ def render_odds(odds_items, commentary):
 
     double = by_name.get("Double (PL + UCL)")
     double_row = ""
-    if double and double.get("odds") is not None:
+    if double and double.get("odds") is not None and not double.get("settled"):
         prob = f'{double["impliedProbability"] * 100:.1f}%' if double.get("impliedProbability") is not None else ""
         double_row = (
             f'<div style="margin-top:10px;padding:8px 12px;background:{CARD_ALT};'
@@ -1471,7 +1564,7 @@ def _tactics_callout(label, body, accent):
     )
 
 
-def render_tactics(entry, lesson_number):
+def render_tactics(entry, lesson_label="Lesson"):
     if not entry:
         return ""
 
@@ -1480,9 +1573,12 @@ def render_tactics(entry, lesson_number):
 
     score = f'{g.get("goalsFor")}–{g.get("goalsAgainst")}'
     venue = "vs" if g.get("homeAway") == "H" else "away at"
+    pens = g.get("shootout") or {}
+    pens_note = (f' ({"won" if pens.get("won") else "lost"} '
+                 f'{pens.get("arsenal")}–{pens.get("opponent")} on penalties)') if pens else ""
     header_line = (
         f'<div style="font-size:15px;font-weight:700;color:{INK};margin-bottom:2px;">'
-        f'Arsenal {E(score)} {E(venue)} {E(g.get("opponent") or "?")}</div>'
+        f'Arsenal {E(score)} {E(venue)} {E(g.get("opponent") or "?")}{E(pens_note)}</div>'
         f'<div style="font-size:12px;color:{INK_SOFT};margin-bottom:10px;">'
         f'{E(g.get("competition") or "")} · {E(g.get("date") or "")}</div>'
     )
@@ -1544,7 +1640,7 @@ def render_tactics(entry, lesson_number):
             f'<div style="margin:14px 0 6px;padding:14px 16px;background:#fffdf5;'
             f'border:2px solid {GOLD};border-radius:8px;">'
             f'<div style="font-size:10px;font-weight:700;color:{GOLD};text-transform:uppercase;'
-            f'letter-spacing:.08em;">Lesson {lesson_number} · Level {level} of 3</div>'
+            f'letter-spacing:.08em;">{E(lesson_label)} · Level {level} of 3</div>'
             f'<div style="font-size:17px;font-weight:700;color:{INK};margin:4px 0 6px;">'
             f'{E(lesson["term"])}</div>'
             f'<p style="margin:0 0 8px;font-size:14px;line-height:1.6;color:{INK};">'
@@ -1582,8 +1678,8 @@ def render_tactics(entry, lesson_number):
             f'</div>'
         )
 
-    # Provenance: these write-ups are researched from published reports, so the
-    # reader needs to be able to follow any claim back to where it came from.
+    # Provenance for the web-research fallback: FotMob entries carry no source
+    # list, but a researched one must let the reader follow a claim back.
     sources = g.get("sources") or []
     if sources:
         links = " · ".join(
@@ -1612,7 +1708,7 @@ def render_footer():
 
 
 def render_email(odds_items, additions, narrative, today_str, preheader,
-                 tactics_entry=None, lesson_number=1, fixtures=None, standing=None,
+                 tactics_entry=None, lesson_label="Lesson", fixtures=None, standing=None,
                  transfers=None, rumors=None, compare=None):
     additions = additions or {}
     narrative = narrative or {}
@@ -1621,7 +1717,7 @@ def render_email(odds_items, additions, narrative, today_str, preheader,
         render_header(today_str)
         + render_standing(standing)
         + render_intro(narrative.get("summary"))
-        + render_tactics(tactics_entry, lesson_number)
+        + render_tactics(tactics_entry, lesson_label)
         + render_season_comparison(compare)
         + render_odds(odds_items, narrative.get("odds_commentary"))
         + render_transfers_in((transfers or {}).get("in") or [])
@@ -1703,63 +1799,76 @@ def send_failure_email(err_text):
 
 def main():
     try:
+        # Free, keyless refreshes first: these keep the site current on every
+        # run, whether or not an email goes out.
         refresh_odds_file()
-
-        # Tactics runs before the news call so a feed outage can't cost us the
-        # match breakdown, which is the harder half to reproduce.
-        recent_matches = fetch_recent_matches()
-        tactics_entry = ensure_latest_match(
-            recent_matches, refresh_tactics(recent_matches) or latest_tactics_entry())
         fixtures = refresh_fixtures()
         standing = refresh_standing()
         compare = refresh_season_comparison()
         refresh_transfers()
-        transfers, rumors = recent_transfers(), recent_rumors()
-        lesson_number = len(load_json("tactics.json").get("conceptsTaught", [])) or 1
+
+        forced = os.environ.get("DIGEST_FORCE", "").lower() == "true"
+        due, already_covered = due_matches()
+        fixtures_unreadable = due is None
+        due = due or []
+        sending = forced or bool(due)
+
+        # A new match is written up on whichever run first sees it, so the site
+        # has the breakdown before the email does. It also runs before the news
+        # call, so a feed outage can't cost us the harder half to reproduce.
+        tactics = load_json("tactics.json") or {}
+        known_ids = [m["fixtureId"] for m in tactics.get("matches") or [] if m.get("fixtureId")]
+        recent_matches = fetch_recent_matches(known_ids=known_ids)
+        tactics_entry = ensure_latest_match(
+            recent_matches,
+            refresh_tactics(recent_matches, allow_research=sending) or latest_tactics_entry())
+
+        if fixtures_unreadable and not forced:
+            # Coverage is tracked per match, so a skipped day is caught up on
+            # the next run that can see the fixtures. Sending blind would repeat
+            # the email every day of an outage.
+            print("[warn] couldn't read finished fixtures; skipping today")
+            return
+        if not sending:
+            print("[info] no Arsenal match finished since the last digest; "
+                  "data refreshed, no email today")
+            return
+        for m in due:
+            print(f"[info] due: {m['opponent']} ({m['competition']}) {m['kickoff'][:10]}")
+        if not due:
+            print("[info] manual run; sending without a new match")
+        # Without the fixture list there is nothing to say about coverage, so
+        # the stored ids are left exactly as they were.
+        covered_ids = None if fixtures_unreadable else already_covered + [m["id"] for m in due]
 
         items, lookback_hours = gather_news()
         print(f"[info] gathered {len(items)} unique articles")
-
-        odds_items = load_json("odds.json").get("items", [])
-        today_str = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
-
-        if not items:
-            html_body = render_email(
-                odds_items=odds_items,
-                additions={},
-                narrative={"summary": "Quiet news cycle. Nothing new picked up from the tracked feeds in the last 3 days."},
-                today_str=today_str,
-                preheader="Quiet news cycle",
-                tactics_entry=tactics_entry,
-                lesson_number=lesson_number,
-                fixtures=fixtures,
-                standing=standing,
-                transfers=transfers, rumors=rumors, compare=compare,
-            )
-            send_email(html_body, "quiet news cycle", 0)
-            record_send()
-            return
-
-        result = generate_digest(items, odds_items, lookback_hours)
-        apply_additions(result.get("additions") or {})
-
-        # Reload odds in case anything was updated during the run (harmless if unchanged)
-        odds_items = load_json("odds.json").get("items", [])
+        if items:
+            result = generate_digest(items, lookback_hours)
+            additions = result.get("additions") or {}
+            narrative = result.get("narrative") or {}
+            highlight = result.get("subject_highlight") or ""
+            apply_additions(additions)
+        else:
+            additions, highlight = {}, "quiet news cycle"
+            narrative = {"summary": "Quiet news cycle. Nothing new picked up from "
+                                    "the tracked feeds since the last digest."}
 
         html_body = render_email(
-            odds_items=odds_items,
-            additions=result.get("additions") or {},
-            narrative=result.get("narrative") or {},
-            today_str=today_str,
-            preheader=result.get("subject_highlight", "Arsenal digest"),
+            odds_items=load_json("odds.json").get("items", []),
+            additions=additions,
+            narrative=narrative,
+            today_str=datetime.now(timezone.utc).strftime("%A, %B %d, %Y"),
+            preheader=highlight or "Arsenal digest",
             tactics_entry=tactics_entry,
-            lesson_number=lesson_number,
+            lesson_label=lesson_label(
+                tactics_entry, load_json("tactics.json").get("conceptsTaught", [])),
             fixtures=fixtures,
             standing=standing,
-            transfers=transfers, rumors=rumors, compare=compare,
+            transfers=recent_transfers(), rumors=recent_rumors(), compare=compare,
         )
-        send_email(html_body, result.get("subject_highlight", ""), len(items))
-        record_send()
+        send_email(html_body, highlight, len(items))
+        record_send(covered_ids)
     except Exception:
         tb = traceback.format_exc()
         print(tb, file=sys.stderr)
