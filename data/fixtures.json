@@ -1,18 +1,7 @@
 {
-  "lastUpdated": "2026-11-05",
+  "lastUpdated": "2026-11-10",
   "timezone": "America/New_York",
   "items": [
-    {
-      "fixtureId": 5795505,
-      "date": "2026-11-07",
-      "kickoffUtc": "2026-11-07T15:00:00.000Z",
-      "kickoffLocal": "Sat Nov 7, 10:00 AM EST",
-      "opponent": "Hull",
-      "opponentId": 8667,
-      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8667.png",
-      "competition": "Premier League",
-      "homeAway": "H"
-    },
     {
       "fixtureId": 5795523,
       "date": "2026-11-21",
@@ -54,6 +43,17 @@
       "opponent": "Brentford",
       "opponentId": 9937,
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9937.png",
+      "competition": "Premier League",
+      "homeAway": "A"
+    },
+    {
+      "fixtureId": 5795554,
+      "date": "2026-12-06",
+      "kickoffUtc": "2026-12-06T16:30:00.000Z",
+      "kickoffLocal": "Sun Dec 6, 11:30 AM EST",
+      "opponent": "Tottenham",
+      "opponentId": 8586,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png",
       "competition": "Premier League",
       "homeAway": "A"
     }

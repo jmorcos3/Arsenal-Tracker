@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-11-05",
+  "lastUpdated": "2026-11-10",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -17,9 +17,148 @@
     "set-piece-xg",
     "xg",
     "xgot",
-    "xg-overperformance"
+    "xg-overperformance",
+    "field-tilt"
   ],
   "matches": [
+    {
+      "fixtureId": 5795505,
+      "date": "2026-11-07",
+      "grounded": {
+        "fixtureId": 5795505,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/hull-city-vs-arsenal/2tt1fr#5795505",
+        "date": "2026-11-07",
+        "competition": "Premier League",
+        "round": "10",
+        "homeAway": "H",
+        "opponent": "Hull City",
+        "opponentId": 8667,
+        "goalsFor": 1,
+        "goalsAgainst": 0,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "5-3-2",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Sergej Jakirovi\u0107",
+        "arsenalXI": [
+          "David Raya",
+          "Jurri\u00ebn Timber",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Bruno Guimar\u00e3es",
+          "Declan Rice",
+          "Noni Madueke",
+          "Martin \u00d8degaard",
+          "Christos Tzolis",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Konstantinos Tzolakis",
+          "Semi Ajayi",
+          "John Egan",
+          "Nobel Mendy",
+          "Lewie Coyle",
+          "Elliot Stroud",
+          "Tim Iroegbunam",
+          "Lucas Gourna-Douath",
+          "Regan Slater",
+          "Mohamed-Ali Cho",
+          "Oli McBurnie"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 67,
+            "xg": 1.26,
+            "shots": 21,
+            "shotsOnTarget": 10,
+            "touchesInBox": 45,
+            "bigChances": 2,
+            "bigChancesMissed": 1,
+            "accuratePasses": 508,
+            "corners": 7,
+            "shotsInBox": 14,
+            "xgOpenPlay": 1.04,
+            "xgSetPlay": 0.22,
+            "xgot": 1.17,
+            "passesOppositionHalf": 285,
+            "tackles": 9,
+            "interceptions": 5,
+            "saves": 2,
+            "fouls": 6
+          },
+          "opponent": {
+            "possession": 33,
+            "xg": 0.36,
+            "shots": 7,
+            "shotsOnTarget": 2,
+            "touchesInBox": 18,
+            "bigChances": 0,
+            "bigChancesMissed": 0,
+            "accuratePasses": 196,
+            "corners": 4,
+            "shotsInBox": 6,
+            "xgOpenPlay": 0.16,
+            "xgSetPlay": 0.21,
+            "xgot": 0.73,
+            "passesOppositionHalf": 100,
+            "tackles": 15,
+            "interceptions": 10,
+            "saves": 9,
+            "fouls": 15
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Martin \u00d8degaard",
+            "minute": 72,
+            "team": "Arsenal",
+            "assist": null
+          }
+        ],
+        "result": "W"
+      },
+      "explained": {
+        "whatHappened": "Arsenal had the ball for two thirds of the match against a Hull City side that packed its own penalty area and tried to survive. Arsenal took 21 shots and forced nine saves from the Hull goalkeeper, but the breakthrough only came on 72 minutes when Martin \u00d8degaard scored. It finished 1-0, and the one-goal margin flatters Hull far more than it reflects the balance of play.",
+        "opponentPlan": "Hull set up in a 5-3-2, which is a formation built almost entirely around denying space: five defenders across the back means there is no gap between centre-backs and full-backs for a runner to attack, and three midfielders in front of them clog the middle. The numbers show it worked as designed for 72 minutes \u2014 Hull made 15 tackles and 10 interceptions to Arsenal's 9 and 5, because the team without the ball is the team doing the defending. Arsenal's answer was territorial: 285 passes in the opposition half and 45 touches in Hull's box, patiently moving the ball from side to side to pull that five-man line out of position rather than running into it.",
+        "keyMoment": "\u00d8degaard's goal on 72 minutes. Against a 5-3-2 that concedes possession by design, the game has one real question \u2014 can you score before the clock runs out \u2014 and Arsenal had already built 21 shots and 45 touches in the Hull box before the answer arrived. The pattern did not change at 72 minutes; it simply finally paid.",
+        "nerdCorner": "The gap between 21 shots and 1.26 xG is the whole story of playing a 5-3-2 low block: that is an average of about 0.06 xG per shot, and even with 14 of those shots inside the box, only 2 qualified as big chances. A back five does not stop you entering the penalty area \u2014 Arsenal got 45 touches in there \u2014 it stops you entering it cleanly, so you end up with blocked efforts and low-value looks from congested positions. The more interesting number is xGOT 1.17 against an xG of 1.26: Arsenal's shots on target were struck close to the value of the chances created, meaning the finishing was not the problem, the chance quality was. Hull, meanwhile, posted 0.73 xGOT from 0.36 xG \u2014 they placed their two shots on target very well and still only forced two saves from Raya, which is how a side with zero big chances can still leave a 1-0 game nominally alive until the end.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "A 4-2-3-1 is how the team lines up before kick-off, but it rarely stays that way once Arsenal have the ball. One full-back \u2014 with Timber and Calafiori as the pair, usually one of them \u2014 steps inside next to a holding midfielder, which leaves three defenders behind the ball and two screening in front of them, while five players spread across the last line to pin the opposition back. When Arsenal lose it, those players drop back out into two banks of four with Havertz and \u00d8degaard ahead of them, which is the shape most teams default to because it covers the width of the pitch quickly."
+        },
+        "lesson": {
+          "conceptId": "field-tilt",
+          "term": "Field tilt",
+          "level": 3,
+          "explain": "Possession tells you who has the ball; field tilt tells you where. It is your share of the touches in the final third \u2014 the part of possession that actually threatens someone. Arsenal had 67% of the ball, which is useful but not damning on its own; the figures that matter are 45 touches in Hull's box against 18, and 285 passes in the opposition half against 100. That is not Arsenal passing the ball around their own defenders to run the clock down \u2014 that is the match being played almost entirely inside Hull's half, which is exactly the territorial picture a 5-3-2 invites and then has to survive.",
+          "spotIt": "Next match, ignore the possession percentage on screen and instead watch where the halfway line sits relative to the action \u2014 if both teams' outfield players are routinely crammed into one third of the pitch, that is field tilt, and the team attacking into that crowd owns it."
+        },
+        "statTranslations": [
+          {
+            "stat": "Touches in opposition box: Arsenal 45 | Hull City 18",
+            "plain": "Arsenal were not just keeping the ball, they were keeping it in the single most dangerous 18 yards of the pitch, roughly two and a half times as often as Hull managed."
+          },
+          {
+            "stat": "Goalkeeper saves: Arsenal 2 | Hull City 9",
+            "plain": "Hull's goalkeeper had to make nine saves to Raya's two \u2014 the single clearest sign that the scoreline is closer than the match was."
+          },
+          {
+            "stat": "Big chances: Arsenal 2 | Hull City 0",
+            "plain": "Hull never once created a situation a player would ordinarily be expected to score from, so Arsenal were never actually in danger of losing this."
+          },
+          {
+            "stat": "xG 1.26 vs 0.36",
+            "plain": "Add up the quality of every shot and Arsenal's chances were worth a bit over a goal, Hull's barely a third of one \u2014 a comfortable but not overwhelming gap, because volume is not the same as quality."
+          },
+          {
+            "stat": "Tackles: Arsenal 9 | Hull City 15, Interceptions: Arsenal 5 | Hull City 10",
+            "plain": "Hull made far more defensive actions simply because they spent the match defending; high tackle counts usually mean a team is chasing, not dominating."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 6106389,
       "date": "2026-11-04",

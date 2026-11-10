@@ -1,7 +1,51 @@
 {
-  "lastUpdated": "2026-11-05",
+  "lastUpdated": "2026-11-10",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Carlos Forbs Borges",
+      "club": "Club Brugge",
+      "direction": "in",
+      "fee": "\u20ac23M",
+      "date": "2026-11-10",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Mart\u00edn Zubimendi",
+      "club": "Atl\u00e9tico Madrid",
+      "direction": "out",
+      "fee": "\u20ac65M",
+      "date": "2026-11-10",
+      "position": "DM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Nicolo Tresoldi",
+      "club": "Club Brugge",
+      "direction": "in",
+      "fee": "\u20ac50M",
+      "date": "2026-11-06",
+      "position": "ST",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Marcus Tavernier",
+      "club": "Bournemouth",
+      "direction": "in",
+      "fee": "\u20ac30M",
+      "date": "2026-11-06",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Piero Hincapi\u00e9",
       "club": "Barcelona",
@@ -53,17 +97,6 @@
       "fee": "\u20ac46M",
       "date": "2026-11-01",
       "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Nicolo Tresoldi",
-      "club": "Club Brugge",
-      "direction": "in",
-      "fee": "\u20ac50M",
-      "date": "2026-10-31",
-      "position": "ST",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
