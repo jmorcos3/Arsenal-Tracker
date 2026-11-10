@@ -72,34 +72,51 @@ def _money(market, key):
         return None
 
 
-def _arsenal_market(series_ticker):
-    """The current-season Arsenal market in a series.
-
-    Several seasons can be open at once, so prefer the one closing soonest.
-    """
-    payload = _get("markets", {"series_ticker": series_ticker, "status": "open", "limit": 300})
+def _arsenal_markets(series_ticker, status):
+    payload = _get("markets", {"series_ticker": series_ticker, "status": status, "limit": 300})
     if not payload:
         return None
-
-    candidates = [
+    return [
         m for m in payload.get("markets") or []
         if (m.get("ticker") or "").upper().endswith(TEAM_SUFFIX)
     ]
-    if not candidates:
-        print(f"[warn] no Arsenal market in series {series_ticker}")
-        return None
-    candidates.sort(key=lambda m: m.get("close_time") or "9999")
-    return candidates[0]
+
+
+def _arsenal_market(series_ticker):
+    """(market, settled) for the current season, or (None, False).
+
+    Several seasons can be open at once, so prefer the one closing soonest.
+    With no open market, look for one that has settled: when Arsenal are knocked
+    out, Kalshi resolves their contract to "no" and delists it. Reporting that
+    as "no market" left a pre-elimination Carabao Cup price on the site for two
+    weeks after they had gone out.
+    """
+    live = _arsenal_markets(series_ticker, "open")
+    if live is None:
+        return None, False
+    if live:
+        live.sort(key=lambda m: m.get("close_time") or "9999")
+        return live[0], False
+
+    settled = [m for m in _arsenal_markets(series_ticker, "settled") or []
+               if m.get("result") in ("yes", "no")]
+    if settled:
+        settled.sort(key=lambda m: m.get("close_time") or "")
+        return settled[-1], True
+    print(f"[warn] no Arsenal market in series {series_ticker}")
+    return None, False
 
 
 def _price(market):
     """Midpoint of the spread, falling back to last traded price.
 
     The midpoint is the fairer read of what the market believes: quoting the ask
-    alone would systematically overstate Arsenal's chances.
+    alone would systematically overstate Arsenal's chances. It needs both sides,
+    though — when a thin market loses its bid, Kalshi reports the bid as 0, and
+    averaging that in would halve the price overnight.
     """
     bid, ask = _money(market, "yes_bid_dollars"), _money(market, "yes_ask_dollars")
-    if bid is not None and ask is not None and 0 < (bid + ask) / 2 < 1:
+    if bid and ask and bid <= ask < 1:
         return (bid + ask) / 2, bid, ask
     last = _money(market, "last_price_dollars")
     if last is not None and 0 < last < 1:
@@ -117,8 +134,29 @@ def fetch_trophy_prices():
     items = []
 
     for competition, series_ticker in SERIES.items():
-        market = _arsenal_market(series_ticker)
+        market, settled = _arsenal_market(series_ticker)
         if not market:
+            continue
+
+        if settled:
+            won = market["result"] == "yes"
+            items.append({
+                "competition": competition,
+                "odds": None,
+                "impliedProbability": 1.0 if won else 0.0,
+                # The trophy is decided: rendered as "Won"/"Out", never as a price.
+                "settled": "won" if won else "out",
+                "bestBookmaker": "Kalshi",
+                "source": "kalshi",
+                "marketTicker": market.get("ticker"),
+                "marketUrl": f"https://kalshi.com/markets/{series_ticker.lower()}",
+                "priceCents": 100.0 if won else 0.0,
+                "bidCents": None,
+                "askCents": None,
+                "lastUpdated": (market.get("close_time") or today)[:10],
+            })
+            print(f"[ok] kalshi {competition}: settled, Arsenal {'won' if won else 'out'} "
+                  f"({market.get('ticker')})")
             continue
 
         probability, bid, ask = _price(market)
@@ -160,7 +198,19 @@ def double_item(items):
 
     probability = pl["impliedProbability"] * ucl["impliedProbability"]
     if probability <= 0:
-        return None
+        if "out" not in (pl.get("settled"), ucl.get("settled")):
+            return None
+        # One leg is gone, so the double is too.
+        return {
+            "competition": "Double (PL + UCL)",
+            "odds": None,
+            "impliedProbability": 0.0,
+            "settled": "out",
+            "bestBookmaker": "Implied (product of the two Kalshi markets)",
+            "source": "derived",
+            "priceCents": 0.0,
+            "lastUpdated": pl["lastUpdated"],
+        }
     return {
         "competition": "Double (PL + UCL)",
         "odds": round(1.0 / probability, 2),

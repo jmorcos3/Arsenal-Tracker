@@ -12,13 +12,22 @@ on:
 permissions:
   contents: write
 
+# A manual run started while the scheduled one is going would race it to push
+# the same data files; queue it instead.
+concurrency:
+  group: arsenal-digest
+  cancel-in-progress: false
+
 jobs:
   send-digest:
     runs-on: ubuntu-latest
+    # A normal run takes about two minutes; don't let a hung request hold a
+    # runner for the six-hour default.
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -49,7 +58,10 @@ jobs:
             echo "No data changes to commit"
           else
             git commit -m "chore(data): auto-update from digest run"
-            git push
+            # The branch can move while the run is in flight (a merged PR, say);
+            # replay the data commit on top rather than fail the push.
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
 
       # Only when digest.py never got far enough to report the error itself —

@@ -16,6 +16,7 @@ from datetime import datetime, timedelta, timezone
 from urllib.error import URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+from zoneinfo import ZoneInfo
 
 API_BASE = "https://www.fotmob.com/api/data"
 CREST_BASE = "https://images.fotmob.com/image_resources/logo/teamlogo"
@@ -47,7 +48,26 @@ STAT_KEYS = {
 }
 
 
+_cache = {}
+
+
 def _get(path, params):
+    """One GET per distinct request per run.
+
+    Fixtures, standing, transfers and the send-day check all read the same team
+    payload, so without this a run fetched it five times over. Failures aren't
+    cached, so a later caller still gets its own attempt.
+    """
+    key = (path, tuple(sorted(params.items())))
+    if key not in _cache:
+        payload = _fetch(path, params)
+        if payload is None:
+            return None
+        _cache[key] = payload
+    return _cache[key]
+
+
+def _fetch(path, params):
     url = f"{API_BASE}/{path}?{urlencode(params)}"
     req = Request(url, headers={
         "User-Agent": "Mozilla/5.0 (compatible; arsenal-tracker/1.0)",
@@ -75,8 +95,11 @@ def _num(value):
         return None
 
 
-def fetch_recent_matches(count=3):
+def fetch_recent_matches(count=3, known_ids=()):
     """The last `count` completed Arsenal fixtures, oldest first.
+
+    Fixtures in `known_ids` already have a stored write-up, so they come back as
+    an id-only stub instead of costing a match-detail request each run.
 
     Several rather than one because a send can cover more than one match — a
     missed day's run catches up on the next — and each needs its own write-up.
@@ -99,8 +122,16 @@ def fetch_recent_matches(count=3):
         return []
 
     finished.sort(key=lambda f: (f.get("status") or {}).get("utcTime") or "")
+    known = {str(i) for i in known_ids}
     matches = []
     for fixture in finished[-count:]:
+        if str(fixture["id"]) in known:
+            matches.append({
+                "fixtureId": fixture["id"],
+                "date": ((fixture.get("status") or {}).get("utcTime") or "")[:10],
+                "opponent": (fixture.get("opponent") or {}).get("name"),
+            })
+            continue
         match = fetch_match(fixture["id"], fixture.get("pageUrl"))
         if match:
             matches.append(match)
@@ -186,6 +217,7 @@ def fetch_match(match_id, page_url=None):
         "goalscorers": [],
     }
     match["result"] = _result_letter(match["goalsFor"], match["goalsAgainst"])
+    match["shootout"] = _shootout(header, arsenal_home)
 
     _attach_lineups(match, content, arsenal_home)
     _attach_stats(match, content, arsenal_home)
@@ -199,6 +231,20 @@ def _scores(header, arsenal_home):
         return None, None
     home_score, away_score = teams[0].get("score"), teams[1].get("score")
     return (home_score, away_score) if arsenal_home else (away_score, home_score)
+
+
+def _shootout(header, arsenal_home):
+    """Penalty-shootout score from Arsenal's side, or None if there wasn't one.
+
+    The headline score stops at the final whistle, so without this a cup exit on
+    penalties is recorded — and written up — as a draw.
+    """
+    pens = ((header.get("status") or {}).get("reason") or {}).get("penalties")
+    if not (isinstance(pens, list) and len(pens) == 2
+            and all(isinstance(p, int) for p in pens)):
+        return None
+    arsenal, opponent = (pens[0], pens[1]) if arsenal_home else (pens[1], pens[0])
+    return {"arsenal": arsenal, "opponent": opponent, "won": arsenal > opponent}
 
 
 def _result_letter(gf, ga):
@@ -304,8 +350,13 @@ def summarize_for_prompt(match):
     ) or "- (none)"
 
     venue = "home" if match["homeAway"] == "H" else "away"
+    pens = match.get("shootout")
+    shootout = (
+        f"\nPENALTY SHOOTOUT: the match finished level and went to penalties, which Arsenal "
+        f"{'won' if pens['won'] else 'lost'} {pens['arsenal']}-{pens['opponent']}."
+    ) if pens else ""
     return f"""FIXTURE: Arsenal {match['goalsFor']}-{match['goalsAgainst']} {match['opponent']} \
-({venue}, {match['competition']}, {match['date']})
+({venue}, {match['competition']}, {match['date']}){shootout}
 ARSENAL FORMATION (as recorded): {match['arsenalFormation'] or 'not reported'}
 OPPONENT FORMATION (as recorded): {match['opponentFormation'] or 'not reported'}
 ARSENAL STARTING XI: {', '.join(match['arsenalXI']) or 'not reported'}
@@ -329,11 +380,7 @@ def _kickoff_local(utc_text):
         moment = datetime.fromisoformat(utc_text.replace("Z", "+00:00"))
     except ValueError:
         return utc_text[:10], None
-    try:
-        from zoneinfo import ZoneInfo
-        local = moment.astimezone(ZoneInfo(DISPLAY_TZ))
-    except Exception:
-        local = moment  # tzdata unavailable: fall back to UTC rather than fail
+    local = moment.astimezone(ZoneInfo(DISPLAY_TZ))
     return local.strftime("%Y-%m-%d"), local.strftime("%a %b %-d, %-I:%M %p %Z")
 
 
@@ -433,7 +480,7 @@ def fetch_standing():
         "points": row.get("pts"),
         "form": form[-5:],
     }
-    print(f"[ok] fotmob standing: {standing['position']}th, {standing['points']} pts")
+    print(f"[ok] fotmob standing: position {standing['position']}, {standing['points']} pts")
     return standing
 
 
