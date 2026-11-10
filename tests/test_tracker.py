@@ -115,5 +115,27 @@ class Shootouts(unittest.TestCase):
         self.assertIsNone(fotmob._shootout({"status": {"reason": {"short": "FT"}}}, True))
 
 
+class EmailTemplate(unittest.TestCase):
+    def test_dark_classes_follow_inline_colours(self):
+        tagged = digest._tag_for_dark_mode(
+            f'<td class="px" style="padding:4px;color:{digest.INK};background:{digest.CARD_ALT};'
+            f'border-bottom:1px solid {digest.BORDER};">x</td>')
+        self.assertIn('class="px d-ink d-alt d-bb"', tagged)
+
+    def test_fixed_colour_chips_keep_their_text(self):
+        chip = f'<span style="background:#fdeaec;color:{digest.INK_SOFT};">HOME</span>'
+        self.assertEqual(digest._tag_for_dark_mode(chip), chip)
+
+    def test_every_dark_class_has_a_rule(self):
+        for cls, _ in digest.DARK_RULES.values():
+            self.assertIn(f".{cls} ", digest.EMAIL_STYLE)
+
+    def test_short_labels(self):
+        self.assertEqual(digest._short_date("2026-11-07"), "Nov 7")
+        self.assertEqual(digest._short_date("2026-11-07", weekday=True), "Sat Nov 7")
+        self.assertEqual(digest._short_date("Feb 1"), "Feb 1")
+        self.assertEqual(digest._short_season("2025/2026"), "25/26")
+
+
 if __name__ == "__main__":
     unittest.main()
