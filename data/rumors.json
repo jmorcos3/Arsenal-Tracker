@@ -1,7 +1,51 @@
 {
-  "lastUpdated": "2026-11-10",
+  "lastUpdated": "2026-11-11",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Endrick",
+      "club": "Real Madrid",
+      "direction": "in",
+      "fee": "\u20ac40M",
+      "date": "2026-11-11",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Antonio Nusa",
+      "club": "RB Leipzig",
+      "direction": "in",
+      "fee": "\u20ac45M",
+      "date": "2026-11-11",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Eli Junior Kroupi",
+      "club": "Bournemouth",
+      "direction": "in",
+      "fee": "\u20ac70M",
+      "date": "2026-11-11",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
+    {
+      "player": "Alejandro Baena",
+      "club": "Atl\u00e9tico Madrid",
+      "direction": "in",
+      "fee": "\u20ac45M",
+      "date": "2026-11-11",
+      "position": "LM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Carlos Forbs Borges",
       "club": "Club Brugge",
@@ -80,17 +124,6 @@
       "source": "fotmob"
     },
     {
-      "player": "Eli Junior Kroupi",
-      "club": "Bournemouth",
-      "direction": "in",
-      "fee": "\u20ac70M",
-      "date": "2026-11-03",
-      "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
       "player": "Can Uzun",
       "club": "Eintracht Frankfurt",
       "direction": "in",
@@ -119,17 +152,6 @@
       "fee": "\u20ac61M",
       "date": "2026-10-26",
       "position": "RW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Alejandro Baena",
-      "club": "Atl\u00e9tico Madrid",
-      "direction": "in",
-      "fee": "\u20ac45M",
-      "date": "2026-10-23",
-      "position": "LM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -267,17 +289,6 @@
       "source": "fotmob"
     },
     {
-      "player": "Antonio Nusa",
-      "club": "RB Leipzig",
-      "direction": "in",
-      "fee": "\u20ac45M",
-      "date": "2026-10-07",
-      "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
       "player": "Breno Bidon",
       "club": "Corinthians",
       "direction": "in",
@@ -329,17 +340,6 @@
       "date": "2026-10-06",
       "position": "AM",
       "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Endrick",
-      "club": "Real Madrid",
-      "direction": "in",
-      "fee": "on loan",
-      "date": "2026-10-06",
-      "position": "ST",
-      "onLoan": true,
       "contractExtension": false,
       "source": "fotmob"
     },
