@@ -1,7 +1,18 @@
 {
-  "lastUpdated": "2026-11-11",
+  "lastUpdated": "2026-11-12",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Mart\u00edn Zubimendi",
+      "club": "Chelsea",
+      "direction": "out",
+      "fee": "\u20ac70M",
+      "date": "2026-11-12",
+      "position": "DM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Endrick",
       "club": "Real Madrid",
@@ -41,7 +52,7 @@
       "direction": "in",
       "fee": "\u20ac45M",
       "date": "2026-11-11",
-      "position": "LM",
+      "position": "LW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -416,17 +427,6 @@
       "fee": "\u20ac70M",
       "date": "2026-09-28",
       "position": "RB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Erling Haaland",
-      "club": "Manchester City",
-      "direction": "in",
-      "fee": "\u20ac227M",
-      "date": "2026-09-28",
-      "position": "ST",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
