@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-13",
+  "lastUpdated": "2026-11-14",
   "source": "fotmob",
   "items": [
     {
@@ -372,17 +372,6 @@
       "fee": "\u20ac90M",
       "date": "2026-10-01",
       "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Finn Jeltsch",
-      "club": "VfB Stuttgart",
-      "direction": "in",
-      "fee": "\u20ac35M",
-      "date": "2026-09-29",
-      "position": "CB",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
