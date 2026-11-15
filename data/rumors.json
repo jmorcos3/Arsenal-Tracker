@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-14",
+  "lastUpdated": "2026-11-15",
   "source": "fotmob",
   "items": [
     {
@@ -361,17 +361,6 @@
       "fee": "\u20ac58M",
       "date": "2026-10-04",
       "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Rayan Cherki",
-      "club": "Manchester City",
-      "direction": "in",
-      "fee": "\u20ac90M",
-      "date": "2026-10-01",
-      "position": "AM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
