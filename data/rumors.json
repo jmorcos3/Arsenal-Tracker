@@ -1,7 +1,18 @@
 {
-  "lastUpdated": "2026-11-16",
+  "lastUpdated": "2026-11-17",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Mart\u00edn Zubimendi",
+      "club": "Chelsea",
+      "direction": "out",
+      "fee": "\u20ac70M",
+      "date": "2026-11-17",
+      "position": "DM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Antonio Nusa",
       "club": "RB Leipzig",
@@ -9,17 +20,6 @@
       "fee": "\u20ac80M",
       "date": "2026-11-15",
       "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Mart\u00edn Zubimendi",
-      "club": "Chelsea",
-      "direction": "out",
-      "fee": "\u20ac70M",
-      "date": "2026-11-12",
-      "position": "DM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
