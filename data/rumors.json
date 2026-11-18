@@ -1,7 +1,18 @@
 {
-  "lastUpdated": "2026-11-17",
+  "lastUpdated": "2026-11-18",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Declan Rice",
+      "club": "Arsenal",
+      "direction": "in",
+      "fee": "contract extension",
+      "date": "2026-11-18",
+      "position": "DM",
+      "onLoan": false,
+      "contractExtension": true,
+      "source": "fotmob"
+    },
     {
       "player": "Mart\u00edn Zubimendi",
       "club": "Chelsea",
@@ -165,17 +176,6 @@
       "position": "RW",
       "onLoan": false,
       "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Declan Rice",
-      "club": "Arsenal",
-      "direction": "in",
-      "fee": "contract extension",
-      "date": "2026-10-21",
-      "position": "DM",
-      "onLoan": false,
-      "contractExtension": true,
       "source": "fotmob"
     },
     {
@@ -350,17 +350,6 @@
       "fee": "\u20ac59M",
       "date": "2026-10-06",
       "position": "AM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Igor Matanovic",
-      "club": "Freiburg",
-      "direction": "in",
-      "fee": "\u20ac58M",
-      "date": "2026-10-04",
-      "position": "ST",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
