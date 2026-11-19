@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-18T20:29:55+00:00",
+  "lastUpdated": "2026-11-19T20:35:47+00:00",
   "source": "Kalshi",
   "items": [
     {
@@ -13,8 +13,8 @@
       "priceCents": 75.5,
       "bidCents": 75,
       "askCents": 76,
-      "openInterest": 582773.93,
-      "lastUpdated": "2026-11-18"
+      "openInterest": 582797.92,
+      "lastUpdated": "2026-11-19"
     },
     {
       "competition": "Champions League",
@@ -27,8 +27,8 @@
       "priceCents": 13.5,
       "bidCents": 13,
       "askCents": 14,
-      "openInterest": 249742.3,
-      "lastUpdated": "2026-11-18"
+      "openInterest": 249964.58,
+      "lastUpdated": "2026-11-19"
     },
     {
       "competition": "FA Cup",
@@ -42,7 +42,7 @@
       "bidCents": 20,
       "askCents": 23,
       "openInterest": 7889.76,
-      "lastUpdated": "2026-11-18"
+      "lastUpdated": "2026-11-19"
     },
     {
       "competition": "Carabao Cup",
@@ -65,7 +65,7 @@
       "bestBookmaker": "Implied (product of the two Kalshi markets)",
       "source": "derived",
       "priceCents": 10.19,
-      "lastUpdated": "2026-11-18"
+      "lastUpdated": "2026-11-19"
     }
   ],
   "history": [
@@ -351,6 +351,14 @@
     },
     {
       "date": "2026-11-18",
+      "Premier League": 0.755,
+      "Champions League": 0.135,
+      "FA Cup": 0.215,
+      "Carabao Cup": 0.0,
+      "Double (PL + UCL)": 0.1019
+    },
+    {
+      "date": "2026-11-19",
       "Premier League": 0.755,
       "Champions League": 0.135,
       "FA Cup": 0.215,

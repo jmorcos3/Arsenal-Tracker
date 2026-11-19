@@ -1,7 +1,18 @@
 {
-  "lastUpdated": "2026-11-18",
+  "lastUpdated": "2026-11-19",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Carlos Forbs Borges",
+      "club": "Club Brugge",
+      "direction": "in",
+      "fee": "\u20ac30M",
+      "date": "2026-11-19",
+      "position": "RW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Declan Rice",
       "club": "Arsenal",
@@ -64,17 +75,6 @@
       "fee": "\u20ac45M",
       "date": "2026-11-11",
       "position": "LW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Carlos Forbs Borges",
-      "club": "Club Brugge",
-      "direction": "in",
-      "fee": "\u20ac23M",
-      "date": "2026-11-10",
-      "position": "RW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"

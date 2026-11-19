@@ -1,7 +1,7 @@
 {
   "currentSeason": "2026/2027",
   "previousSeason": "2025/2026",
-  "lastUpdated": "2026-11-18",
+  "lastUpdated": "2026-11-19",
   "rows": [
     {
       "round": 1,
@@ -386,7 +386,7 @@
       "opponentShort": "Newcastle",
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10261.png",
       "venue": "H",
-      "kickoff": "2027-01-23T15:00:00Z",
+      "kickoff": "2027-01-23T17:30:00Z",
       "previous": {
         "result": "W",
         "score": "1-0",
@@ -403,7 +403,7 @@
       "opponentShort": "Man City",
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8456.png",
       "venue": "A",
-      "kickoff": "2027-01-30T15:00:00Z",
+      "kickoff": "2027-01-31T16:30:00Z",
       "previous": {
         "result": "L",
         "score": "1-2",
