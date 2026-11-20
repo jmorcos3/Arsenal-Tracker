@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-19",
+  "lastUpdated": "2026-11-20",
   "source": "fotmob",
   "items": [
     {
@@ -190,17 +190,6 @@
       "source": "fotmob"
     },
     {
-      "player": "Xavi Espart",
-      "club": "Barcelona",
-      "direction": "in",
-      "fee": "\u20ac25M",
-      "date": "2026-10-21",
-      "position": "LB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
       "player": "Wesley",
       "club": "Roma",
       "direction": "in",
@@ -306,50 +295,6 @@
       "fee": "\u20ac25M",
       "date": "2026-10-07",
       "position": "RW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Noni Madueke",
-      "club": "Atl\u00e9tico Madrid",
-      "direction": "out",
-      "fee": "\u20ac50M",
-      "date": "2026-10-06",
-      "position": "RW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Noni Madueke",
-      "club": "Juventus",
-      "direction": "out",
-      "fee": "\u20ac50M",
-      "date": "2026-10-06",
-      "position": "RW",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Jules Kounde",
-      "club": "Barcelona",
-      "direction": "in",
-      "fee": "\u20ac55M",
-      "date": "2026-10-06",
-      "position": "RB",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Joshua King",
-      "club": "Fulham",
-      "direction": "in",
-      "fee": "\u20ac59M",
-      "date": "2026-10-06",
-      "position": "AM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
