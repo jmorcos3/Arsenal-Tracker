@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-20",
+  "lastUpdated": "2026-11-21",
   "source": "fotmob",
   "items": [
     {
@@ -286,17 +286,6 @@
       "position": "CM",
       "onLoan": false,
       "contractExtension": true,
-      "source": "fotmob"
-    },
-    {
-      "player": "Breno Bidon",
-      "club": "Corinthians",
-      "direction": "in",
-      "fee": "\u20ac25M",
-      "date": "2026-10-07",
-      "position": "RW",
-      "onLoan": false,
-      "contractExtension": false,
       "source": "fotmob"
     }
   ]

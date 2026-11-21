@@ -1,18 +1,7 @@
 {
-  "lastUpdated": "2026-11-20",
+  "lastUpdated": "2026-11-21",
   "timezone": "America/New_York",
   "items": [
-    {
-      "fixtureId": 5795523,
-      "date": "2026-11-21",
-      "kickoffUtc": "2026-11-21T17:30:00.000Z",
-      "kickoffLocal": "Sat Nov 21, 12:30 PM EST",
-      "opponent": "Newcastle",
-      "opponentId": 10261,
-      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10261.png",
-      "competition": "Premier League",
-      "homeAway": "A"
-    },
     {
       "fixtureId": 6106259,
       "date": "2026-11-24",
@@ -56,6 +45,17 @@
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8586.png",
       "competition": "Premier League",
       "homeAway": "A"
+    },
+    {
+      "fixtureId": 6106258,
+      "date": "2026-12-09",
+      "kickoffUtc": "2026-12-09T20:00:00.000Z",
+      "kickoffLocal": "Wed Dec 9, 3:00 PM EST",
+      "opponent": "Real Madrid",
+      "opponentId": 8633,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png",
+      "competition": "Champions League",
+      "homeAway": "H"
     }
   ]
 }

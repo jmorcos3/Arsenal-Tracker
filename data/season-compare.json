@@ -1,7 +1,7 @@
 {
   "currentSeason": "2026/2027",
   "previousSeason": "2025/2026",
-  "lastUpdated": "2026-11-20",
+  "lastUpdated": "2026-11-21",
   "rows": [
     {
       "round": 1,
@@ -209,7 +209,7 @@
       "opponentShort": "Newcastle",
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10261.png",
       "venue": "A",
-      "kickoff": "2026-11-21T17:30:00Z",
+      "kickoff": "2026-11-21T17:30:00.000Z",
       "previous": {
         "result": "W",
         "score": "2-1",
