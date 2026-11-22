@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-11-10",
+  "lastUpdated": "2026-11-22",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -18,9 +18,167 @@
     "xg",
     "xgot",
     "xg-overperformance",
-    "field-tilt"
+    "field-tilt",
+    "third-man"
   ],
   "matches": [
+    {
+      "fixtureId": 5795523,
+      "date": "2026-11-21",
+      "grounded": {
+        "fixtureId": 5795523,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/arsenal-vs-newcastle-united/3c42by#5795523",
+        "date": "2026-11-21",
+        "competition": "Premier League",
+        "round": "11",
+        "homeAway": "A",
+        "opponent": "Newcastle United",
+        "opponentId": 10261,
+        "goalsFor": 2,
+        "goalsAgainst": 2,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "4-2-3-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Matthias Jaissle",
+        "arsenalXI": [
+          "David Raya",
+          "Jurri\u00ebn Timber",
+          "Ezri Konsa",
+          "Gabriel",
+          "Riccardo Calafiori",
+          "Declan Rice",
+          "Bruno Guimar\u00e3es",
+          "Noni Madueke",
+          "Martin \u00d8degaard",
+          "Eberechi Eze",
+          "Kai Havertz"
+        ],
+        "opponentXI": [
+          "Luk\u00e1s Horn\u00edcek",
+          "Amar Dedi\u0107",
+          "Malick Thiaw",
+          "Daniel Burn",
+          "Lewis Hall",
+          "Sean Steur",
+          "Lewis Miley",
+          "Jacob Murphy",
+          "Joseph Willock",
+          "Harvey Barnes",
+          "William Osula"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 66,
+            "xg": 1.49,
+            "shots": 13,
+            "shotsOnTarget": 4,
+            "touchesInBox": 22,
+            "bigChances": 4,
+            "bigChancesMissed": 3,
+            "accuratePasses": 456,
+            "corners": 3,
+            "shotsInBox": 10,
+            "xgOpenPlay": 1.43,
+            "xgSetPlay": 0.06,
+            "xgot": 1.42,
+            "passesOppositionHalf": 224,
+            "tackles": 9,
+            "interceptions": 6,
+            "saves": 1,
+            "fouls": 7
+          },
+          "opponent": {
+            "possession": 34,
+            "xg": 1.71,
+            "shots": 12,
+            "shotsOnTarget": 3,
+            "touchesInBox": 16,
+            "bigChances": 3,
+            "bigChancesMissed": 1,
+            "accuratePasses": 192,
+            "corners": 6,
+            "shotsInBox": 5,
+            "xgOpenPlay": 0.67,
+            "xgSetPlay": 1.04,
+            "xgot": 1.29,
+            "passesOppositionHalf": 87,
+            "tackles": 15,
+            "interceptions": 7,
+            "saves": 2,
+            "fouls": 20
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Eberechi Eze",
+            "minute": 33,
+            "team": "Arsenal",
+            "assist": "Kai Havertz"
+          },
+          {
+            "player": "Harvey Barnes",
+            "minute": 49,
+            "team": "Newcastle United",
+            "assist": "William Osula"
+          },
+          {
+            "player": "Malick Thiaw",
+            "minute": 62,
+            "team": "Newcastle United",
+            "assist": "Joseph Willock"
+          },
+          {
+            "player": "Noni Madueke",
+            "minute": 78,
+            "team": "Arsenal",
+            "assist": "Martin \u00d8degaard"
+          }
+        ],
+        "result": "D",
+        "shootout": null
+      },
+      "explained": {
+        "whatHappened": "Arsenal controlled the ball for most of the afternoon at Newcastle \u2014 two thirds of it \u2014 and went in front on 33 minutes when Kai Havertz set up Eberechi Eze. Newcastle came out after the break and turned the game around quickly: Harvey Barnes scored on 49 minutes from William Osula's pass, and Malick Thiaw headed them in front on 62 from a Joseph Willock delivery. Arsenal kept pushing and Noni Madueke levelled it on 78 after Martin \u00d8degaard played him in, and it finished 2-2.",
+        "opponentPlan": "Newcastle also set up 4-2-3-1, but with 34% of the ball they were clearly not trying to out-pass Arsenal \u2014 they were trying to stay compact, make Arsenal play in front of them and hurt them in moments. The tackle count tells you the job they were given: 15 tackles to Arsenal's 9, meaning far more of their defending was active duelling rather than simply passing the ball around. Arsenal's answer was volume and territory \u2014 224 passes in Newcastle's half to 87, 10 of their 13 shots from inside the box \u2014 squeezing Newcastle back and attacking the penalty area rather than shooting from distance. Where Newcastle got their reward was the other route: six corners to Arsenal's three, and Thiaw's 62nd-minute goal came from a Willock assist.",
+        "keyMoment": "The twelve minutes after half-time. Arsenal led 1-0 through Eze's 33rd-minute goal, then conceded on 49 (Barnes, assisted by Osula) and again on 62 (Thiaw, assisted by Willock) and were suddenly chasing a game they had dominated the ball in. Madueke's 78th-minute equaliser, laid on by \u00d8degaard, restored the pattern the possession numbers had suggested all along \u2014 but by then Arsenal needed a goal rather than simply wanting one.",
+        "nerdCorner": "The honest read is that this is a game Arsenal were slightly fortunate to draw rather than unlucky not to win. 66% possession, 224 passes in the opposition half and 10 shots inside the box normally reads as a comfortable afternoon \u2014 but Newcastle finished with the higher xG (1.71 to 1.49) from one fewer shot. Look at where the two numbers diverge: Arsenal's xGOT (1.42) sits just under their xG, while Newcastle's xGOT (1.29) sits well below theirs (1.71), which tells you Newcastle's chances were good ones that weren't struck especially well. Add the 6-3 corner count and the Thiaw header, and the pattern is a side ceding the ball on purpose and banking on dead-ball volume plus a couple of high-value openings. Arsenal's 9 tackles to Newcastle's 15 isn't a sign of passivity either \u2014 it's what happens when you have the ball; the question worth asking across the season is whether 22 touches in the opposition box is converting into enough of the 1.5+ xG that this kind of control ought to generate.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "On paper both sides lined up 4-2-3-1, but a team's shape with the ball is almost never the shape on the teamsheet. With possession, an Arteta side like this one usually turns into something closer to a 3-2-5: one full-back (Timber or Calafiori) tucks inside or stays back to make a back three, Rice and Bruno Guimar\u00e3es sit in front of them as a double pivot, and five players \u2014 the wingers, \u00d8degaard, Eze and Havertz \u2014 occupy the width and the spaces between Newcastle's defenders. The moment Arsenal lose the ball, those attackers drop back out into a flatter 4-4-2 bank, because defending needs even spacing across the pitch while attacking needs bodies high up it."
+        },
+        "lesson": {
+          "conceptId": "third-man",
+          "term": "Third-man run",
+          "level": 1,
+          "explain": "A third-man run is when player A passes to player B, and the pass that actually matters is B's \u2014 to player C, who has started moving while the defenders' eyes were on the first pass. Arsenal's two goals both have that fingerprint: a midfielder or forward receives, and the finisher arrives from somewhere the defence had stopped tracking \u2014 Havertz feeding Eze on 33, \u00d8degaard feeding Madueke on 78. It works because defenders naturally shift toward the ball when a pass is played, and for about a second the player furthest from the ball is the least watched man on the pitch. That is why 10 of Arsenal's 13 shots came from inside the box: they weren't forcing passes through the defence, they were arriving behind it.",
+          "spotIt": "When Arsenal play a short pass into a midfielder's feet with his back to goal, don't follow the ball \u2014 look at who starts sprinting beyond him at that exact moment; that's the third man."
+        },
+        "statTranslations": [
+          {
+            "stat": "Possession 66% vs 34%",
+            "plain": "Arsenal had the ball twice as much, so the game was played largely on Newcastle's terms of territory but Arsenal's terms of tempo."
+          },
+          {
+            "stat": "Passes in opposition half 224 vs 87",
+            "plain": "Arsenal spent the match camped in Newcastle's half \u2014 Newcastle barely got to pass the ball in Arsenal's."
+          },
+          {
+            "stat": "xG 1.49 vs 1.71",
+            "plain": "Despite all that control, Newcastle's smaller number of chances were the better ones \u2014 their shots were worth slightly more than Arsenal's."
+          },
+          {
+            "stat": "Shots inside box 10 vs 5",
+            "plain": "Arsenal got into the penalty area twice as often, so their shots were close-range rather than hopeful efforts from distance."
+          },
+          {
+            "stat": "Corners 3 vs 6",
+            "plain": "Newcastle doubled Arsenal's set-piece deliveries, which is how a team with a third of the ball still manufactures dangerous moments."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795505,
       "date": "2026-11-07",

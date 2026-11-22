@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-21",
+  "lastUpdated": "2026-11-22",
   "source": "fotmob",
   "items": [
     {
@@ -264,28 +264,6 @@
       "position": "AM",
       "onLoan": false,
       "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Jurrien Timber",
-      "club": "Arsenal",
-      "direction": "in",
-      "fee": "contract extension",
-      "date": "2026-10-08",
-      "position": "RB",
-      "onLoan": false,
-      "contractExtension": true,
-      "source": "fotmob"
-    },
-    {
-      "player": "Martin \u00d8degaard",
-      "club": "Arsenal",
-      "direction": "in",
-      "fee": "contract extension",
-      "date": "2026-10-08",
-      "position": "CM",
-      "onLoan": false,
-      "contractExtension": true,
       "source": "fotmob"
     }
   ]

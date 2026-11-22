@@ -1,7 +1,7 @@
 {
   "currentSeason": "2026/2027",
   "previousSeason": "2025/2026",
-  "lastUpdated": "2026-11-21",
+  "lastUpdated": "2026-11-22",
   "rows": [
     {
       "round": 1,
@@ -209,16 +209,20 @@
       "opponentShort": "Newcastle",
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/10261.png",
       "venue": "A",
-      "kickoff": "2026-11-21T17:30:00.000Z",
+      "kickoff": "2026-11-21T17:30:00Z",
       "previous": {
         "result": "W",
         "score": "2-1",
         "points": 3,
         "venue": "A"
       },
-      "current": null,
-      "delta": null,
-      "aggregate": null
+      "current": {
+        "result": "D",
+        "score": "2-2",
+        "points": 1
+      },
+      "delta": -2,
+      "aggregate": 5
     },
     {
       "round": 12,
@@ -661,10 +665,10 @@
     }
   ],
   "previousTotal": 85,
-  "currentTotal": 27,
-  "played": 10,
-  "swing": 7,
-  "comparable": 8,
+  "currentTotal": 28,
+  "played": 11,
+  "swing": 5,
+  "comparable": 9,
   "withoutBaseline": 6,
-  "projected": 92
+  "projected": 90
 }
