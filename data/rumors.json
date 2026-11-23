@@ -1,7 +1,18 @@
 {
-  "lastUpdated": "2026-11-22",
+  "lastUpdated": "2026-11-23",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Jamal Musiala",
+      "club": "Bayern Munich",
+      "direction": "in",
+      "fee": "\u20ac102M",
+      "date": "2026-11-23",
+      "position": "AM",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Carlos Forbs Borges",
       "club": "Club Brugge",

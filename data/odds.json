@@ -1,20 +1,20 @@
 {
-  "lastUpdated": "2026-11-22T19:37:59+00:00",
+  "lastUpdated": "2026-11-23T23:52:55+00:00",
   "source": "Kalshi",
   "items": [
     {
       "competition": "Premier League",
-      "odds": 1.32,
-      "impliedProbability": 0.755,
+      "odds": 1.36,
+      "impliedProbability": 0.735,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXPREMIERLEAGUE-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxpremierleague",
-      "priceCents": 75.5,
-      "bidCents": 75,
-      "askCents": 76,
-      "openInterest": 585140.91,
-      "lastUpdated": "2026-11-22"
+      "priceCents": 73.5,
+      "bidCents": 73,
+      "askCents": 74,
+      "openInterest": 585168.54,
+      "lastUpdated": "2026-11-23"
     },
     {
       "competition": "Champions League",
@@ -27,8 +27,8 @@
       "priceCents": 12.5,
       "bidCents": 12,
       "askCents": 13,
-      "openInterest": 254685.34,
-      "lastUpdated": "2026-11-22"
+      "openInterest": 254883.53,
+      "lastUpdated": "2026-11-23"
     },
     {
       "competition": "FA Cup",
@@ -42,7 +42,7 @@
       "bidCents": 20,
       "askCents": 24,
       "openInterest": 7837.59,
-      "lastUpdated": "2026-11-22"
+      "lastUpdated": "2026-11-23"
     },
     {
       "competition": "Carabao Cup",
@@ -60,12 +60,12 @@
     },
     {
       "competition": "Double (PL + UCL)",
-      "odds": 10.6,
-      "impliedProbability": 0.0944,
+      "odds": 10.88,
+      "impliedProbability": 0.0919,
       "bestBookmaker": "Implied (product of the two Kalshi markets)",
       "source": "derived",
-      "priceCents": 9.44,
-      "lastUpdated": "2026-11-22"
+      "priceCents": 9.19,
+      "lastUpdated": "2026-11-23"
     }
   ],
   "history": [
@@ -388,6 +388,14 @@
       "FA Cup": 0.22,
       "Carabao Cup": 0.0,
       "Double (PL + UCL)": 0.0944
+    },
+    {
+      "date": "2026-11-23",
+      "Premier League": 0.735,
+      "Champions League": 0.125,
+      "FA Cup": 0.22,
+      "Carabao Cup": 0.0,
+      "Double (PL + UCL)": 0.0919
     }
   ]
 }
