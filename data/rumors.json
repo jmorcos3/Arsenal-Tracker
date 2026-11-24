@@ -1,7 +1,18 @@
 {
-  "lastUpdated": "2026-11-23",
+  "lastUpdated": "2026-11-24",
   "source": "fotmob",
   "items": [
+    {
+      "player": "Antonio Nusa",
+      "club": "RB Leipzig",
+      "direction": "in",
+      "fee": "\u20ac80M",
+      "date": "2026-11-24",
+      "position": "LW",
+      "onLoan": false,
+      "contractExtension": false,
+      "source": "fotmob"
+    },
     {
       "player": "Jamal Musiala",
       "club": "Bayern Munich",
@@ -42,17 +53,6 @@
       "fee": "\u20ac70M",
       "date": "2026-11-17",
       "position": "DM",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Antonio Nusa",
-      "club": "RB Leipzig",
-      "direction": "in",
-      "fee": "\u20ac80M",
-      "date": "2026-11-15",
-      "position": "LW",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"
@@ -262,17 +262,6 @@
       "fee": "\u20ac40M",
       "date": "2026-10-13",
       "position": "ST",
-      "onLoan": false,
-      "contractExtension": false,
-      "source": "fotmob"
-    },
-    {
-      "player": "Gilberto Mora",
-      "club": "Tijuana",
-      "direction": "in",
-      "fee": "\u20ac28M",
-      "date": "2026-10-10",
-      "position": "AM",
       "onLoan": false,
       "contractExtension": false,
       "source": "fotmob"

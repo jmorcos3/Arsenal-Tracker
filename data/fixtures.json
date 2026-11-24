@@ -1,18 +1,7 @@
 {
-  "lastUpdated": "2026-11-23",
+  "lastUpdated": "2026-11-24",
   "timezone": "America/New_York",
   "items": [
-    {
-      "fixtureId": 6106259,
-      "date": "2026-11-24",
-      "kickoffUtc": "2026-11-24T20:00:00.000Z",
-      "kickoffLocal": "Tue Nov 24, 3:00 PM EST",
-      "opponent": "Dortmund",
-      "opponentId": 9789,
-      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/9789.png",
-      "competition": "Champions League",
-      "homeAway": "H"
-    },
     {
       "fixtureId": 5795525,
       "date": "2026-11-29",
@@ -55,6 +44,17 @@
       "opponentId": 8633,
       "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8633.png",
       "competition": "Champions League",
+      "homeAway": "H"
+    },
+    {
+      "fixtureId": 5795555,
+      "date": "2026-12-13",
+      "kickoffUtc": "2026-12-13T14:00:00.000Z",
+      "kickoffLocal": "Sun Dec 13, 9:00 AM EST",
+      "opponent": "Bournemouth",
+      "opponentId": 8678,
+      "crestUrl": "https://images.fotmob.com/image_resources/logo/teamlogo/8678.png",
+      "competition": "Premier League",
       "homeAway": "H"
     }
   ]

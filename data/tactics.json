@@ -1,6 +1,6 @@
 {
   "note": "Per-match tactical breakdowns. Fields under `grounded` come from FotMob's match data and are never written by the LLM. Fields under `explained` are model commentary constrained to that data. `conceptsTaught` drives the lesson curriculum so it ramps instead of repeating.",
-  "lastUpdated": "2026-11-22",
+  "lastUpdated": "2026-11-24",
   "conceptsTaught": [
     "low-block",
     "shape-in-out",
@@ -19,9 +19,155 @@
     "xgot",
     "xg-overperformance",
     "field-tilt",
-    "third-man"
+    "third-man",
+    "line-breaking"
   ],
   "matches": [
+    {
+      "fixtureId": 6106259,
+      "date": "2026-11-24",
+      "grounded": {
+        "fixtureId": 6106259,
+        "source": "fotmob",
+        "sourceUrl": "https://www.fotmob.com/matches/borussia-dortmund-vs-arsenal/36j8tu#6106259",
+        "date": "2026-11-24",
+        "competition": "Champions League",
+        "round": "5",
+        "homeAway": "H",
+        "opponent": "Borussia Dortmund",
+        "opponentId": 9789,
+        "goalsFor": 1,
+        "goalsAgainst": 1,
+        "arsenalFormation": "4-2-3-1",
+        "opponentFormation": "3-4-2-1",
+        "arsenalCoach": "Mikel Arteta",
+        "opponentCoach": "Niko Kova\u010d",
+        "arsenalXI": [
+          "Kepa Arrizabalaga",
+          "Ben White",
+          "Ezri Konsa",
+          "Gabriel",
+          "Piero Hincapi\u00e9",
+          "Declan Rice",
+          "Myles Lewis-Skelly",
+          "Noni Madueke",
+          "Martin \u00d8degaard",
+          "Christos Tzolis",
+          "Viktor Gy\u00f6keres"
+        ],
+        "opponentXI": [
+          "Gregor Kobel",
+          "Joane Gadou",
+          "Waldemar Anton",
+          "Nico Schlotterbeck",
+          "Julian Ryerson",
+          "Joey Veerman",
+          "Felix Nmecha",
+          "Daniel Svensson",
+          "Jobe Bellingham",
+          "Maximilian Beier",
+          "F\u00e1bio Silva"
+        ],
+        "stats": {
+          "arsenal": {
+            "possession": 63,
+            "xg": 2.34,
+            "shots": 30,
+            "shotsOnTarget": 4,
+            "touchesInBox": 56,
+            "bigChances": 4,
+            "bigChancesMissed": 4,
+            "accuratePasses": 501,
+            "corners": 8,
+            "shotsInBox": 19,
+            "xgOpenPlay": 1.51,
+            "xgSetPlay": 0.83,
+            "xgot": 0.72,
+            "passesOppositionHalf": 248,
+            "tackles": 15,
+            "interceptions": 9,
+            "saves": 3,
+            "fouls": 7
+          },
+          "opponent": {
+            "possession": 37,
+            "xg": 0.92,
+            "shots": 13,
+            "shotsOnTarget": 4,
+            "touchesInBox": 23,
+            "bigChances": 4,
+            "bigChancesMissed": 3,
+            "accuratePasses": 275,
+            "corners": 5,
+            "shotsInBox": 10,
+            "xgOpenPlay": 0.71,
+            "xgSetPlay": 0.22,
+            "xgot": 1.34,
+            "passesOppositionHalf": 151,
+            "tackles": 18,
+            "interceptions": 10,
+            "saves": 3,
+            "fouls": 13
+          }
+        },
+        "goalscorers": [
+          {
+            "player": "Viktor Gy\u00f6keres",
+            "minute": 10,
+            "team": "Arsenal",
+            "assist": "Noni Madueke"
+          },
+          {
+            "player": "Maximilian Beier",
+            "minute": 55,
+            "team": "Borussia Dortmund",
+            "assist": "Joane Gadou"
+          }
+        ],
+        "result": "D",
+        "shootout": null
+      },
+      "explained": {
+        "whatHappened": "Arsenal scored early at home \u2014 Gy\u00f6keres finishing a Madueke pass in the 10th minute \u2014 and then spent most of the night camped in Dortmund's half, taking 30 shots to their 13. Dortmund did very little with the ball but struck once just after the hour mark, Beier scoring in the 55th minute from a Gadou assist. It finished 1-1: Arsenal created far more, but only four of their 30 shots forced a save, and Dortmund's handful of chances were much better aimed.",
+        "opponentPlan": "Kova\u010d's 3-4-2-1 is built to be hard to play through and dangerous when it wins the ball: three centre-backs cover the width of the box, two wing-backs drop to make a back five when needed, and the two players behind the striker wait between Arsenal's midfield and defence. Dortmund were happy to have only 37% of the ball and just 151 passes in the opposition half \u2014 they conceded territory and defended the penalty area, which is why Arsenal's 30 shots produced only 19 from inside the box and just four on target. Arsenal's answer was width and volume: 56 touches in the Dortmund box and eight corners, trying to stretch a back five until a gap appeared. It half-worked \u2014 four big chances is a genuine return \u2014 but Dortmund also manufactured four big chances of their own from only 13 shots, which is what a counter-attacking side is built to do.",
+        "keyMoment": "Beier's equaliser on 55 minutes, assisted by Gadou. Before it, the pattern was one-way: Arsenal ahead from Gy\u00f6keres on 10, Dortmund sitting deep and offering almost nothing. The goal changed the shape of the game without changing Dortmund's approach \u2014 they still finished with 37% possession and 13 shots. What it changed was Arsenal's margin for error: a side that had already spent 45 minutes failing to turn territory into shots on target now had to find a second goal against a block that had just been handed a reason to defend even deeper.",
+        "nerdCorner": "The gap between xG 2.34 and xGOT 0.72 is the whole match in two numbers, and it is worth being precise about what it means. xG is measured at the moment of the shot; xGOT is measured at the moment it crosses the line \u2014 it only counts shots on target, so blocks and misses drop out entirely. Arsenal shedding 1.62 of value between the two is not bad luck in the usual sense, it's 26 shots that never tested Kepa's opposite number. Dortmund went the other way, 0.92 to 1.34: fewer shots, better aimed. Both keepers made three saves, which tells you Arsenal's four on-target efforts and Dortmund's four were being dealt with at roughly the same rate \u2014 the difference was purely in how many attempts each side wasted getting there. The regression argument cuts both ways: a side generating 19 shots inside the box will convert more of them over a season, but a side conceding four big chances from 13 opposition shots while holding 63% possession has a rest-defence problem that volume at the other end won't paper over forever.",
+        "shape": {
+          "arsenalInPossession": "3-2-5",
+          "arsenalOutOfPossession": "4-4-2 mid block",
+          "plainEnglish": "With the ball, a 4-2-3-1 like this one usually stops looking like four defenders in a line: one full-back tucks inside next to the two holding midfielders, leaving three at the back and two screening in front of them, while the wingers hold the touchline and the number ten pushes up alongside the striker \u2014 five across the front. Without the ball it snaps back into two banks of four, because those advanced players drop back into line. The movement that causes the switch is the full-back's: whether Lewis-Skelly or White steps inside, that one decision is what turns a back four into a back three and a midfield two into a midfield three."
+        },
+        "lesson": {
+          "conceptId": "line-breaking",
+          "term": "Line-breaking pass / packing",
+          "level": 3,
+          "explain": "A team defends in lines \u2014 Dortmund had three centre-backs in one line and four midfielders in another. A line-breaking pass is one that travels through a line rather than around it, and 'packing' counts how many opponents a single pass takes out of the game. This is the number that explains Arsenal's night: 248 passes in the Dortmund half and 56 touches in their box sounds like domination, but if most of those passes go sideways in front of the block, they take nobody out of the game, and you end up with 30 shots and only 4 on target. Gy\u00f6keres's goal on 10 minutes came from a Madueke assist \u2014 a pass that put a forward in front of goal, which by definition removed defenders from the equation; the other 29 shots mostly came after the ball had been worked around the outside rather than through the middle.",
+          "spotIt": "Next match, pick one Arsenal pass and count how many Dortmund-style defenders were between the passer and the receiver before it was played \u2014 if the answer is two or more, you just watched a line-breaking pass, and watch how the shot that follows is usually cleaner than one built from sideways possession."
+        },
+        "statTranslations": [
+          {
+            "stat": "xG 2.34 vs 0.92, but xGOT 0.72 vs 1.34",
+            "plain": "Arsenal built much better chances than Dortmund but finished them badly \u2014 by the time their shots reached the goal they were worth less than Dortmund's, which is the single cleanest explanation of a 1-1."
+          },
+          {
+            "stat": "30 shots, 4 on target",
+            "plain": "Volume without accuracy: Arsenal got into shooting positions constantly and then blocked, dragged or skied the overwhelming majority of them."
+          },
+          {
+            "stat": "Big chances 4 vs 4",
+            "plain": "The headline numbers scream Arsenal dominance, but the clear-cut opportunities were dead level \u2014 Dortmund needed far fewer touches to manufacture theirs."
+          },
+          {
+            "stat": "Touches in the opposition box 56 vs 23",
+            "plain": "Arsenal lived in the Dortmund penalty area, which is usually how you win games; here it only produced territory, not quality."
+          },
+          {
+            "stat": "Tackles 15 vs 18, interceptions 9 vs 10",
+            "plain": "Dortmund made more defensive actions than Arsenal despite having the ball a third of the time \u2014 the price of defending deep for 90 minutes."
+          }
+        ]
+      }
+    },
     {
       "fixtureId": 5795523,
       "date": "2026-11-21",
