@@ -1,20 +1,20 @@
 {
-  "lastUpdated": "2026-11-25T21:40:34+00:00",
+  "lastUpdated": "2026-11-26T21:30:03+00:00",
   "source": "Kalshi",
   "items": [
     {
       "competition": "Premier League",
-      "odds": 1.36,
-      "impliedProbability": 0.735,
+      "odds": 1.38,
+      "impliedProbability": 0.725,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXPREMIERLEAGUE-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxpremierleague",
-      "priceCents": 73.5,
-      "bidCents": 73,
-      "askCents": 74,
-      "openInterest": 584801.62,
-      "lastUpdated": "2026-11-25"
+      "priceCents": 72.5,
+      "bidCents": 72,
+      "askCents": 73,
+      "openInterest": 584756.79,
+      "lastUpdated": "2026-11-26"
     },
     {
       "competition": "Champions League",
@@ -27,22 +27,22 @@
       "priceCents": 13.5,
       "bidCents": 13,
       "askCents": 14,
-      "openInterest": 258889.73,
-      "lastUpdated": "2026-11-25"
+      "openInterest": 258925.15,
+      "lastUpdated": "2026-11-26"
     },
     {
       "competition": "FA Cup",
-      "odds": 4.35,
-      "impliedProbability": 0.23,
+      "odds": 4.44,
+      "impliedProbability": 0.225,
       "bestBookmaker": "Kalshi",
       "source": "kalshi",
       "marketTicker": "KXFACUP-27-ARS",
       "marketUrl": "https://kalshi.com/markets/kxfacup",
-      "priceCents": 23.0,
+      "priceCents": 22.5,
       "bidCents": 21,
-      "askCents": 25,
-      "openInterest": 8183.55,
-      "lastUpdated": "2026-11-25"
+      "askCents": 24,
+      "openInterest": 8173.97,
+      "lastUpdated": "2026-11-26"
     },
     {
       "competition": "Carabao Cup",
@@ -60,12 +60,12 @@
     },
     {
       "competition": "Double (PL + UCL)",
-      "odds": 10.08,
-      "impliedProbability": 0.0992,
+      "odds": 10.22,
+      "impliedProbability": 0.0979,
       "bestBookmaker": "Implied (product of the two Kalshi markets)",
       "source": "derived",
-      "priceCents": 9.92,
-      "lastUpdated": "2026-11-25"
+      "priceCents": 9.79,
+      "lastUpdated": "2026-11-26"
     }
   ],
   "history": [
@@ -412,6 +412,14 @@
       "FA Cup": 0.23,
       "Carabao Cup": 0.0,
       "Double (PL + UCL)": 0.0992
+    },
+    {
+      "date": "2026-11-26",
+      "Premier League": 0.725,
+      "Champions League": 0.135,
+      "FA Cup": 0.225,
+      "Carabao Cup": 0.0,
+      "Double (PL + UCL)": 0.0979
     }
   ]
 }
